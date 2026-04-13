@@ -25,46 +25,113 @@
 
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; background: var(--bg); font-family: system-ui, -apple-system, sans-serif;}
 
-        /* --- FUNNY INTRO PAGE --- */
+        /* --- SMART CONCISE INTRO PAGE --- */
         #introPage {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100dvh;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            position: fixed; inset: 0; width: 100%; height: 100dvh;
+            background: rgba(248, 250, 252, 0.9); /* White and blue-tinted frosted glass */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px; box-sizing: border-box; color: white; text-align: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            padding: 20px; box-sizing: border-box; color: var(--text-main); text-align: center;
+            transition: opacity 0.5s ease, visibility 0.5s, transform 0.5s ease;
         }
 
-        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.02); }
 
         .intro-content {
-            display: flex; flex-direction: column; align-items: center; max-width: 400px;
-            animation: slideUpIntro 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex; flex-direction: column; align-items: center; max-width: 360px; width: 100%;
+            background: #ffffff;
+            border: 2px solid var(--primary);
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: 0 25px 50px -12px rgba(10, 85, 215, 0.25);
+            animation: slideUpIntro 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
         }
 
-        .cartoon-box {
-            width: 160px; height: 160px; margin-bottom: 20px;
-            background: white; border-radius: 50%; padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            position: relative; overflow: hidden;
+        .intro-lang-toggles {
+            position: absolute;
+            top: max(20px, env(safe-area-inset-top));
+            right: 20px;
+            display: inline-flex;
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 4px;
+            border: 2px solid var(--border-neutral);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            gap: 2px;
+            z-index: 2;
+        }
+        
+        .intro-lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .cartoon-box svg { width: 100%; height: 100%; }
+        .intro-lang-btn:hover { background: #f1f5f9; color: var(--primary); }
 
-        .intro-h1 { font-size: 2rem; font-weight: 900; margin: 0 0 10px 0; text-transform: uppercase; line-height: 1; }
+        .intro-lang-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(10, 85, 215, 0.4);
+        }
+
+        .video-container {
+            width: 100%; max-width: 280px; aspect-ratio: 16/9; margin-bottom: 24px;
+            background: #000; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            transform: translateZ(0);
+        }
+
+        .video-container video { width: 100%; height: 100%; object-fit: cover; }
+
+        .video-placeholder-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.5); font-weight: 700; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
+            pointer-events: none;
+        }
+
+        .intro-h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1.1; letter-spacing: -0.5px; color: var(--primary-dark); }
         .intro-h1 span { color: var(--accent); }
-        .intro-p { font-size: 1rem; font-weight: 700; margin: 0 0 25px 0; opacity: 0.9; line-height: 1.4; }
+        .intro-p { font-size: 0.95rem; font-weight: 600; margin: 0 0 28px 0; color: var(--text-muted); line-height: 1.5; }
 
         .intro-btn {
-            background: var(--accent); color: #000; border: none; padding: 14px 28px;
-            border-radius: 50px; font-weight: 900; font-size: 1rem; cursor: pointer;
-            text-transform: uppercase; box-shadow: 0 6px 0 #cc9900, 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.1s ease;
+            background: var(--primary); color: white; border: none; padding: 14px 24px;
+            border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            box-shadow: 0 8px 16px rgba(10, 85, 215, 0.3);
+            transition: all 0.2s ease; width: 100%;
         }
 
-        .intro-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #cc9900, 0 4px 10px rgba(0,0,0,0.2); }
+        .intro-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(10, 85, 215, 0.4); }
+        .intro-btn:active { transform: translateY(0); box-shadow: 0 4px 8px rgba(10, 85, 215, 0.3); }
+
+        .intro-footer {
+            position: absolute;
+            bottom: 25px;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
 
         @keyframes slideUpIntro {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -72,7 +139,7 @@
         #mainAppWrapper {
             position: relative; width: 100%; height: 100dvh; display: flex; flex-direction: column;
             align-items: center; overflow: hidden; box-sizing: border-box;
-            padding: max(8px, env(safe-area-inset-top)) 8px max(10px, env(safe-area-inset-bottom));
+            padding: max(8px, env(safe-area-inset-top)) 8px 0;
         }
 
         .app-container { width: 100%; max-width: 950px; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
@@ -92,7 +159,6 @@
 
         .meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; min-height: 20px; }
 
-        /* Modern Category Chips */
         .filter-wrapper { 
             width: 100%; 
             display: flex; 
@@ -154,7 +220,45 @@
 
         .result-item { width: 100%; box-sizing: border-box; min-height: 85px; border-radius: 10px; cursor: pointer; display: flex; background: white; border: 3px solid var(--border-neutral); overflow: hidden; outline: none; transition: all 0.2s ease; flex-shrink: 0; }
         .result-item.selected { min-height: 110px; border-color: var(--primary); background: #f0f6ff; box-shadow: 0 4px 12px rgba(10,85,215,0.25); z-index: 10; position: relative; }
-        .icon-wrap { width: 55px; background: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border-right: 2px solid var(--border-neutral); flex-shrink: 0; }
+        .icon-wrap { width: 55px; height: inherit; background: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border-right: 2px solid var(--border-neutral); flex-shrink: 0; overflow: hidden; position: relative; cursor: zoom-in; }
+        
+        .icon-wrap img {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 4px;
+            box-sizing: border-box;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .icon-wrap:hover img {
+            transform: scale(1.3);
+        }
+
+        .icon-wrap::after {
+            content: '🔍';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            transform: scale(0.5);
+        }
+
+        .icon-wrap:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
         .info { flex: 1; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
         .info h3 { font-size: 1rem; margin: 0 0 4px 0; font-weight: 900; color: var(--text-main); white-space: normal; word-wrap: break-word; line-height: 1.2; }
         .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
@@ -169,14 +273,24 @@
         .badge span { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
         .sectie-label { font-size: 0.65rem; font-weight: 800; color: white; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 3px; padding-top: 3px; width: 90%; text-align: center; }
 
-        /* --- IMAGE ZOOM MODAL --- */
+        /* --- IMAGE ZOOM MODAL (WITH MODERN PAN-ZOOM) --- */
         .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
         .image-modal.show { opacity: 1; pointer-events: auto; }
-        .image-modal img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: white; padding: 10px; }
+        .image-modal img { 
+            max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: white; padding: 10px; cursor: zoom-in; 
+        }
         .image-modal.show img { transform: scale(1); }
-        .image-modal-close { position: absolute; top: 20px; right: 20px; background: white; color: var(--text-main); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s; }
+        .image-modal.show img.is-zoomed { 
+            transform: scale(2.5); 
+            cursor: zoom-out; 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .image-modal-close { position: absolute; top: 20px; right: 20px; background: white; color: var(--text-main); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10001; }
         .image-modal-close:hover { background: var(--accent); color: black; transform: scale(1.1); }
-        .image-modal-title { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; font-size: 1.1rem; text-align: center; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; max-width: 80%; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .image-modal-title { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; font-size: 1.1rem; text-align: center; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; max-width: 80%; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10001; pointer-events: none; }
 
         /* --- AISLE POPUP TOAST --- */
         .aisle-popup {
@@ -197,7 +311,7 @@
         }
 
         /* --- MAP SECTION --- */
-        .map-section { width: 100%; max-width: 950px; height: 70px; flex-shrink: 0; perspective: 1000px; margin-top: 0px; margin-bottom: 97px; position: relative; z-index: 1; }
+        .map-section { width: 100%; max-width: 950px; height: 70px; flex-shrink: 0; perspective: 1000px; margin-top: 0px; margin-bottom: 118px; position: relative; z-index: 1; }
         
         .floor { 
             height: 100%; 
@@ -211,13 +325,14 @@
             transform-origin: bottom center; 
             display: grid; 
             grid-template-columns: repeat(17, 1fr); 
-            gap: 8px; /* Bredere grid gap voor strakkere 3D blokken */
+            gap: 8px; 
             padding: 10px 15px 85px; 
             border: 3px solid var(--border-neutral); 
             border-bottom: 8px solid var(--primary); 
             border-radius: 12px; 
             position: relative; 
             transform-style: preserve-3d; 
+            -webkit-transform-style: preserve-3d;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
         }
         
@@ -225,13 +340,13 @@
         .aisle { 
             background: #ffffff; border-radius: 2px; position: relative; cursor: pointer; 
             transform-style: preserve-3d;
-            transform: translateZ(25px); /* Push up to create 3D block */
+            -webkit-transform-style: preserve-3d;
+            transform: translateZ(25px); 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: -5px 15px 15px rgba(0,0,0,0.04);
         }
         .aisle:hover { transform: translateZ(30px); }
         
-        /* Front wall of shelf */
         .aisle::before {
             content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 25px;
             background: linear-gradient(to bottom, #f1f5f9, #cbd5e1);
@@ -239,7 +354,6 @@
             border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        /* Right wall of shelf */
         .aisle::after {
             content: ''; position: absolute; top: 0; left: 100%; width: 25px; height: 100%;
             background: linear-gradient(to right, #f8fafc, #e2e8f0);
@@ -255,33 +369,32 @@
         .aisle.active::before { background: linear-gradient(to bottom, #bae6fd, #7dd3fc); height: 35px; border-color: #38bdf8; }
         .aisle.active::after { background: linear-gradient(to right, #e0f2fe, #bae6fd); width: 35px; border-color: #38bdf8; }
         
-        /* Floating Labels */
         .aisle-num { 
             position: absolute; bottom: -30px; left: 50%; 
-            transform: translateX(-50%) rotateX(-35deg) translateZ(10px); 
+            transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
             font-weight: 900; font-size: 0.65rem; z-index: 30; 
             background: var(--primary); color: white; padding: 2px 5px; 
             border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); pointer-events: none; 
             transition: all 0.3s ease;
         }
-        .aisle.active .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-35deg) translateZ(15px) scale(1.1); }
+        .aisle.active .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-35deg) translateZ(15px) translateY(-10px) scale(1.1); }
         
         .entrance-label { 
-            position: absolute; bottom: -48px; left: 50%; 
-            transform: translateX(-50%) rotateX(-35deg) translateZ(10px); 
-            font-weight: 900; font-size: 0.5rem; z-index: 30; 
-            background: var(--accent); color: #000; padding: 3px 6px; 
+            position: absolute; 
+            transform-origin: bottom right;
+            transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
+            font-weight: 900; font-size: 0.45rem; z-index: 30; 
+            background: var(--accent); color: #000; padding: 2px 4px; 
             border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; 
             white-space: nowrap;
         }
         .entrance-label::before { content: var(--txt-entrance); }
         
-        /* --- MODERN CASHIER DESKS --- */
         #cashierZone {
             position: absolute;
             bottom: 0; 
-            left: calc(100% / 17 * 5.2); 
-            width: calc(100% / 17 * 9.6); 
+            left: calc(100% / 17 * 8); 
+            width: calc(100% / 17 * 5); 
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -290,15 +403,17 @@
             cursor: pointer;
             transform: translateZ(8px);
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
         }
         
         .cashier-desk {
-            width: 14%; height: 100%;
+            width: 18%; height: 100%;
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 1px solid #334155; border-top: 2px solid var(--accent);
             border-radius: 2px; position: relative;
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
         }
         
         .cashier-desk::before {
@@ -309,18 +424,174 @@
             z-index: 1;
         }
 
+        .desk-label {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
+            font-weight: 900;
+            font-size: 0.55rem;
+            z-index: 300;
+            background: var(--accent);
+            color: #000;
+            padding: 3px 6px;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        #coffeeCorner {
+            position: absolute;
+            bottom: 0;
+            right: calc(100% / 17 * 0.2); 
+            width: calc(100% / 17 * 1.8); 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 16px; 
+            z-index: 150; 
+            cursor: pointer;
+            background: linear-gradient(145deg, #27272a, #111827); 
+            border: 1px solid #0f172a; 
+            border-top: 3px solid #b45309; 
+            border-radius: 3px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 5px 10px rgba(0,0,0,0.5);
+            transform: translateZ(8px);
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #coffeeCorner:hover { transform: translateZ(12px); }
+
+        #coffeeCorner::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 8%;
+            width: 28%;
+            height: 8px;
+            background: linear-gradient(to right, #9ca3af, #cbd5e1);
+            border: 1px solid #475569;
+            border-radius: 2px;
+            transform: translateZ(2px);
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+        
+        #coffeeCorner::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 5%;
+            width: 90%;
+            height: 2px;
+            background: #fde047;
+            box-shadow: 0 0 5px #fde047, 0 0 10px #eab308;
+            border-radius: 2px;
+            opacity: 0.8;
+            transform: translateZ(1px);
+        }
+
+        .vending-machine {
+            position: absolute;
+            bottom: 100%;
+            right: 10%; 
+            width: 22%; 
+            height: 24px; 
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #020617;
+            border-top: 1px solid #475569;
+            border-left: 1px solid #334155;
+            border-radius: 2px;
+            transform-origin: bottom center;
+            transform: rotateX(-35deg) translateZ(8px) translateY(-1px);
+            box-shadow: -5px 15px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 3px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .vending-screen {
+            width: 85%;
+            height: 12px;
+            background: 
+                linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)),
+                repeating-linear-gradient(to bottom, #0ea5e9 0px, #0ea5e9 3px, #020617 3px, #020617 5px);
+            border: 1px solid #000;
+            border-radius: 1px;
+            box-shadow: inset 0 0 5px #000, 0 0 8px rgba(14, 165, 233, 0.4);
+            position: relative;
+        }
+
+        .vending-slot {
+            margin-top: 3px;
+            width: 60%;
+            height: 2px;
+            background: #000;
+            border-radius: 1px;
+            border-top: 1px solid #334155;
+            position: relative;
+        }
+        
+        .vending-slot::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            width: 4px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 1px;
+        }
+
+        .coffee-label {
+            position: absolute;
+            bottom: 100%;
+            left: -50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
+            font-weight: 900;
+            font-size: 0.55rem;
+            z-index: 300;
+            background: #b45309; 
+            color: #fff;
+            padding: 3px 6px;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            pointer-events: none;
+            border: 1px solid #78350f;
+        }
+
+        .coffee-cup {
+            position: absolute;
+            bottom: 100%;
+            left: 45%; 
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-2px);
+            font-size: 1.1rem;
+            pointer-events: none;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            z-index: 20;
+        }
+
         #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; } 
-        .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.8s linear; } 
+        .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; } 
         
         @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(-35deg) translateZ(60px) translateY(0); } 50% { transform: translateX(-50%) rotateX(-35deg) translateZ(60px) translateY(-4px); } }
-        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 3%; display: flex; justify-content: center; transform: translateX(-50%) rotateX(-35deg) translateZ(60px); }
-        .user.running { animation: runBob 0.25s infinite linear; }
+        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(-35deg) translateZ(60px); width: 24px; }
+        .user.running { animation: runBob 0.2s infinite alternate; }
         .user svg { width: 100%; transform: scaleX(var(--char-dir)); transition: transform 0.15s ease; filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3)); }
 
         #printArea { display: none; }
         @media print { 
             body { background: white; margin: 0; padding: 0; height: auto; position: static; } 
-            #introPage, .app-container, .map-section, .promo-banner, #aislePopup { display: none !important; } 
+            #introPage, .app-container, .map-section, .promo-banner, #aislePopup, .app-footer { display: none !important; } 
             #printArea { display: block !important; text-align: center; font-family: sans-serif; padding: 30px; border: 8px solid var(--primary); width: 100%; box-sizing: border-box; } 
             #printArea h1 { font-size: 3rem !important; margin: 15px 0; word-break: break-word; }
         }
@@ -334,34 +605,119 @@
             .action-btn:hover { background: #e6b800; box-shadow: 0 4px 8px rgba(0,0,0,0.15); transform: translateY(-1px); }
             .category-chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); background: #f0f6ff; }
         }
+
+        /* --- DIM MODE --- */
+        body.dark-mode {
+            --bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-neutral: #334155;
+            --aisle: #1e293b;
+        }
+        body.dark-mode .search-wrap, 
+        body.dark-mode .category-chip,
+        body.dark-mode .result-item,
+        body.dark-mode .lang-flags,
+        body.dark-mode .btn-reset,
+        body.dark-mode .icon-wrap,
+        body.dark-mode .image-modal img {
+            background: #1e293b;
+            color: var(--text-main);
+        }
+        body.dark-mode .flag-btn.active { background: #334155; }
+        body.dark-mode .input-layer { color: var(--text-main); }
+        body.dark-mode .tag { background: #334155; color: #cbd5e1; }
+        body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
+        body.dark-mode .clear-btn { background: #334155; color: white; }
+        body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
+        body.dark-mode .icon-wrap::after { background: rgba(30, 41, 59, 0.6); }
+        body.dark-mode .floor {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), 
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        body.dark-mode .aisle { background: #334155; box-shadow: -5px 15px 15px rgba(0,0,0,0.2); }
+        body.dark-mode .aisle::before {
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
+            border-color: #475569;
+        }
+        body.dark-mode .aisle::after {
+            background: linear-gradient(to right, #334155, #1e293b);
+            border-color: #475569;
+        }
+        @media (hover: hover) {
+            body.dark-mode .category-chip:hover:not(.active) { background: #334155; color: #f8fafc; border-color: #475569; }
+        }
+
+        /* --- FOOTER STYLES (Single Line) --- */
+        .app-footer {
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            z-index: 5;
+            background: var(--bg);
+            border-top: 1px solid var(--border-neutral);
+        }
+        .app-footer .footer-content {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+        .app-footer .brand {
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .beta-badge {
+            background: var(--accent);
+            color: #000;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 900;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body onload="initApp()">
 
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <div id="imageModal" class="image-modal" onclick="closeImageModal(event)">
         <button class="image-modal-close" onclick="closeImageModal(event)">✕</button>
         <img id="modalImage" src="" alt="Zoomed Product">
         <div id="modalTitle" class="image-modal-title"></div>
     </div>
 
     <div id="introPage">
+        <div class="intro-lang-toggles">
+            <button class="intro-lang-btn active" onclick="setLang('nl')" id="intro-btn-nl">🇳🇱 NL</button>
+            <button class="intro-lang-btn" onclick="setLang('en')" id="intro-btn-en">🇬🇧 EN</button>
+            <button class="intro-lang-btn" onclick="setLang('uk')" id="intro-btn-uk">🇺🇦 UK</button>
+        </div>
+        
         <div class="intro-content">
-            <div class="cartoon-box">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="5" y="5" width="20" height="90" rx="3" fill="#0a55d7" opacity="0.4"/>
-                    <rect x="30" y="15" width="20" height="80" rx="3" fill="#0a55d7" opacity="0.6"/>
-                    <rect x="55" y="25" width="20" height="70" rx="3" fill="#0a55d7" opacity="0.4"/>
-                    <rect x="80" y="5" width="15" height="90" rx="3" fill="#0a55d7" opacity="0.2"/>
-                    
-                    <path d="M50 40 Q45 40 45 45 L45 55 Q45 60 50 60 Q55 60 55 55 L55 45 Q55 40 50 40" fill="#475569"/> <path d="M40 60 L60 60 L65 95 L35 95 Z" fill="#475569"/> <circle cx="43" cy="50" r="1" fill="white"/> <circle cx="57" cy="50" r="1" fill="white"/> <path d="M42 32 L44 35 L47 32 L45 29 Z" fill="#ffcc00"/>
-                    <path d="M50 25 L52 28 L55 25 L53 22 Z" fill="#ffcc00"/>
-                    <path d="M58 32 L60 35 L63 32 L61 29 Z" fill="#ffcc00"/>
-                </svg>
+            <div class="video-container">
+                <div class="video-placeholder-text">Video Placeholder</div>
+                <video id="introVideo" autoplay loop playsinline controls muted src="https://www.w3schools.com/html/mov_bbb.mp4">
+                    Your browser does not support HTML video.
+                </video>
             </div>
-            <h1 class="intro-h1">WELKOM BIJ<br>Amsterdam AMSTEL <span>XL</span></h1>
+            
+            <h1 class="intro-h1">WELKOM BIJ<br>BOUWMAAT AMSTEL <span>XL</span></h1>
             <p class="intro-p" id="introText">Verdwaald in het gangpad? DIY is leuk, maar niet als het om zoeken gaat. Let’s get you found!</p>
             <button class="intro-btn" onclick="closeIntro()" id="introBtn">LET’S FIND MY STUFF!</button>
         </div>
+        
+        <div class="intro-footer">Powered by <b>Aisle Wise&trade;</b></div>
     </div>
 
     <div id="mainAppWrapper">
@@ -372,16 +728,17 @@
         <div class="app-container" id="mainApp">
             <div class="top-bar">
                 <div class="logo">
-                    <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#0a55d7"/> <img src="https://www.bouwmaat.nl/_nuxt/img/logo.156d07e.svg"> </svg>
-                    <h1>Amsterdam Amstel <span style="color:var(--accent)">XL</span></h1>
+                    <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#0a55d7"/> <img src="https://www.bouwmaat.nl/_nuxt/img/logo.156d07e.svg" alt="logo"> </svg>
+                    <h1>Amstel <span style="color:var(--accent)">XL</span></h1>
                 </div>
                 <div class="controls">
+                    <button id="btnDimToggle" onclick="toggleDimMode()" class="btn-reset" style="padding: 4px 8px; font-size: 1.1rem; border-radius: 50%;" title="Toggle Dim Mode">🌙</button>
                     <div class="lang-flags">
                         <button class="flag-btn" onclick="setLang('nl')" id="btn-nl" aria-label="Nederlands">🇳🇱</button>
                         <button class="flag-btn" onclick="setLang('en')" id="btn-en" aria-label="English">🇬🇧</button>
                         <button class="flag-btn" onclick="setLang('uk')" id="btn-uk" aria-label="Українська">🇺🇦</button>
                     </div>
-                    <button id="btnReset" onclick="location.reload()" class="btn-reset">RESET</button>
+                    <button id="btnReset" onclick="resetApp()" class="btn-reset" style="display: none;">RESET</button>
                 </div>
             </div>
 
@@ -416,15 +773,22 @@
             <div class="floor" id="mapGrid">
 
                 <div id="cashierZone" onclick="handleMapClick('KAS')">
-                    <div class="cashier-desk"></div>
-                    <div class="cashier-desk"></div>
-                    <div class="cashier-desk"></div>
-                    <div class="cashier-desk"></div>
-                    <div class="cashier-desk"></div>
+                    <div class="cashier-desk"><div class="desk-label" id="label-service">Service desk</div></div>
+                    <div class="cashier-desk"><div class="desk-label" id="label-sales1">Verkoopdesk</div></div>
+                    <div class="cashier-desk"><div class="desk-label" id="label-kassa">Kassa</div></div>
+                </div>
+
+                <div id="coffeeCorner" onclick="handleMapClick('KOFFIE')">
+                    <div class="vending-machine">
+                        <div class="vending-screen"></div>
+                        <div class="vending-slot"></div>
+                    </div>
+                    <div class="coffee-cup">☕</div>
+                    <div class="coffee-label" id="label-coffee">Koffiehoek</div>
                 </div>
 
                 <svg id="pathLayer"><path id="guideLine" class="walking-line" d="" /></svg>
-                <div class="user" id="mainChar">
+                <div class="user" id="mainChar" style="bottom: 0%; left: 270px;">
                     <svg viewBox="0 0 64 100">
                         <path d="M22 18 Q10 40 18 55 Q32 30 42 18" fill="#4a3000" /><circle cx="32" cy="22" r="14" fill="#ffcdb2" /><path d="M18 22 Q32 8 46 22 Q32 12 18 22" fill="#3a2500" />
                         <path d="M22 36 L42 36 Q48 50 44 65 L20 65 Q16 50 22 36" fill="#0a55d7" /> 
@@ -434,12 +798,31 @@
                 </div>
             </div>
         </div>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="beta-badge">BETA v1.1</div>
+                <div>&copy; 2026 <span class="brand">AISLE WISE&trade;</span></div>
+                <div>&bull;</div>
+                <div style="opacity: 0.7;">Registered Trademark</div>
+                <div>&bull;</div>
+                <div>All Rights Reserved</div>
+            </div>
+        </footer>
     </div>
 
 <script>
+    if (localStorage.getItem('bouwmaat_dim') === '1') document.body.classList.add('dark-mode');
+
+    function toggleDimMode() {
+        const isDim = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('bouwmaat_dim', isDim ? '1' : '0');
+        document.getElementById('btnDimToggle').innerText = isDim ? '☀️' : '🌙';
+    }
+
     const i18n = {
         nl: { 
-            introTitle: "WELKOM BIJ<br>AMSTEL <span>XL</span>",
+            introTitle: "WELKOM BIJ<br>BOUWMAAT AMSTEL <span>XL</span>",
             introP: "Verdwaald in het gangpad? DIY is leuk, maar niet als het om zoeken gaat. Let’s get you found!",
             introBtn: "LET’S FIND MY STUFF!",
             placeholder: "Zoek artikel of code...", search: "🔍 ZOEKEN", reset: "RESET", 
@@ -447,13 +830,15 @@
             resFoundPlural: "RESULTATEN", resFoundSingular: "RESULTAAT", noResTitle: "Geen resultaten voor", 
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
             entrance: "INGANG", left: "LINKS", right: "RECHTS", sect: "Sectie", pad: "PAD", zijde: "ZIJDE", kassa: "KASSA",
+            serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek",
             moreRes: "meer resultaten. Verfijn je zoekopdracht.",
             groups: { 
-                "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen"
+                "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
+                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Verf benodigdheden/attributen": "Verf benodigdheden/attributen", "Kleding & schoenen": "Kleding & schoenen"
             }
         },
         en: { 
-            introTitle: "WELCOME TO<br>AMSTEL <span>XL</span>",
+            introTitle: "WELCOME TO<br>BOUWMAAT AMSTEL <span>XL</span>",
             introP: "Lost in the aisle? DIY is fun, but searching shouldn't be a project. Let’s get you found!",
             introBtn: "LET’S FIND MY STUFF!",
             placeholder: "Search item or code...", search: "🔍 SEARCH", reset: "RESET", 
@@ -461,13 +846,15 @@
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
             entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
+            serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner",
             moreRes: "more results. Please refine your search.",
             groups: { 
-                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc"
+                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
+                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Verf benodigdheden/attributen": "Painting Supplies", "Kleding & schoenen": "Clothing & Shoes"
             }
         },
         uk: { 
-            introTitle: "ВІТАЄМО В<br>AMSTEL <span>XL</span>",
+            introTitle: "ВІТАЄМО В<br>BOUWMAAT AMSTEL <span>XL</span>",
             introP: "Загубилися в міжрядді? DIY — це весело, але пошук не має бути проблемою. Допоможемо знайти все!",
             introBtn: "ПОЇХАЛИ ШУКАТИ!",
             placeholder: "Пошук товару чи коду...", search: "🔍 ПОШУК", reset: "СКИДАННЯ", 
@@ -475,25 +862,26 @@
             resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
             noResDesc: "Перевірте орфографію.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУК ЧЕКА", 
             entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
+            serviceDesk: "Сервісна стійка", salesDesk: "Стійка продажу", coffeeCorner: "Кавовий куточок",
             moreRes: "більше результатів. Уточніть свій пошук.",
             groups: { 
-                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen gebruik": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Цемент та суміші": "Cement en mortels", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Власне використання (різне)"
+                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент та суміші", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en циліндри": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Власне використання (різне)",
+                "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Verf benodigdheden/attributen": "Малярні аксесуари", "Kleding & schoenen": "Одяг та взуття"
             }
         }
     };
 
     const aisleCategories = {
         1: "Hout", 2: "Hout", 3: "Hout", 
-        4: "Bouwstoffen", 5: "Bouwstoffen", 
-        6: "IJzerwaren", 7: "IJzerwaren", 8: "IJzerwaren", 
+        4: "Deuren & Kozijnen", 5: "IJzerwaren", 
+        6: "Schroeven", 7: "Kit, pur & lijm", 8: "Verf benodigdheden/attributen", 
         9: "Verf", 10: "Verf", 
         11: "Gereedschap", 12: "Gereedschap", 
-        13: "Elektra", 
+        13: "Kleding & schoenen", 
         14: "Sanitair", 15: "Sanitair", 
-        16: "Verwarming", 17: "Verwarming"
+        16: "Elektra", 17: "Verwarming"
     };
 
-    // Special Location Mappings
     const specialLocations = [
         { id: "KAS", short: "KASSA", long: "Kassa" },
         { id: "0AW", short: "BACK WALL", long: "Back wall" },
@@ -502,7 +890,8 @@
         { id: "0BC-DAK", short: "SERVICE", long: "Ask servicedesk" },
         { id: "VMB", short: "VERF BALIE", long: "Verfmengbalie" },
         { id: "LIJ", short: "LIJSTEN", long: "Lijstenkast of kop 2-3" },
-        { id: "BAL", short: "BALIE", long: "Balie - ask desk service" }
+        { id: "BAL", short: "BALIE", long: "Balie - ask desk service" },
+        { id: "KOFFIE", short: "KOFFIE", long: "Koffiehoek" }
     ];
 
     let curLang = localStorage.getItem('bouwmaat_lang') || 'nl';
@@ -594,15 +983,6 @@
             "Hoofdgroep": "Bevestigingsmateriaal",
             "Subgroep": "Pluggen",
             "Locatie2": "Pad 06 Rechts, Sectie 02"
-        },
-
-          {
-            "ArtikelNr.": "10001128",
-            "Artikel omsch.": "Wagner Easy-Clean Reiniger 1L",
-            "Schaplocatie code": "08R-003-0181",
-            "Hoofdgroep": "Gereedschap",
-            "Subgroep": "Toebehoren gereedschap",
-            "Locatie2": "Pad 08 Rechts, Sectie 03"
         },
         {
             "ArtikelNr.": "032711",
@@ -926,8 +1306,22 @@
             "Subgroep": "Elektrisch installatiemateriaal",
             "Locatie2": "Pad 16 Rechts, Sectie 05"
         },
+          {
+            "ArtikelNr.": "10001077",
+            "Artikel omsch.": "Illbruck AA232 Purschuimpistool Groen",
+            "Hoofdgroep": "Gereedschap",
+            "Subgroep": "Handgereedschap",
+            "Locatie2": "Pad  Links, Sectie "
+        },
 
-
+     {
+            "ArtikelNr.": "10001128",
+            "Artikel omsch.": "Wagner Easy-Clean Reiniger 1L",
+            "Schaplocatie code": "08R-003-0181",
+            "Hoofdgroep": "Gereedschap",
+            "Subgroep": "Toebehoren gereedschap",
+            "Locatie2": "Pad 08 Rechts, Sectie 03"
+        },
    {
             "ArtikelNr.": "754249",
             "Artikel omsch.": "ABB Haf Hollewanddoos HW52FBW 16-19-20mm",
@@ -1332,7 +1726,6 @@
             "Locatie2": "Pad VM Links, Sectie 02"
         },
 
-
     ];
 
     async function initApp() {
@@ -1341,11 +1734,9 @@
             if (response.ok) {
                 data = await response.json();
             } else {
-                console.warn("Kan data.json niet laden, testdata wordt gebruikt.");
                 data = fallbackData;
             }
         } catch (error) {
-            console.warn("Fetch error (verwacht in Canvas omgeving):", error);
             data = fallbackData; 
         }
         boot(); 
@@ -1353,27 +1744,69 @@
 
     function closeIntro() {
         document.getElementById('introPage').classList.add('hidden');
+        const vidPlayer = document.getElementById('introVideo');
+        if (vidPlayer) {
+            vidPlayer.muted = true;
+            vidPlayer.pause();
+        }
+        document.getElementById('btnReset').style.display = '';
+    }
+
+    function resetApp() {
+        closeSelection(); 
+        document.getElementById('searchBox').value = '';
+        currentCategory = 'all';
+        renderCategoryChips();
+        handleSearch(); 
+        document.getElementById('introPage').classList.remove('hidden');
+        document.getElementById('btnReset').style.display = 'none';
+        const vidPlayer = document.getElementById('introVideo');
+        if (vidPlayer) {
+            vidPlayer.play().catch(e => console.warn("Video play prevented:", e));
+        }
     }
 
     function setLang(lang) {
         curLang = lang;
         localStorage.setItem('bouwmaat_lang', lang);
-        
         document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = document.getElementById(`btn-${lang}`);
         if(activeBtn) activeBtn.classList.add('active');
-        
+        document.querySelectorAll('.intro-lang-btn').forEach(btn => btn.classList.remove('active'));
+        const activeIntroBtn = document.getElementById(`intro-btn-${lang}`);
+        if(activeIntroBtn) activeIntroBtn.classList.add('active');
         const t = i18n[lang];
         document.querySelector('.intro-h1').innerHTML = t.introTitle;
         document.getElementById('introText').innerText = t.introP;
         document.getElementById('introBtn').innerText = t.introBtn;
-
         document.getElementById('searchBox').placeholder = t.placeholder;
         document.getElementById('btnReset').innerText = t.reset;
         document.getElementById('btnSearch').innerHTML = window.innerWidth < 400 ? "🔍" : t.search;
         document.documentElement.style.setProperty('--txt-entrance', `"${t.entrance}"`);
-
-        // Update Modern Chips
+        const lblService = document.getElementById('label-service');
+        if(lblService) lblService.innerText = t.serviceDesk;
+        const lblSales1 = document.getElementById('label-sales1');
+        if(lblSales1) lblSales1.innerText = t.salesDesk;
+        const lblKassa = document.getElementById('label-kassa');
+        if(lblKassa) lblKassa.innerText = t.kassa;
+        const lblCoffee = document.getElementById('label-coffee');
+        if(lblCoffee) lblCoffee.innerText = t.coffeeCorner;
+        
+        // Dynamic Video Switching per Language
+        const videoSrcs = {
+            nl: "dutch1.mp4",
+            en: "eng.mp4",
+            uk: "uk1.mp4"
+        };
+        const vidPlayer = document.getElementById('introVideo');
+        if (vidPlayer) {
+            if (vidPlayer.getAttribute('src') !== videoSrcs[lang]) {
+                vidPlayer.src = videoSrcs[lang];
+                vidPlayer.load();
+                vidPlayer.play().catch(e => console.warn("Auto-play prevented:", e));
+            }
+        }
+        
         renderCategoryChips();
         handleSearch();
     }
@@ -1382,16 +1815,12 @@
         const t = i18n[curLang];
         const container = document.getElementById('categoryChips');
         if (!container || !data) return;
-
         container.innerHTML = '';
-        
-        // "All" chip
         const allChip = document.createElement('div');
         allChip.className = `category-chip ${currentCategory === 'all' ? 'active' : ''}`;
         allChip.textContent = t.allCats;
         allChip.onclick = () => selectCategory('all');
         container.appendChild(allChip);
-
         const uniqueCats = [...new Set(data.map(item => item["Hoofdgroep"]))];
         uniqueCats.forEach(cat => {
             const chip = document.createElement('div');
@@ -1407,8 +1836,6 @@
         currentCategory = cat;
         renderCategoryChips();
         handleSearch();
-        
-        // Scroll active chip into view if hidden
         const activeChip = document.querySelector('.category-chip.active');
         if (activeChip) {
             activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -1425,102 +1852,134 @@
     };
 
     function boot() {
-        setLang(curLang); 
-        
         data.forEach(item => {
             if(!item._searchStr) {
-                item._searchStr = `${item["ArtikelNr."]} ${item["Schaplocatie code"]} ${item["Artikel omsch."]}`.toLowerCase();
-                item._cleanArt = String(item["ArtikelNr."]).toLowerCase().replace(/[-\s]/g, '');
+                const fullText = `${item["ArtikelNr."]} ${item["Schaplocatie code"]} ${item["Artikel omsch."]}`;
+                item._searchStr = normalizeStr(fullText);
+                item._cleanArt = item["ArtikelNr."].toString().replace(/[-\s]/g, '').toLowerCase();
+                item._nameNorm = normalizeStr(item["Artikel omsch."]);
             }
         });
-
         const grid = document.getElementById('mapGrid'), svg = document.getElementById('pathLayer'), char = document.getElementById('mainChar');
-        const cashiers = document.getElementById('cashierZone');
-        svg.remove(); char.remove(); cashiers.remove();
-        
+        const cashiers = document.getElementById('cashierZone'), coffee = document.getElementById('coffeeCorner');
+        svg.remove(); char.remove(); cashiers.remove(); coffee.remove();
         for (let i = 1; i <= 17; i++) {
             const div = document.createElement('div');
             div.className = 'aisle'; div.id = `p-${i}`; div.dataset.num = i;
-            
             div.innerHTML = `<div class="aisle-num">${i}</div>`;
-            if (i === 5) {
-                div.innerHTML += `<div class="entrance-label"></div>`;
-            }
-            
             div.onclick = () => handleMapClick(i);
             grid.appendChild(div);
         }
-        grid.append(cashiers, svg, char);
-        
-        setTimeout(() => moveChar('entrance', false, false), 50); 
-
+        const entLabel = document.createElement('div');
+        entLabel.className = 'entrance-label'; entLabel.id = 'entranceText';
+        grid.append(cashiers, coffee, svg, entLabel, char);
+        const dimBtn = document.getElementById('btnDimToggle');
+        if(dimBtn) dimBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        setLang(curLang); 
+        setTimeout(() => {
+            const sPos = 270;
+            entLabel.style.left = `calc(${sPos}px - 22px)`; entLabel.style.bottom = `0%`;
+            moveChar('entrance', false, false);
+        }, 50); 
         document.getElementById('searchBox').addEventListener('input', handleSearch);
         document.getElementById('searchBox').addEventListener('keydown', handleKeys);
-        
         window.addEventListener('resize', () => setLang(curLang));
+        
+        setupImageZoom(); // Initialize modern pan/zoom
+    }
+
+    function setupImageZoom() {
+        const modal = document.getElementById('imageModal');
+        const img = document.getElementById('modalImage');
+
+        function handlePan(e) {
+            if (!img.classList.contains('is-zoomed')) return;
+            
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            if (clientX === undefined || clientY === undefined) return;
+
+            const x = (clientX / window.innerWidth) * 100;
+            const y = (clientY / window.innerHeight) * 100;
+            img.style.transformOrigin = `${x}% ${y}%`;
+        }
+
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            img.classList.toggle('is-zoomed');
+            if (img.classList.contains('is-zoomed')) {
+                handlePan(e);
+            } else {
+                img.style.transformOrigin = 'center center';
+            }
+        });
+
+        modal.addEventListener('mousemove', handlePan);
+        modal.addEventListener('touchmove', handlePan, {passive: true});
+    }
+
+    function normalizeStr(str) {
+        return str.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[-]/g, ' ');
     }
 
     let popupTimer;
     function showAislePopup(num) {
         if(num === 'SPECIAL' || num === 'entrance') return;
-        
         const popup = document.getElementById('aislePopup');
         let targetEl;
         let popupText = "";
         const t = i18n[curLang];
-
         if (num === 'KAS') {
             targetEl = document.getElementById('cashierZone');
-            if(!targetEl) return;
             popupText = `<span style="color:var(--accent)">${t.kassa}</span>`;
+        } else if (num === 'VMB') {
+            targetEl = document.getElementById('p-8');
+            popupText = `<span style="color:var(--accent)">VERF BALIE</span>`;
+        } else if (num === 'KOFFIE') {
+            targetEl = document.getElementById('coffeeCorner');
+            popupText = `<span style="color:var(--accent)">KOFFIE</span>`;
         } else {
             targetEl = document.getElementById(`p-${num}`);
-            if(!targetEl) return;
             const cat = aisleCategories[num] || "Algemeen";
             const translatedCat = t.groups[cat] || cat;
             popupText = `<span style="color:var(--accent)">${t.pad} ${num}:</span> ${translatedCat}`;
         }
-
+        if(!targetEl) return;
         const rect = targetEl.getBoundingClientRect();
-        
         popup.style.left = `${rect.left + (rect.width / 2)}px`;
         popup.style.top = `${rect.top - 10}px`;
-        
         popup.innerHTML = popupText;
         popup.classList.add('show');
-        
         clearTimeout(popupTimer);
-        popupTimer = setTimeout(() => {
-            popup.classList.remove('show');
-        }, 2500);
+        popupTimer = setTimeout(() => { popup.classList.remove('show'); }, 2500);
     }
 
     function handleMapClick(id) {
         document.querySelectorAll('.aisle, .result-item').forEach(x => x.classList.remove('active', 'selected'));
-        if (id !== 'KAS') document.getElementById(`p-${id}`)?.classList.add('active');
-        
+        if (id !== 'KAS' && id !== 'KOFFIE') document.getElementById(`p-${id}`)?.classList.add('active');
         showAislePopup(id);
-        if (id !== 'KAS') {
-            moveChar(id, true, true);
-        }
+        moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE');
     }
 
     function clearSearch() {
-        closeSelection(); 
-        document.getElementById('searchBox').value = '';
-        currentCategory = 'all';
-        renderCategoryChips();
-        document.getElementById('searchBox').focus();
-        handleSearch(); 
+        closeSelection(); document.getElementById('searchBox').value = '';
+        currentCategory = 'all'; renderCategoryChips();
+        document.getElementById('searchBox').focus(); handleSearch(); 
     }
 
     let searchTimeout = null;
-
     function handleSearch() {
         const input = document.getElementById('searchBox');
         const val = input.value.trim(); 
         const lowerVal = val.toLowerCase();
-        
         const app = document.getElementById('mainApp');
         const ghost = document.getElementById('searchGhost');
         const clearBtn = document.getElementById('clearBtn');
@@ -1534,127 +1993,96 @@
         }
         
         app.classList.add('searching');
+        const normVal = normalizeStr(val);
 
-        if (val) {
-            const suggestionItem = data.find(i => i["Artikel omsch."].toLowerCase().startsWith(lowerVal) && (currentCategory === 'all' || i["Hoofdgroep"] === currentCategory));
-            if (suggestionItem) ghost.textContent = val + suggestionItem["Artikel omsch."].slice(val.length);
-            else ghost.textContent = "";
-        } else {
-            ghost.textContent = "";
-        }
+        if (val.length > 1) {
+            const suggestionItem = data.find(i => i._nameNorm.startsWith(normVal) && (currentCategory === 'all' || i["Hoofdgroep"] === currentCategory));
+            ghost.textContent = suggestionItem ? val + suggestionItem["Artikel omsch."].slice(val.length) : "";
+        } else { ghost.textContent = ""; }
 
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => { executeHeavySearch(val, lowerVal, counter, currentCategory); }, 150);
+        searchTimeout = setTimeout(() => { executeHeavySearch(val, normalizeStr(val), counter, currentCategory); }, 100);
     }
 
-    function executeHeavySearch(val, lowerVal, counter, catFilter) {
+    function executeHeavySearch(originalVal, normVal, counter, catFilter) {
         const t = i18n[curLang]; 
         const list = document.getElementById('resultsList');
-        const safeVal = val ? lowerVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : '';
-        const words = safeVal ? safeVal.split(/\s+/).filter(w => w.length > 0) : [];
-        const rawSearch = val ? lowerVal.replace(/[-\s]/g, '') : ''; 
+        const tokens = normVal.split(/\s+/).filter(w => w.length > 0);
+        const rawCodeSearch = originalVal.replace(/[-\s]/g, '').toLowerCase();
         
-        let matches = [];
-        const groupCache = {};
-        const getGroupStr = (item) => {
-            const key = item["Hoofdgroep"] + "|" + item["Subgroep"];
-            if (groupCache[key]) return groupCache[key];
-            const transHoofd = (t.groups[item["Hoofdgroep"]] || item["Hoofdgroep"]).toLowerCase();
-            const transSub = (t.groups[item["Subgroep"]] || item["Subgroep"]).toLowerCase();
-            groupCache[key] = transHoofd + " " + transSub;
-            return groupCache[key];
-        };
-
-        for (let i = 0; i < data.length; i++) {
-            const item = data[i];
-            if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) continue;
-            if (!val) { matches.push(item); continue; }
-            const exactCodeMatch = item._cleanArt.includes(rawSearch) || item._searchStr.includes(rawSearch);
-            let textMatch = false;
-            if (!exactCodeMatch) {
-                const groupText = getGroupStr(item);
-                textMatch = words.every(w => item._searchStr.includes(w) || groupText.includes(w));
-            }
-            if (exactCodeMatch || textMatch) matches.push(item);
+        if (tokens.length === 0 && catFilter === 'all') {
+             list.innerHTML = "";
+             return;
         }
 
-        if (val) {
-            matches.sort((a, b) => {
-                let scoreA = 0, scoreB = 0;
-                if (a._cleanArt === rawSearch) scoreA += 1000;
-                if (b._cleanArt === rawSearch) scoreB += 1000;
-                if (a._searchStr.includes(lowerVal)) scoreA += 500;
-                if (b._searchStr.includes(lowerVal)) scoreB += 500;
-                return scoreB - scoreA;
+        const results = data.reduce((acc, item) => {
+            if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) return acc;
+            let score = 0;
+            const target = item._searchStr, name = item._nameNorm;
+            if (item._cleanArt === rawCodeSearch) score += 5000;
+            else if (item._cleanArt.includes(rawCodeSearch) && rawCodeSearch.length > 3) score += 1000;
+            if (name.startsWith(normVal)) score += 2000;
+            let tokensFound = 0;
+            tokens.forEach(token => {
+                if (target.includes(token)) {
+                    tokensFound++;
+                    if (target.includes(' ' + token) || target.startsWith(token)) score += 100;
+                    score += 50; 
+                }
             });
-        } else if (matches.length < 2000) {
-             matches.sort((a, b) => a["Artikel omsch."].localeCompare(b["Artikel omsch."]));
-        }
+            if (tokens.length > 0 && tokensFound === 0 && score < 1000) return acc;
+            const matchRatio = tokensFound / tokens.length;
+            if (tokens.length > 0 && matchRatio < 0.7 && score < 1000) return acc;
+            if (score > 0 || (tokens.length === 0 && catFilter !== 'all')) {
+                acc.push({ item, score });
+            }
+            return acc;
+        }, []);
 
-        if (matches.length === 0) {
+        results.sort((a, b) => b.score - a.score || a.item["Artikel omsch."].localeCompare(b.item["Artikel omsch."]));
+        if (results.length === 0) {
             counter.textContent = `0 ${t.resFoundPlural}`;
-            list.innerHTML = `<div style="text-align:center; padding: 20px; border: 3px dashed var(--border-neutral); border-radius: 10px; background: white;"><div style="font-size: 2.5rem; margin-bottom: 5px;">🔍</div><b style="color:var(--text-main); font-size: 1.1rem;">${val ? t.noResTitle + ' "' + val + '"' : t.noResTitle}</b><p style="color:var(--text-muted); font-size:0.85rem; font-weight:700;">${t.noResDesc}</p></div>`;
+            list.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--text-muted);"><b style="font-size: 1.2rem; color: var(--text-main);">${t.noResTitle} "${originalVal}"</b><p>${t.noResDesc}</p></div>`;
             return;
         }
-
-        counter.textContent = `${matches.length} ${matches.length > 1 ? t.resFoundPlural : t.resFoundSingular}`;
-        const regex = new RegExp(`(${words.join('|')})`, 'gi');
-        const hl = (txt) => val ? txt.toString().replace(regex, `<mark>$1</mark>`) : txt;
-
-        const MAX_RESULTS = 50;
-        const displayMatches = matches.slice(0, MAX_RESULTS);
-
-        let htmlString = displayMatches.map((item, index) => {
+        counter.textContent = `${results.length} ${results.length > 1 ? t.resFoundPlural : t.resFoundSingular}`;
+        const MAX_RESULTS = 40, displayMatches = results.slice(0, MAX_RESULTS);
+        const regex = tokens.length > 0 ? new RegExp(`(${tokens.map(tk => tk.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi') : null;
+        const hl = (txt) => (regex && originalVal) ? txt.toString().replace(regex, `<mark>$1</mark>`) : txt;
+        
+        list.innerHTML = displayMatches.map(({item}) => {
             const locStr = (item["Locatie2"] + " " + item["Schaplocatie code"]).toUpperCase();
             const matchedSpecial = specialLocations.find(s => locStr.includes(s.id));
             let padDisplay, padArg, sideStr, printLoc;
-
             if (matchedSpecial) {
-                padDisplay = matchedSpecial.short;
-                printLoc = matchedSpecial.long;
-                padArg = `'${matchedSpecial.id}'`;
-                sideStr = ""; 
+                padDisplay = matchedSpecial.short; printLoc = matchedSpecial.long; padArg = matchedSpecial.id; sideStr = ""; 
             } else {
-                const padNumMatch = item["Locatie2"].match(/\d+/);
-                const pad = padNumMatch ? parseInt(padNumMatch[0]) : 7;
-                padDisplay = `P${pad}`;
-                printLoc = `${t.pad} ${pad}`;
-                padArg = pad; 
-                sideStr = item["Locatie2"].includes("Rechts") ? t.right : t.left;
+                const padNumMatch = item["Locatie2"].match(/\d+/), pad = padNumMatch ? parseInt(padNumMatch[0]) : 7;
+                padDisplay = `P${pad}`; printLoc = `${t.pad} ${pad}`; padArg = pad; sideStr = item["Locatie2"].includes("Rechts") ? t.right : t.left;
             }
-
-            const badgeFontSize = matchedSpecial ? (padDisplay.length > 5 ? '0.75rem' : '1rem') : '1.4rem';
-            const secMatch = item["Locatie2"].match(/Sectie\s+(\d+)/i);
-            const secNum = secMatch ? secMatch[1] : "01";
-            const displayHoofd = t.groups[item["Hoofdgroep"]] || item["Hoofdgroep"];
-            const displaySub = t.groups[item["Subgroep"]] || item["Subgroep"];
-
+            const secNum = item["Locatie2"].match(/Sectie\s+(\d+)/i)?.[1] || "01";
+            const safeArgPad = typeof padArg === 'string' ? `"${padArg}"` : padArg;
             return `
-            <div class="result-item" role="button" tabindex="0" aria-label="Selecteer ${item["Artikel omsch."]}" onclick="selectItem(${padArg}, this)" onkeypress="if(event.key==='Enter') selectItem(${padArg}, this)">
-                <div class="icon-wrap" aria-hidden="true"><img src="img/${item["ArtikelNr."]}.webp" onerror="this.outerHTML='<div style=\\'font-size: 1.8rem;\\'>${icons[item["Hoofdgroep"]] || '📦'}</div>'" onclick="openImageModal(event, this.src, '${item["Artikel omsch."].replace(/'/g, "\\'")}')" style="width: 100%; height: 100%; object-fit: contain; padding: 6px; box-sizing: border-box;" alt="${item["Artikel omsch."]}" loading="lazy" /></div>
-                <div class="info"><h3>${hl(item["Artikel omsch."])}</h3><div class="tags"><span class="tag">ART. ${hl(item["ArtikelNr."])}</span> <span class="tag">${hl(displayHoofd).toUpperCase()}</span><span class="tag sub">${hl(displaySub)}</span></div><div class="action-btns"><button class="action-btn" tabindex="-1" onclick="printTicket(event, '${item["Artikel omsch."].replace(/'/g, "\\'")}', '${printLoc.replace(/'/g, "\\'")}', '${sideStr}', '${secNum}')">${t.printBtn}</button></div></div>
-                <div class="badge" aria-hidden="true"><b style="font-size: ${badgeFontSize}; margin-bottom: 4px; line-height: 1.1;">${padDisplay}</b>${sideStr ? `<span>${sideStr}</span>` : ''}<div class="sectie-label">${t.sect} ${secNum}</div></div>
+            <div class="result-item" role="button" tabindex="0" onclick="selectItem(${safeArgPad}, this)">
+                <div class="icon-wrap">
+                    <img src="img/${item["ArtikelNr."]}.webp" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" 
+                         onclick="openImageModal(event, this.src, '${item["Artikel omsch."].replace(/'/g, "\\'")}')"
+                         alt="${item["Artikel omsch."]}" loading="lazy" />
+                    <div style="display:none; font-size: 1.8rem;">${icons[item["Hoofdgroep"]] || '📦'}</div>
+                </div>
+                <div class="info"><h3>${hl(item["Artikel omsch."])}</h3><div class="tags"><span class="tag">ART. ${hl(item["ArtikelNr."])}</span> <span class="tag sub">${hl(t.groups[item["Subgroep"]] || item["Subgroep"])}</span></div><div class="action-btns"><button class="action-btn" onclick="printTicket(event, '${item["Artikel omsch."].replace(/'/g, "\\'")}', '${printLoc}', '${sideStr}', '${secNum}')">${t.printBtn}</button></div></div>
+                <div class="badge"><b>${padDisplay}</b>${sideStr ? `<span>${sideStr}</span>` : ''}<div class="sectie-label">${t.sect} ${secNum}</div></div>
             </div>`;
-        }).join('');
-
-        if (matches.length > MAX_RESULTS) {
-            htmlString += `<div style="text-align:center; padding: 15px; color: var(--text-muted); font-weight: 800; font-size: 0.9rem; background: #e2e8f0; border-radius: 10px; margin-top: 5px;">+ ${matches.length - MAX_RESULTS} ${t.moreRes}</div>`;
-        }
-        list.innerHTML = htmlString;
+        }).join('') + (results.length > MAX_RESULTS ? `<div style="text-align:center; padding: 15px; color: var(--text-muted); font-weight: 800; font-size: 0.9rem;">+ ${results.length - MAX_RESULTS} ${t.moreRes}</div>` : '');
     }
 
     function selectItem(pad, el) {
         if (el && el.classList.contains('selected')) return;
         document.querySelectorAll('.aisle, .result-item').forEach(x => x.classList.remove('active', 'selected'));
         if (el) el.classList.add('selected');
-        const isSpecial = specialLocations.some(s => s.id === pad);
-        if (!isSpecial) {
-            document.getElementById(`p-${pad}`)?.classList.add('active');
-            showAislePopup(pad);
-        } else if (pad === 'KAS') {
-            showAislePopup('KAS');
-        }
-        moveChar(pad, true, true);
+        if (typeof pad !== 'string' || !specialLocations.some(s => s.id === pad)) document.getElementById(`p-${pad}`)?.classList.add('active');
+        showAislePopup(pad); moveChar(pad, true, true);
         if (el) setTimeout(() => { el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 210);
     }
 
@@ -1664,76 +2092,58 @@
     }
 
     function moveChar(pad, active, line) {
-        const char = document.getElementById('mainChar');
-        const path = document.getElementById('guideLine');
-        const start5 = document.getElementById('p-5'); 
-        if(!start5) return;
-        const entrancePos = start5.offsetLeft - 2;
-        const sPos = entrancePos; 
-        let cPos, targetBottom, targetWidth;
-        const walkLineBottom = 26, aisleTarget = 85, kasTarget = 12;
-        const isSpecial = specialLocations.some(s => s.id === pad);
-
-        if (pad === 'entrance' || isSpecial) {
-            if (pad === 'KAS' && active) {
-                const p10 = document.getElementById('p-10'), p11 = document.getElementById('p-11');
-                if (p10 && p11) cPos = (p10.offsetLeft + p11.offsetLeft + p11.offsetWidth) / 2;
-                else cPos = document.getElementById('cashierZone')?.offsetLeft + (document.getElementById('cashierZone')?.offsetWidth / 2) || entrancePos;
-            } else cPos = entrancePos;
-            targetBottom = (isSpecial && active) ? `${kasTarget}%` : `${walkLineBottom}%`; 
-            targetWidth = 24;
-        } else {
-            const target = document.getElementById(`p-${pad}`);
-            if(!target) return;
-            cPos = target.offsetLeft + (target.offsetWidth / 2);
-            targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`;
-            targetWidth = target.offsetWidth * 0.85;
-        }
-        char.style.width = `${Math.min(24, targetWidth)}px`; 
-
+        const char = document.getElementById('mainChar'), path = document.getElementById('guideLine');
+        const sPos = 270, walkLineBottom = 26, aisleTarget = 85, kasTarget = 12;
+        let cPos = sPos, targetBottom = '0%';
+        if (pad === 'KAS') { cPos = document.getElementById('p-11')?.offsetLeft || sPos; targetBottom = `${kasTarget}%`; }
+        else if (pad === 'VMB') { cPos = (document.getElementById('p-8')?.offsetLeft || sPos) + 15; targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; }
+        else if (pad === 'KOFFIE') { cPos = (document.getElementById('coffeeCorner')?.offsetLeft || sPos) + 10; targetBottom = `${kasTarget}%`; }
+        else if (pad !== 'entrance' && !isNaN(pad)) { const t = document.getElementById(`p-${pad}`); if(t) { cPos = t.offsetLeft + (t.offsetWidth / 2); targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; } }
+        char.style.animation = 'none';
         if (line && pad !== 'entrance') {
-            char.style.transition = 'none';
-            char.style.left = `${sPos}px`;
-            char.style.bottom = `${walkLineBottom}%`;
+            const svgH = path.parentElement.clientHeight || 120, startY = svgH, bY = svgH * (1 - (walkLineBottom / 100)), tY = svgH * (1 - (parseFloat(targetBottom) / 100));
+            path.setAttribute("d", `M ${sPos} ${startY} L ${sPos} ${bY} L ${cPos} ${bY} L ${cPos} ${tY}`);
+            const len = path.getTotalLength(); path.style.transition = 'none'; path.style.strokeDasharray = len; path.style.strokeDashoffset = len; void path.offsetWidth;
+            path.style.transition = `stroke-dashoffset 1400ms linear`; path.style.strokeDashoffset = "0";
+            let styleTag = document.getElementById('walk-keyframes') || document.head.appendChild(Object.assign(document.createElement('style'), {id: 'walk-keyframes'}));
+            styleTag.innerHTML = `@keyframes walkAnim { 0% { left: ${sPos}px; bottom: 0%; } 25% { left: ${sPos}px; bottom: ${walkLineBottom}%; } 75% { left: ${cPos}px; bottom: ${walkLineBottom}%; } 100% { left: ${cPos}px; bottom: ${targetBottom}; } }`;
+            char.classList.add('running'); char.style.animation = `walkAnim 1400ms linear forwards`;
             document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
-            void char.offsetWidth; 
-            const svgH = path.parentElement.clientHeight || 120;
-            const baseLineY = svgH * (1 - (walkLineBottom / 100)), targetY = svgH * (1 - (parseInt(targetBottom) / 100)); 
-            path.setAttribute("d", `M ${sPos} ${baseLineY} L ${cPos} ${baseLineY} L ${cPos} ${targetY}`);
-            const len = path.getTotalLength();
-            const distX = Math.abs(cPos - sPos), distY = Math.abs(parseInt(targetBottom) - walkLineBottom) * (svgH / 100), totalDist = distX + distY || 1, totalTime = 1200; 
-            const timeX = Math.max((distX / totalDist) * totalTime, 1), timeY = Math.max((distY / totalDist) * totalTime, 1);
-            path.style.transition = 'none'; path.style.strokeDasharray = `${len} ${len}`; path.style.strokeDashoffset = len;
-            void path.offsetWidth; path.style.transition = `stroke-dashoffset ${totalTime}ms linear`; path.style.strokeDashoffset = "0";
-            char.classList.add('running');
-            char.style.transition = `left ${timeX}ms linear, bottom ${timeY}ms linear ${timeX}ms`;
-            char.style.left = `${cPos}px`; char.style.bottom = targetBottom;
-            clearTimeout(char.runTimeout);
-            char.runTimeout = setTimeout(() => { char.classList.remove('running'); }, totalTime);
+            setTimeout(() => { char.classList.remove('running'); char.style.animation = 'none'; char.style.left = `${cPos}px`; char.style.bottom = targetBottom; }, 1400);
         } else {
-            path.setAttribute("d", ""); char.classList.remove('running');
-            document.documentElement.style.setProperty('--char-dir', '1');
-            char.style.transition = `left 0.4s ease, bottom 0.4s ease`;
+            path.setAttribute("d", ""); char.classList.remove('running'); char.style.transition = 'left 0.8s ease, bottom 0.8s ease';
+            document.documentElement.style.setProperty('--char-dir', cPos < char.offsetLeft ? '-1' : '1');
             char.style.left = `${cPos}px`; char.style.bottom = targetBottom;
         }
     }
 
-    function printTicket(e, name, locText, sideStr, secNum) {
-        e.stopPropagation(); 
+    function printTicket(e, name, loc, side, sec) {
+        e.stopPropagation();
         const t = i18n[curLang];
-        const printArea = document.getElementById('printArea');
-        printArea.innerHTML = `<h2 style="color:var(--primary); margin-top:0;">BOUWMAAT AMSTEL XL</h2><hr><h2>${name}</h2><h1>${locText}</h1>${sideStr ? `<h2>${t.zijde}: ${sideStr}</h2>` : ''}<h3>${t.sect}: ${secNum}</h3><hr><p>${new Date().toLocaleString()}</p>`;
+        document.getElementById('printArea').innerHTML = `<h2 style="color:var(--primary);">BOUWMAAT AMSTEL XL</h2><hr><h2>${name}</h2><h1>${loc}</h1>${side ? `<h2>${t.zijde}: ${side}</h2>` : ''}<h3>${t.sect}: ${sec}</h3><hr><p>${new Date().toLocaleString()}</p>`;
         window.print();
     }
 
     function openImageModal(e, src, title) {
-        e.stopPropagation();
-        document.getElementById('modalImage').src = src;
-        document.getElementById('modalTitle').textContent = title;
+        e.stopPropagation(); 
+        const img = document.getElementById('modalImage');
+        img.src = src; 
+        document.getElementById('modalTitle').textContent = title; 
         document.getElementById('imageModal').classList.add('show');
+        img.classList.remove('is-zoomed');
+        img.style.transformOrigin = 'center center';
     }
 
-    function closeImageModal(e) { if (e) e.stopPropagation(); document.getElementById('imageModal').classList.remove('show'); }
+    function closeImageModal(e) { 
+        if (e) e.stopPropagation(); 
+        const modal = document.getElementById('imageModal');
+        const img = document.getElementById('modalImage');
+        modal.classList.remove('show'); 
+        setTimeout(() => {
+            img.classList.remove('is-zoomed');
+            img.style.transformOrigin = 'center center';
+        }, 300);
+    }
 
     function handleKeys(e) {
         if (e.key === "Escape") { if (document.getElementById('imageModal').classList.contains('show')) closeImageModal(); else closeSelection(); }
