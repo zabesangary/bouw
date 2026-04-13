@@ -25,115 +25,178 @@
 
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; background: var(--bg); font-family: system-ui, -apple-system, sans-serif;}
 
-        /* --- SMART CONCISE INTRO PAGE --- */
+        /* --- HYPER-MODERN 3-COLOR INTRO PAGE --- */
         #introPage {
             position: fixed; inset: 0; width: 100%; height: 100dvh;
-            background: rgba(248, 250, 252, 0.9); /* White and blue-tinted frosted glass */
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box; color: var(--text-main); text-align: center;
-            transition: opacity 0.5s ease, visibility 0.5s, transform 0.5s ease;
+            padding: 20px; box-sizing: border-box; color: var(--primary); text-align: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            background: #ffffff;
         }
 
-        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.02); }
+        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.08); filter: blur(10px); }
 
+        /* Deep 3D Grid Background */
+        .intro-bg {
+            position: absolute; inset: 0;
+            background: #ffffff;
+            z-index: 0; overflow: hidden;
+        }
+
+        .intro-bg::before {
+            content: ''; position: absolute;
+            width: 200%; height: 200%; top: -50%; left: -50%;
+            background-image: 
+                linear-gradient(rgba(10, 85, 215, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 85, 215, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(800px) rotateX(60deg);
+            animation: mapScroll 15s linear infinite;
+        }
+
+        @keyframes mapScroll {
+            0% { transform: perspective(800px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(800px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Floating 3D Digital Billboards */
+        .floating-tags-container {
+            position: absolute; inset: -50% -50%; width: 200%; height: 200%;
+            transform: perspective(800px) rotateX(60deg);
+            transform-style: preserve-3d; pointer-events: none; z-index: 2;
+        }
+
+        .float-tag {
+            position: absolute; bottom: -10%; left: 50%;
+            transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg);
+            background: var(--primary); 
+            color: #ffffff;
+            padding: 8px 24px;
+            border-radius: 8px;
+            border-bottom: 4px solid var(--accent);
+            font-size: 0.85rem; font-weight: 900; white-space: nowrap;
+            box-shadow: 0 20px 40px rgba(10, 85, 215, 0.2);
+            animation: tagFloat 22s linear infinite; animation-delay: var(--td);
+            opacity: 0; text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .float-tag span { color: var(--accent); font-size: 1.2rem; line-height: 0; }
+        .float-tag i { color: var(--accent); font-style: normal; }
+
+        @keyframes tagFloat {
+            0% { bottom: -10%; opacity: 0; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(0.8); }
+            10% { opacity: 1; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1); }
+            90% { opacity: 1; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1); }
+            100% { bottom: 120%; opacity: 0; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1.2); }
+        }
+
+        /* Animated Navigation Lines & GPS Shoppers */
+        .intro-routes {
+            position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.8;
+        }
+
+        .intro-routes path {
+            fill: none; stroke: var(--primary); opacity: 0.3; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+        }
+        
+        .intro-routes .accent-path { stroke: var(--accent); opacity: 0.5; }
+
+        /* Premium Card */
         .intro-content {
             display: flex; flex-direction: column; align-items: center; max-width: 360px; width: 100%;
             background: #ffffff;
-            border: 2px solid var(--primary);
-            border-radius: 24px;
-            padding: 32px 28px;
-            box-shadow: 0 25px 50px -12px rgba(10, 85, 215, 0.25);
-            animation: slideUpIntro 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            z-index: 1;
+            border: 2px solid var(--primary); border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 50px rgba(10, 85, 215, 0.15);
+            animation: scaleUpIntro 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; z-index: 10;
         }
 
+        @keyframes scaleUpIntro {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Toggles */
         .intro-lang-toggles {
-            position: absolute;
-            top: max(20px, env(safe-area-inset-top));
-            right: 20px;
-            display: inline-flex;
-            background: #ffffff;
-            border-radius: 50px;
-            padding: 4px;
-            border: 2px solid var(--border-neutral);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            gap: 2px;
-            z-index: 2;
+            position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: inline-flex;
+            background: #ffffff; border-radius: 50px;
+            padding: 5px; border: 2px solid var(--primary); box-shadow: 0 8px 20px rgba(10,85,215,0.1);
+            gap: 4px; z-index: 20;
         }
         
         .intro-lang-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            background: transparent; border: none; color: var(--primary); font-size: 0.85rem; font-weight: 800;
+            padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;
         }
 
-        .intro-lang-btn:hover { background: #f1f5f9; color: var(--primary); }
+        .intro-lang-btn:hover { background: rgba(10, 85, 215, 0.1); }
+        .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
 
-        .intro-lang-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 2px 8px rgba(10, 85, 215, 0.4);
-        }
-
+        /* Video */
         .video-container {
-            width: 100%; max-width: 280px; aspect-ratio: 16/9; margin-bottom: 24px;
-            background: #000; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-            transform: translateZ(0);
+            width: 100%; max-width: 300px; aspect-ratio: 16/9; margin-bottom: 20px;
+            background: var(--primary); border-radius: 14px; overflow: hidden;
+            box-shadow: 0 15px 30px rgba(10, 85, 215, 0.2);
+            border: 2px solid var(--primary);
+            position: relative; transform: translateZ(0);
         }
-
         .video-container video { width: 100%; height: 100%; object-fit: cover; }
+        .video-placeholder-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
 
-        .video-placeholder-text {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: rgba(255,255,255,0.5); font-weight: 700; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px; text-align: center;
-            pointer-events: none;
+        /* Typography */
+        .intro-h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1; letter-spacing: -1px; color: var(--primary); }
+        .intro-h1 span { color: var(--primary); background: var(--accent); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; }
+        
+        .intro-slogan {
+            font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 16px; background: var(--accent); padding: 4px 10px; border-radius: 6px;
         }
 
-        .intro-h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1.1; letter-spacing: -0.5px; color: var(--primary-dark); }
-        .intro-h1 span { color: var(--accent); }
-        .intro-p { font-size: 0.95rem; font-weight: 600; margin: 0 0 28px 0; color: var(--text-muted); line-height: 1.5; }
+        .intro-nav-title {
+            font-size: 1.1rem; font-weight: 900; color: var(--primary); text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 6px;
+        }
 
+        .intro-p { font-size: 0.9rem; font-weight: 600; margin: 0 0 24px 0; color: var(--primary); line-height: 1.4; text-align: center; opacity: 0.8; }
+
+        /* CTA Button */
         .intro-btn {
-            background: var(--primary); color: white; border: none; padding: 14px 24px;
-            border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            box-shadow: 0 8px 16px rgba(10, 85, 215, 0.3);
-            transition: all 0.2s ease; width: 100%;
+            background: var(--primary);
+            color: #ffffff; border: none; padding: 14px 24px;
+            border-radius: 14px; font-weight: 900; font-size: 1.05rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(10, 85, 215, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
-        .intro-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(10, 85, 215, 0.4); }
-        .intro-btn:active { transform: translateY(0); box-shadow: 0 4px 8px rgba(10, 85, 215, 0.3); }
+        .intro-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
+        .intro-btn:hover svg { transform: translateX(5px); }
 
-        .intro-footer {
-            position: absolute;
-            bottom: 25px;
-            font-size: 0.75rem;
-            color: var(--primary);
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            opacity: 0.9;
-        }
+        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(10, 85, 215, 0.4); background: var(--accent); color: var(--primary); }
+        .intro-btn:active { transform: translateY(1px); box-shadow: 0 5px 10px rgba(10, 85, 215, 0.3); }
 
-        @keyframes slideUpIntro {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Commercial Ticker */
+        .commercial-ticker {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 32px;
+            background: var(--primary); color: var(--accent);
+            display: flex; align-items: center; overflow: hidden;
+            font-weight: 900; font-size: 0.8rem; letter-spacing: 2px;
+            z-index: 20;
         }
+        
+        .ticker-track {
+            display: flex; gap: 50px; white-space: nowrap;
+            animation: tickerScroll 30s linear infinite;
+            text-transform: uppercase;
+        }
+        
+        .ticker-track span i { color: #ffffff; margin-right: 8px; font-style: normal; }
+
+        @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* --- MAIN APP INTERFACE --- */
         #mainAppWrapper {
@@ -222,42 +285,10 @@
         .result-item.selected { min-height: 110px; border-color: var(--primary); background: #f0f6ff; box-shadow: 0 4px 12px rgba(10,85,215,0.25); z-index: 10; position: relative; }
         .icon-wrap { width: 55px; height: inherit; background: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border-right: 2px solid var(--border-neutral); flex-shrink: 0; overflow: hidden; position: relative; cursor: zoom-in; }
         
-        .icon-wrap img {
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            padding: 4px;
-            box-sizing: border-box;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .icon-wrap:hover img {
-            transform: scale(1.3);
-        }
-
-        .icon-wrap::after {
-            content: '🔍';
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            transform: scale(0.5);
-        }
-
-        .icon-wrap:hover::after {
-            opacity: 1;
-            transform: scale(1);
-        }
+        .icon-wrap img { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; padding: 4px; box-sizing: border-box; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .icon-wrap:hover img { transform: scale(1.3); }
+        .icon-wrap::after { content: '🔍'; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; opacity: 0; transition: all 0.3s ease; pointer-events: none; transform: scale(0.5); }
+        .icon-wrap:hover::after { opacity: 1; transform: scale(1); }
 
         .info { flex: 1; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
         .info h3 { font-size: 1rem; margin: 0 0 4px 0; font-weight: 900; color: var(--text-main); white-space: normal; word-wrap: break-word; line-height: 1.2; }
@@ -269,316 +300,122 @@
         .action-btn { background: var(--accent); color: #000; border: none; padding: 5px 12px; border-radius: 5px; font-weight: 900; font-size: 0.8rem; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: auto; transition: all 0.2s ease; }
         
         .badge { width: 80px; background: var(--primary); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4px; flex-shrink: 0; }
-        .badge b { font-size: 1.4rem; font-weight: 900; line-height: 1; margin-bottom: 2px; text-align: center; }
+        .badge b { font-size: 1.4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2px; text-align: center; width: 100%; word-break: break-word; padding: 0 2px; box-sizing: border-box; }
         .badge span { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
         .sectie-label { font-size: 0.65rem; font-weight: 800; color: white; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 3px; padding-top: 3px; width: 90%; text-align: center; }
 
-        /* --- IMAGE ZOOM MODAL (WITH MODERN PAN-ZOOM) --- */
+        /* --- IMAGE ZOOM MODAL --- */
         .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
         .image-modal.show { opacity: 1; pointer-events: auto; }
-        .image-modal img { 
-            max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            background: white; padding: 10px; cursor: zoom-in; 
-        }
+        .image-modal img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: white; padding: 10px; cursor: zoom-in; }
         .image-modal.show img { transform: scale(1); }
-        .image-modal.show img.is-zoomed { 
-            transform: scale(2.5); 
-            cursor: zoom-out; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-
+        .image-modal.show img.is-zoomed { transform: scale(2.5); cursor: zoom-out; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .image-modal-close { position: absolute; top: 20px; right: 20px; background: white; color: var(--text-main); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10001; }
         .image-modal-close:hover { background: var(--accent); color: black; transform: scale(1.1); }
         .image-modal-title { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; font-size: 1.1rem; text-align: center; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; max-width: 80%; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10001; pointer-events: none; }
 
         /* --- AISLE POPUP TOAST --- */
         .aisle-popup {
-            position: fixed;
-            background: var(--primary-dark); color: white;
-            padding: 6px 14px; border-radius: 20px; 
-            font-weight: 900; font-size: 0.85rem; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 2px solid var(--accent);
-            opacity: 0; pointer-events: none; 
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5000; 
-            transform: translate(-50%, -50%) scale(0.8);
-            white-space: nowrap;
+            position: fixed; background: var(--primary-dark); color: white; padding: 6px 14px; border-radius: 20px; 
+            font-weight: 900; font-size: 0.85rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid var(--accent); opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5000; transform: translate(-50%, -50%) scale(0.8); white-space: nowrap;
         }
-        .aisle-popup.show {
-            opacity: 1; transform: translate(-50%, -100%) scale(1);
-        }
+        .aisle-popup.show { opacity: 1; transform: translate(-50%, -100%) scale(1); }
 
         /* --- MAP SECTION --- */
         .map-section { width: 100%; max-width: 950px; height: 70px; flex-shrink: 0; perspective: 1000px; margin-top: 0px; margin-bottom: 118px; position: relative; z-index: 1; }
         
         .floor { 
-            height: 100%; 
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-            background-image: 
-                linear-gradient(to right, rgba(10, 85, 215, 0.05) 1px, transparent 1px), 
-                linear-gradient(to bottom, rgba(10, 85, 215, 0.05) 1px, transparent 1px),
-                linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-            background-size: 15px 15px, 15px 15px, 100% 100%;
-            transform: rotateX(35deg); 
-            transform-origin: bottom center; 
-            display: grid; 
-            grid-template-columns: repeat(17, 1fr); 
-            gap: 8px; 
-            padding: 10px 15px 85px; 
-            border: 3px solid var(--border-neutral); 
-            border-bottom: 8px solid var(--primary); 
-            border-radius: 12px; 
-            position: relative; 
-            transform-style: preserve-3d; 
-            -webkit-transform-style: preserve-3d;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+            height: 100%; background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            background-image: linear-gradient(to right, rgba(10, 85, 215, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(10, 85, 215, 0.05) 1px, transparent 1px), linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            background-size: 15px 15px, 15px 15px, 100% 100%; transform: rotateX(35deg); transform-origin: bottom center; 
+            display: grid; grid-template-columns: repeat(17, 1fr); gap: 8px; padding: 10px 15px 85px; 
+            border: 3px solid var(--border-neutral); border-bottom: 8px solid var(--primary); border-radius: 12px; 
+            position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
         }
         
-        /* 3D Aisles (Shelves) */
         .aisle { 
             background: #ffffff; border-radius: 2px; position: relative; cursor: pointer; 
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
-            transform: translateZ(25px); 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -5px 15px 15px rgba(0,0,0,0.04);
+            transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: translateZ(25px); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -5px 15px 15px rgba(0,0,0,0.04);
         }
         .aisle:hover { transform: translateZ(30px); }
         
         .aisle::before {
-            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 25px;
-            background: linear-gradient(to bottom, #f1f5f9, #cbd5e1);
-            transform-origin: top; transform: rotateX(-90deg);
-            border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; box-sizing: border-box;
-            transition: all 0.3s ease;
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 25px; background: linear-gradient(to bottom, #f1f5f9, #cbd5e1);
+            transform-origin: top; transform: rotateX(-90deg); border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; box-sizing: border-box; transition: all 0.3s ease;
         }
         .aisle::after {
-            content: ''; position: absolute; top: 0; left: 100%; width: 25px; height: 100%;
-            background: linear-gradient(to right, #f8fafc, #e2e8f0);
-            transform-origin: left; transform: rotateY(90deg);
-            border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; box-sizing: border-box;
-            transition: all 0.3s ease;
+            content: ''; position: absolute; top: 0; left: 100%; width: 25px; height: 100%; background: linear-gradient(to right, #f8fafc, #e2e8f0);
+            transform-origin: left; transform: rotateY(90deg); border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; box-sizing: border-box; transition: all 0.3s ease;
         }
 
-        .aisle.active { 
-            background: #e0f2fe; transform: translateZ(35px);
-            box-shadow: -5px 15px 25px rgba(0, 229, 255, 0.2); 
-        }
+        .aisle.active { background: #e0f2fe; transform: translateZ(35px); box-shadow: -5px 15px 25px rgba(0, 229, 255, 0.2); }
         .aisle.active::before { background: linear-gradient(to bottom, #bae6fd, #7dd3fc); height: 35px; border-color: #38bdf8; }
         .aisle.active::after { background: linear-gradient(to right, #e0f2fe, #bae6fd); width: 35px; border-color: #38bdf8; }
         
         .aisle-num { 
-            position: absolute; bottom: -30px; left: 50%; 
-            transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
-            font-weight: 900; font-size: 0.65rem; z-index: 30; 
-            background: var(--primary); color: white; padding: 2px 5px; 
-            border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); pointer-events: none; 
-            transition: all 0.3s ease;
+            position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
+            font-weight: 900; font-size: 0.65rem; z-index: 30; background: var(--primary); color: white; padding: 2px 5px; 
+            border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); pointer-events: none; transition: all 0.3s ease;
         }
         .aisle.active .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-35deg) translateZ(15px) translateY(-10px) scale(1.1); }
         
+        .back-wall {
+            position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: #cbd5e1;
+            transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+            border-radius: 8px 8px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .back-wall::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
+            transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid var(--border-neutral); box-sizing: border-box; transition: all 0.3s ease;
+        }
+        .back-wall.active { background: #bae6fd; transform: translateZ(45px); box-shadow: 0 -5px 15px rgba(0, 229, 255, 0.2); }
+        .back-wall.active::before { background: linear-gradient(to bottom, #e0f2fe, #7dd3fc); border-color: #38bdf8; height: 45px; }
+
         .entrance-label { 
-            position: absolute; 
-            transform-origin: bottom right;
-            transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
-            font-weight: 900; font-size: 0.45rem; z-index: 30; 
-            background: var(--accent); color: #000; padding: 2px 4px; 
-            border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; 
-            white-space: nowrap;
+            position: absolute; transform-origin: bottom right; transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
+            font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; 
+            border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; white-space: nowrap;
         }
         .entrance-label::before { content: var(--txt-entrance); }
         
         #cashierZone {
-            position: absolute;
-            bottom: 0; 
-            left: calc(100% / 17 * 8); 
-            width: calc(100% / 17 * 5); 
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            height: 14px; 
-            z-index: 150; 
-            cursor: pointer;
-            transform: translateZ(8px);
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
+            position: absolute; bottom: 0; left: calc(100% / 17 * 8); width: calc(100% / 17 * 5); display: flex; justify-content: space-between; align-items: flex-end;
+            height: 14px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
         }
-        
-        .cashier-desk {
-            width: 18%; height: 100%;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155; border-top: 2px solid var(--accent);
-            border-radius: 2px; position: relative;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
-        }
-        
-        .cashier-desk::before {
-            content: ''; position: absolute;
-            top: -4px; right: 15%; width: 35%; height: 4px;
-            background: #00e5ff; border-radius: 1px; border: 1px solid #222;
-            box-shadow: 0 0 4px rgba(0, 229, 255, 0.6); transform: rotateZ(-8deg) translateZ(1px);
-            z-index: 1;
-        }
+        .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .cashier-desk::before { content: ''; position: absolute; top: -4px; right: 15%; width: 35%; height: 4px; background: #00e5ff; border-radius: 1px; border: 1px solid #222; box-shadow: 0 0 4px rgba(0, 229, 255, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
 
         .desk-label {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform-origin: bottom center;
-            transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
-            font-weight: 900;
-            font-size: 0.55rem;
-            z-index: 300;
-            background: var(--accent);
-            color: #000;
-            padding: 3px 6px;
-            border-radius: 3px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            white-space: nowrap;
-            pointer-events: none;
+            position: absolute; bottom: 100%; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
+            font-weight: 900; font-size: 0.45rem; z-index: 300; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none;
         }
 
         #coffeeCorner {
-            position: absolute;
-            bottom: 0;
-            right: calc(100% / 17 * 0.2); 
-            width: calc(100% / 17 * 1.8); 
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 16px; 
-            z-index: 150; 
-            cursor: pointer;
-            background: linear-gradient(145deg, #27272a, #111827); 
-            border: 1px solid #0f172a; 
-            border-top: 3px solid #b45309; 
-            border-radius: 3px;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 5px 10px rgba(0,0,0,0.5);
-            transform: translateZ(8px);
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute; bottom: 0; right: calc(100% / 17 * 0.2); width: calc(100% / 17 * 1.4); display: flex; justify-content: center; align-items: flex-end;
+            height: 13px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1px solid #0f172a; border-top: 3px solid #b45309; border-radius: 3px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 5px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         #coffeeCorner:hover { transform: translateZ(12px); }
-
-        #coffeeCorner::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: 8%;
-            width: 28%;
-            height: 8px;
-            background: linear-gradient(to right, #9ca3af, #cbd5e1);
-            border: 1px solid #475569;
-            border-radius: 2px;
-            transform: translateZ(2px);
-            box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-        }
-        
-        #coffeeCorner::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: 5%;
-            width: 90%;
-            height: 2px;
-            background: #fde047;
-            box-shadow: 0 0 5px #fde047, 0 0 10px #eab308;
-            border-radius: 2px;
-            opacity: 0.8;
-            transform: translateZ(1px);
-        }
+        #coffeeCorner::before { content: ''; position: absolute; top: -6px; left: 8%; width: 32%; height: 6px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        #coffeeCorner::after { content: ''; position: absolute; top: -2px; left: 5%; width: 90%; height: 2px; background: #fde047; box-shadow: 0 0 5px #fde047, 0 0 10px #eab308; border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
 
         .vending-machine {
-            position: absolute;
-            bottom: 100%;
-            right: 10%; 
-            width: 22%; 
-            height: 24px; 
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #020617;
-            border-top: 1px solid #475569;
-            border-left: 1px solid #334155;
-            border-radius: 2px;
-            transform-origin: bottom center;
-            transform: rotateX(-35deg) translateZ(8px) translateY(-1px);
-            box-shadow: -5px 15px 15px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 3px;
-            box-sizing: border-box;
-            z-index: 10;
+            position: absolute; bottom: 100%; right: 8%; width: 24%; height: 20px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #020617; border-top: 1px solid #475569; border-left: 1px solid #334155;
+            border-radius: 2px; transform-origin: bottom center; transform: rotateX(-35deg) translateZ(8px) translateY(-1px); box-shadow: -5px 15px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; padding-top: 2px; box-sizing: border-box; z-index: 10;
         }
-
-        .vending-screen {
-            width: 85%;
-            height: 12px;
-            background: 
-                linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)),
-                repeating-linear-gradient(to bottom, #0ea5e9 0px, #0ea5e9 3px, #020617 3px, #020617 5px);
-            border: 1px solid #000;
-            border-radius: 1px;
-            box-shadow: inset 0 0 5px #000, 0 0 8px rgba(14, 165, 233, 0.4);
-            position: relative;
-        }
-
-        .vending-slot {
-            margin-top: 3px;
-            width: 60%;
-            height: 2px;
-            background: #000;
-            border-radius: 1px;
-            border-top: 1px solid #334155;
-            position: relative;
-        }
-        
-        .vending-slot::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            right: -8px;
-            width: 4px;
-            height: 6px;
-            background: #94a3b8;
-            border-radius: 1px;
-        }
+        .vending-screen { width: 85%; height: 10px; background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)), repeating-linear-gradient(to bottom, #0ea5e9 0px, #0ea5e9 3px, #020617 3px, #020617 5px); border: 1px solid #000; border-radius: 1px; box-shadow: inset 0 0 5px #000, 0 0 8px rgba(14, 165, 233, 0.4); position: relative; }
+        .vending-slot { margin-top: 3px; width: 60%; height: 2px; background: #000; border-radius: 1px; border-top: 1px solid #334155; position: relative; }
+        .vending-slot::before { content: ''; position: absolute; top: -6px; right: -8px; width: 4px; height: 6px; background: #94a3b8; border-radius: 1px; }
 
         .coffee-label {
-            position: absolute;
-            bottom: 100%;
-            left: -50%;
-            transform-origin: bottom center;
-            transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
-            font-weight: 900;
-            font-size: 0.55rem;
-            z-index: 300;
-            background: #b45309; 
-            color: #fff;
-            padding: 3px 6px;
-            border-radius: 3px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            white-space: nowrap;
-            pointer-events: none;
-            border: 1px solid #78350f;
+            position: absolute; bottom: 100%; left: -50%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
+            font-weight: 900; font-size: 0.45rem; z-index: 300; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none;
         }
 
-        .coffee-cup {
-            position: absolute;
-            bottom: 100%;
-            left: 45%; 
-            transform-origin: bottom center;
-            transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-2px);
-            font-size: 1.1rem;
-            pointer-events: none;
-            text-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            z-index: 20;
-        }
+        .coffee-cup { position: absolute; bottom: 100%; left: 45%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(8px) translateY(-1px); font-size: 0.85rem; pointer-events: none; text-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 20; }
 
         #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; } 
         .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; } 
@@ -608,85 +445,47 @@
 
         /* --- DIM MODE --- */
         body.dark-mode {
-            --bg: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-neutral: #334155;
-            --aisle: #1e293b;
+            --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b;
         }
-        body.dark-mode .search-wrap, 
-        body.dark-mode .category-chip,
-        body.dark-mode .result-item,
-        body.dark-mode .lang-flags,
-        body.dark-mode .btn-reset,
-        body.dark-mode .icon-wrap,
-        body.dark-mode .image-modal img {
-            background: #1e293b;
-            color: var(--text-main);
-        }
-        body.dark-mode .flag-btn.active { background: #334155; }
-        body.dark-mode .input-layer { color: var(--text-main); }
-        body.dark-mode .tag { background: #334155; color: #cbd5e1; }
-        body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
-        body.dark-mode .clear-btn { background: #334155; color: white; }
-        body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
+        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .lang-flags, body.dark-mode .btn-reset, body.dark-mode .icon-wrap, body.dark-mode .image-modal img { background: #1e293b; color: var(--text-main); }
+        body.dark-mode .flag-btn.active { background: #334155; } body.dark-mode .input-layer { color: var(--text-main); }
+        body.dark-mode .tag { background: #334155; color: #cbd5e1; } body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
+        body.dark-mode .clear-btn { background: #334155; color: white; } body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
         body.dark-mode .icon-wrap::after { background: rgba(30, 41, 59, 0.6); }
-        body.dark-mode .floor {
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), 
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        }
+        body.dark-mode .floor { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
         body.dark-mode .aisle { background: #334155; box-shadow: -5px 15px 15px rgba(0,0,0,0.2); }
-        body.dark-mode .aisle::before {
-            background: linear-gradient(to bottom, #1e293b, #0f172a);
-            border-color: #475569;
-        }
-        body.dark-mode .aisle::after {
-            background: linear-gradient(to right, #334155, #1e293b);
-            border-color: #475569;
-        }
-        @media (hover: hover) {
-            body.dark-mode .category-chip:hover:not(.active) { background: #334155; color: #f8fafc; border-color: #475569; }
-        }
+        body.dark-mode .aisle::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-color: #475569; }
+        body.dark-mode .aisle::after { background: linear-gradient(to right, #334155, #1e293b); border-color: #475569; }
+        body.dark-mode .back-wall { background: #334155; }
+        body.dark-mode .back-wall::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom-color: #475569; }
+        body.dark-mode .back-wall.active { background: #0284c7; }
+        body.dark-mode .back-wall.active::before { background: linear-gradient(to bottom, #0369a1, #0c4a6e); border-color: #38bdf8; }
+
+        /* Intro Page Dark Mode Overrides (Strict 3 Colors) */
+        body.dark-mode #introPage { background: #0f172a; color: #ffffff; }
+        body.dark-mode .intro-bg { background: #0f172a; }
+        body.dark-mode .intro-bg::before { background-image: linear-gradient(rgba(10, 85, 215, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 85, 215, 0.3) 1px, transparent 1px); }
+        body.dark-mode .orb-1 { background: rgba(10, 85, 215, 0.2); } body.dark-mode .orb-2 { background: rgba(255, 204, 0, 0.1); }
+        body.dark-mode .intro-content { background: #0f172a; border-color: var(--primary); }
+        body.dark-mode .float-tag { background: #0f172a; color: #ffffff; border: 2px solid var(--primary); border-bottom: 4px solid var(--accent); }
+        body.dark-mode .intro-h1 { color: #ffffff; }
+        body.dark-mode .intro-h1 span { background: var(--accent); color: #0f172a; }
+        body.dark-mode .intro-slogan { background: var(--accent); color: #0f172a; }
+        body.dark-mode .intro-nav-title { color: #ffffff; }
+        body.dark-mode .intro-p { color: #ffffff; }
+        body.dark-mode .intro-lang-toggles { background: #0f172a; border-color: var(--primary); }
+        body.dark-mode .intro-lang-btn { color: #ffffff; }
+        body.dark-mode .intro-lang-btn:hover { background: rgba(10,85,215,0.3); }
+        body.dark-mode .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
+        body.dark-mode .commercial-ticker { background: var(--primary); color: var(--accent); }
+
+        @media (hover: hover) { body.dark-mode .category-chip:hover:not(.active) { background: #334155; color: #f8fafc; border-color: #475569; } }
 
         /* --- FOOTER STYLES (Single Line) --- */
-        .app-footer {
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            flex-shrink: 0;
-            z-index: 5;
-            background: var(--bg);
-            border-top: 1px solid var(--border-neutral);
-        }
-        .app-footer .footer-content {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10px;
-        }
-        .app-footer .brand {
-            font-weight: 900;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .beta-badge {
-            background: var(--accent);
-            color: #000;
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-weight: 900;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
+        .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); }
+        .app-footer .footer-content { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 0 10px; }
+        .app-footer .brand { font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .beta-badge { background: var(--accent); color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 900; font-size: 0.6rem; text-transform: uppercase; white-space: nowrap; }
     </style>
 </head>
 <body onload="initApp()">
@@ -698,6 +497,58 @@
     </div>
 
     <div id="introPage">
+        <!-- Glowing Ambient Orbs (Reduced to 2 for primary/accent emphasis) -->
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+
+        <!-- 3D Animated Blueprint Background -->
+        <div class="intro-bg">
+            <!-- Floating Commercial Aisle Tags -->
+            <div class="floating-tags-container">
+                <div class="float-tag" style="--tx: -35%; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint <span>•</span> Фарби</div>
+                <div class="float-tag" style="--tx: 25%; --td: -7s;"><i>🛠️</i> Gereedschap <span>•</span> Tools <span>•</span> Інструменти</div>
+                <div class="float-tag" style="--tx: -15%; --td: -14s;"><i>🪵</i> Hout <span>•</span> Timber <span>•</span> Деревина</div>
+            </div>
+
+            <!-- Path SVG and Top-Down Shoppers (Strict 3 Colors) -->
+            <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+                <!-- Static Paths -->
+                <path d="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" />
+                <path class="accent-path" d="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" />
+                <path d="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" />
+
+                <!-- Animated Shopper 1 -->
+                <g>
+                    <g transform="rotate(90)">
+                        <rect x="-10" y="-6" width="20" height="12" rx="6" fill="#0a55d7" />
+                        <circle cx="0" cy="0" r="6" fill="#ffffff" />
+                    </g>
+                    <animateMotion dur="16s" repeatCount="indefinite" path="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" rotate="auto" />
+                </g>
+
+                <!-- Animated Shopper 2 -->
+                <g>
+                    <g transform="rotate(90)">
+                        <rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#ffcc00" stroke-width="2" />
+                        <line x1="10" y1="-4" x2="26" y2="-4" stroke="#ffcc00" stroke-width="1" />
+                        <line x1="10" y1="4" x2="26" y2="4" stroke="#ffcc00" stroke-width="1" />
+                        <rect x="-10" y="-7" width="20" height="14" rx="6" fill="#ffcc00" />
+                        <circle cx="0" cy="0" r="6" fill="#ffffff" />
+                    </g>
+                    <animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" />
+                </g>
+
+                <!-- Animated Shopper 3 -->
+                <g>
+                    <g transform="rotate(90)">
+                        <rect x="-9" y="-5" width="18" height="10" rx="5" fill="#0a55d7" />
+                        <circle cx="0" cy="0" r="5" fill="#ffcc00" />
+                    </g>
+                    <animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" />
+                </g>
+            </svg>
+        </div>
+
         <div class="intro-lang-toggles">
             <button class="intro-lang-btn active" onclick="setLang('nl')" id="intro-btn-nl">🇳🇱 NL</button>
             <button class="intro-lang-btn" onclick="setLang('en')" id="intro-btn-en">🇬🇧 EN</button>
@@ -706,18 +557,34 @@
         
         <div class="intro-content">
             <div class="video-container">
-                
-                <video id="introVideo" autoplay loop playsinline controls muted src="dutch.mp4">
+                <video id="introVideo" autoplay loop playsinline controls muted src="dutch1.mp4">
                     Your browser does not support HTML video.
                 </video>
             </div>
             
-            <h1 class="intro-h1">WELKOM BIJ<br>BOUWMAAT AMSTEL <span>XL</span></h1>
-            <p class="intro-p" id="introText">Verdwaald in het gangpad? DIY is leuk, maar niet als het om zoeken gaat. Let’s get you found!</p>
-            <button class="intro-btn" onclick="closeIntro()" id="introBtn">LET’S FIND MY STUFF!</button>
+            <h1 class="intro-h1" id="introTitle">BOUWMAAT AMSTEL <span>XL</span></h1>
+            <div class="intro-slogan" id="introSlogan">Alles voor de vakman</div>
+            
+            <div class="intro-nav-title" id="introNavTitle">Smart Navigator</div>
+            <p class="intro-p" id="introText">Vind direct jouw producten in de vestiging.</p>
+            
+            <button class="intro-btn" onclick="closeIntro()" id="introBtn">
+                <span id="introBtnText">START ZOEKEN</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
         </div>
-        
-        <div class="intro-footer">Powered by <b>Aisle Wise&trade;</b></div>
+
+        <!-- Commercial Ticker Tape -->
+        <div class="commercial-ticker">
+            <div class="ticker-track">
+                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
+                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
+                <span><i>•</i> УСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
+                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
+                <span><i>•</i> УСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+            </div>
+        </div>
     </div>
 
     <div id="mainAppWrapper">
@@ -771,6 +638,8 @@
 
         <div class="map-section" aria-hidden="true">
             <div class="floor" id="mapGrid">
+            
+                <div class="back-wall" id="p-0AW" onclick="handleMapClick('0AW')"></div>
 
                 <div id="cashierZone" onclick="handleMapClick('KAS')">
                     <div class="cashier-desk"><div class="desk-label" id="label-service">Service desk</div></div>
@@ -822,15 +691,18 @@
 
     const i18n = {
         nl: { 
-            introTitle: "WELKOM BIJ<br>BOUWMAAT AMSTEL <span>XL</span>",
-            introP: "Verdwaald in het gangpad? DIY is leuk, maar niet als het om zoeken gaat. Let’s get you found!",
-            introBtn: "LET’S FIND MY STUFF!",
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Alles voor de vakman",
+            introNav: "Smart Navigator",
+            introP: "Vind direct jouw producten in de vestiging.",
+            introBtn: "START ZOEKEN",
             placeholder: "Zoek artikel of code...", search: "🔍 ZOEKEN", reset: "RESET", 
             allCats: "Alle categorieën",
             resFoundPlural: "RESULTATEN", resFoundSingular: "RESULTAAT", noResTitle: "Geen resultaten voor", 
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
             entrance: "INGANG", left: "LINKS", right: "RECHTS", sect: "Sectie", pad: "PAD", zijde: "ZIJDE", kassa: "KASSA",
             serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek",
+            backWallShort: "ACHTERWAND", backWallLong: "Achterwand",
             moreRes: "meer resultaten. Verfijn je zoekopdracht.",
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
@@ -838,15 +710,18 @@
             }
         },
         en: { 
-            introTitle: "WELCOME TO<br>BOUWMAAT AMSTEL <span>XL</span>",
-            introP: "Lost in the aisle? DIY is fun, but searching shouldn't be a project. Let’s get you found!",
-            introBtn: "LET’S FIND MY STUFF!",
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Everything for the professional",
+            introNav: "Smart Navigator",
+            introP: "Find your products instantly in the store.",
+            introBtn: "START SEARCHING",
             placeholder: "Search item or code...", search: "🔍 SEARCH", reset: "RESET", 
             allCats: "All categories",
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
             entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner",
+            backWallShort: "BACK WALL", backWallLong: "Back wall",
             moreRes: "more results. Please refine your search.",
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
@@ -854,18 +729,21 @@
             }
         },
         uk: { 
-            introTitle: "ВІТАЄМО В<br>BOUWMAAT AMSTEL <span>XL</span>",
-            introP: "Загубилися в міжрядді? DIY — це весело, але пошук не має бути проблемою. Допоможемо знайти все!",
-            introBtn: "ПОЇХАЛИ ШУКАТИ!",
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Усе для професіоналів",
+            introNav: "Розумний навігатор",
+            introP: "Миттєво знаходьте свої товари в магазині.",
+            introBtn: "ПОЧАТИ ПОШУК",
             placeholder: "Пошук товару чи коду...", search: "🔍 ПОШУК", reset: "СКИДАННЯ", 
             allCats: "Всі категорії",
             resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
             noResDesc: "Перевірте орфографію.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУК ЧЕКА", 
             entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
             serviceDesk: "Сервісна стійка", salesDesk: "Стійка продажу", coffeeCorner: "Кавовий куточок",
+            backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна",
             moreRes: "більше результатів. Уточніть свій пошук.",
             groups: { 
-                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент та суміші", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en циліндри": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Власне використання (різне)",
+                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент та суміші", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en циліндри": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Власне використання (різне)",
                 "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Verf benodigdheden/attributen": "Малярні аксесуари", "Kleding & schoenen": "Одяг та взуття"
             }
         }
@@ -899,7 +777,7 @@
     let currentCategory = 'all';
 
     const fallbackData = [
-           {
+            {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -1421,8 +1299,87 @@
             "Subgroep": "Keukenkasten",
             "Locatie2": "Pad 17 Links, Sectie 13"
         },
-
-
+           {
+            "ArtikelNr.": "314639",
+            "Artikel omsch.": "Lijmblok Kalkzandsteen Wit CS12 L100/198  437x100x198mm",
+            "Schaplocatie code": "13L-009-0091",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Constructie buiten",
+            "Locatie2": "Pad 13 Links, Sectie 09"
+        },
+          {
+            "ArtikelNr.": "567106",
+            "Artikel omsch.": "Bouwmaat Blokkenlijm 25kg",
+            "Schaplocatie code": "13R-015-0080",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Cement en mortels",
+            "Locatie2": "Pad 13 Rechts, Sectie 15"
+        },
+          {
+            "ArtikelNr.": "727529",
+            "Artikel omsch.": "H+H Cellenbeton Lijmblok 400x600x70mm Tolerantie 0,4mm",
+            "Schaplocatie code": "13R-008-0010",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Droge afbouw",
+            "Locatie2": "Pad 13 Rechts, Sectie 08"
+        },
+           {
+            "ArtikelNr.": "719713",
+            "Artikel omsch.": "H+H Cellenbeton Lijmblok 400x600x100mm Tolerantie 0,4mm",
+            "Schaplocatie code": "13R-010-0010",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Droge afbouw",
+            "Locatie2": "Pad 13 Rechts, Sectie 10"
+        },
+           {
+            "ArtikelNr.": "719714",
+            "Artikel omsch.": "H+H Cellenbeton Lijmblok 200x600x150mm Tolerantie 0,4mm",
+            "Schaplocatie code": "13R-011-0010",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Droge afbouw",
+            "Locatie2": "Pad 13 Rechts, Sectie 11"
+        },
+           {
+            "ArtikelNr.": "726566",
+            "Artikel omsch.": "Busch-Jaeger Opzetwip Balance Wissel/Kruis/Impuls Polarwit",
+            "Schaplocatie code": "16L-003-1050",
+            "Hoofdgroep": "Elektra",
+            "Subgroep": "Schakelmateriaal",
+            "Locatie2": "Pad 16 Links, Sectie 03"
+        },
+           {
+            "ArtikelNr.": "759928",
+            "Artikel omsch.": "Busch-Jaeger Schakelaar Balance Inbouw Wissel Polarwit",
+            "Schaplocatie code": "16L-003-1260",
+            "Hoofdgroep": "Elektra",
+            "Subgroep": "Schakelmateriaal",
+            "Locatie2": "Pad 16 Links, Sectie 03"
+        },
+           {
+            "ArtikelNr.": "363976",
+            "Artikel omsch.": "Zwaluw Stuc-O-Seal Acrylaatkit Wit 310ml",
+            "Schaplocatie code": "07R-003-0170",
+            "Hoofdgroep": "Lijm, kit en pur",
+            "Subgroep": "Kitten",
+            "Locatie2": "Pad 07 Rechts, Sectie 03"
+        },
+ {
+            "ArtikelNr.": "771791",
+            "Artikel omsch.": "Skantrae Achterdeur SKG 3559 NEXT Grijs 83x211,5cm FSC 100%",
+            "Schaplocatie code": "04R-007-0061",
+            "Hoofdgroep": "Hout",
+            "Subgroep": "Deuren",
+            "Locatie2": "Pad 04 Rechts, Sectie 07"
+        },
+       
+     {
+            "ArtikelNr.": "771787",
+            "Artikel omsch.": "Skantrae Achterdeur SKG 3559 NEXT Grijs 83x201,5cm FSC 100%",
+            "Schaplocatie code": "04R-007-0051",
+            "Hoofdgroep": "Hout",
+            "Subgroep": "Deuren",
+            "Locatie2": "Pad 04 Rechts, Sectie 07"
+        },
             {
             "ArtikelNr.": "753213",
             "Artikel omsch.": "Afvalzak LDPE blauw 90x110 cm 20 stuks",
@@ -1701,6 +1658,14 @@
             "Subgroep": "Timmerhout",
             "Locatie2": "Pad 05 Links, Sectie 08"
         },
+          {
+            "ArtikelNr.": "470831",
+            "Artikel omsch.": "Attema Blinddeksel Universele Lasdoos Crème",
+            "Schaplocatie code": "16l-006-0490",
+            "Hoofdgroep": "Elektra",
+            "Subgroep": "Elektrisch installatiemateriaal",
+            "Locatie2": "Pad 16 Links, Sectie 06"
+        },
         {
             "ArtikelNr.": "573876",
             "Artikel omsch.": "AC ACOMIX COLORPASTE WR2 1 L",
@@ -1716,7 +1681,7 @@
             "Hoofdgroep": "Eigen gebruik",
             "Subgroep": "Eigen gebruik diversen",
             "Locatie2": "Pad VM Links, Sectie 02"
-        }
+        },
 
     ];
 
@@ -1768,9 +1733,11 @@
         const activeIntroBtn = document.getElementById(`intro-btn-${lang}`);
         if(activeIntroBtn) activeIntroBtn.classList.add('active');
         const t = i18n[lang];
-        document.querySelector('.intro-h1').innerHTML = t.introTitle;
+        document.getElementById('introTitle').innerHTML = t.introTitle;
+        document.getElementById('introSlogan').innerText = t.introSlogan;
+        document.getElementById('introNavTitle').innerText = t.introNav;
         document.getElementById('introText').innerText = t.introP;
-        document.getElementById('introBtn').innerText = t.introBtn;
+        document.getElementById('introBtnText').innerText = t.introBtn;
         document.getElementById('searchBox').placeholder = t.placeholder;
         document.getElementById('btnReset').innerText = t.reset;
         document.getElementById('btnSearch').innerHTML = window.innerWidth < 400 ? "🔍" : t.search;
@@ -1783,6 +1750,13 @@
         if(lblKassa) lblKassa.innerText = t.kassa;
         const lblCoffee = document.getElementById('label-coffee');
         if(lblCoffee) lblCoffee.innerText = t.coffeeCorner;
+        
+        // Update special locations translations
+        const awLoc = specialLocations.find(s => s.id === '0AW');
+        if (awLoc) {
+            awLoc.short = t.backWallShort;
+            awLoc.long = t.backWallLong;
+        }
         
         // Dynamic Video Switching per Language
         const videoSrcs = {
@@ -1818,14 +1792,20 @@
         const allCategories = [
             "Bouwmaterialen", "Hout", "Gereedschap", "Bevestigingsmateriaal", "Verf", 
             "Sanitair", "Elektra", "Verwarming en klimaat", "Lijm, kit en pur",
-            "IJzerwaren", "Bouwstoffen", "Verwarming", "Verlichting", "Hang- en sluitwerk", 
-            "Keukens", "Deuren & Kozijnen", "Persoonlijke beschermings", "Kleding & schoenen", 
-            "Schoonmaak, bedrijfswagen", "Emballage", "Eigen gebruik", "Lokaal", "Algemeen"
+            "Verlichting", "Hang- en sluitwerk", 
+            "Keukens", "Persoonlijke beschermings", "Eigen gebruik"
         ];
         
-        // Combine predefined list with any dynamic ones found in the data
+        // Categories to explicitly hide
+        const hiddenCategories = [
+            "IJzerwaren", "Bouwstoffen", "Verwarming", "Deuren & Kozijnen", 
+            "Kleding & schoenen", "Emballage", "Lokaal", "Algemeen",
+            "Schoonmaak, bedrijfswagen", "Schoonmaak bedrijfswagen"
+        ];
+        
+        // Combine predefined list with any dynamic ones found in the data, filtering out hidden ones
         const dataCats = [...new Set(data.map(item => item["Hoofdgroep"]))];
-        const combinedCats = [...new Set([...allCategories, ...dataCats])];
+        const combinedCats = [...new Set([...allCategories, ...dataCats])].filter(cat => !hiddenCategories.includes(cat));
 
         combinedCats.forEach(cat => {
             if (!cat) return;
@@ -1868,7 +1848,8 @@
         });
         const grid = document.getElementById('mapGrid'), svg = document.getElementById('pathLayer'), char = document.getElementById('mainChar');
         const cashiers = document.getElementById('cashierZone'), coffee = document.getElementById('coffeeCorner');
-        svg.remove(); char.remove(); cashiers.remove(); coffee.remove();
+        const backWall = document.getElementById('p-0AW');
+        svg.remove(); char.remove(); cashiers.remove(); coffee.remove(); backWall.remove();
         for (let i = 1; i <= 17; i++) {
             const div = document.createElement('div');
             div.className = 'aisle'; div.id = `p-${i}`; div.dataset.num = i;
@@ -1878,7 +1859,7 @@
         }
         const entLabel = document.createElement('div');
         entLabel.className = 'entrance-label'; entLabel.id = 'entranceText';
-        grid.append(cashiers, coffee, svg, entLabel, char);
+        grid.append(backWall, cashiers, coffee, svg, entLabel, char);
         const dimBtn = document.getElementById('btnDimToggle');
         if(dimBtn) dimBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         setLang(curLang); 
@@ -1952,6 +1933,9 @@
         } else if (num === 'KOFFIE') {
             targetEl = document.getElementById('coffeeCorner');
             popupText = `<span style="color:var(--accent)">KOFFIE</span>`;
+        } else if (num === '0AW') {
+            targetEl = document.getElementById('p-0AW');
+            popupText = `<span style="color:var(--accent)">${t.backWallShort}</span>`;
         } else if (num === 'LIJ') {
             targetEl = document.getElementById('p-3');
             popupText = `<span style="color:var(--accent)">LIJSTEN</span>`;
@@ -1975,8 +1959,8 @@
     }
 
     function handleMapClick(id) {
-        document.querySelectorAll('.aisle, .result-item').forEach(x => x.classList.remove('active', 'selected'));
-        if (id !== 'KAS' && id !== 'KOFFIE') document.getElementById(`p-${id}`)?.classList.add('active');
+        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
+        document.getElementById(`p-${id}`)?.classList.add('active');
         showAislePopup(id);
         moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE');
     }
@@ -2080,6 +2064,18 @@
             const displayHoofd = t.groups[item["Hoofdgroep"]] || item["Hoofdgroep"] || '';
             const displaySub = t.groups[item["Subgroep"]] || item["Subgroep"] || '';
 
+            let badgeFontSize = '1.4rem';
+            if (matchedSpecial) {
+                const len = padDisplay.length;
+                if (len >= 10) badgeFontSize = '0.55rem';
+                else if (len >= 8) badgeFontSize = '0.65rem';
+                else if (len >= 6) badgeFontSize = '0.75rem';
+                else if (len >= 4) badgeFontSize = '0.95rem';
+                else badgeFontSize = '1.2rem';
+            } else {
+                badgeFontSize = padDisplay.length > 3 ? '1.1rem' : '1.4rem';
+            }
+
             return `
             <div class="result-item" role="button" tabindex="0" onclick="selectItem(${safeArgPad}, this)">
                 <div class="icon-wrap">
@@ -2090,27 +2086,28 @@
                     <div style="display:none; font-size: 1.8rem;">${icons[item["Hoofdgroep"]] || '📦'}</div>
                 </div>
                 <div class="info"><h3>${hl(item["Artikel omsch."])}</h3><div class="tags"><span class="tag">ART. ${hl(item["ArtikelNr."])}</span> <span class="tag">${hl(displayHoofd).toUpperCase()}</span><span class="tag sub">${hl(displaySub)}</span></div><div class="action-btns"><button class="action-btn" onclick="printTicket(event, '${safeName}', '${printLoc}', '${sideStr}', '${secNum}')">${t.printBtn}</button></div></div>
-                <div class="badge"><b>${padDisplay}</b>${sideStr ? `<span>${sideStr}</span>` : ''}<div class="sectie-label">${t.sect} ${secNum}</div></div>
+                <div class="badge"><b style="font-size: ${badgeFontSize};">${padDisplay}</b>${sideStr ? `<span>${sideStr}</span>` : ''}<div class="sectie-label">${t.sect} ${secNum}</div></div>
             </div>`;
         }).join('') + (results.length > MAX_RESULTS ? `<div style="text-align:center; padding: 15px; color: var(--text-muted); font-weight: 800; font-size: 0.9rem;">+ ${results.length - MAX_RESULTS} ${t.moreRes}</div>` : '');
     }
 
     function selectItem(pad, el) {
         if (el && el.classList.contains('selected')) return;
-        document.querySelectorAll('.aisle, .result-item').forEach(x => x.classList.remove('active', 'selected'));
+        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
         if (el) el.classList.add('selected');
         
         let targetPad = pad;
         if (pad === 'LIJ') targetPad = 3;
         if (pad === 'PBM') targetPad = 13;
         
-        if (typeof targetPad !== 'string' || !specialLocations.some(s => s.id === targetPad)) document.getElementById(`p-${targetPad}`)?.classList.add('active');
-        showAislePopup(pad); moveChar(pad, true, true);
+        document.getElementById(`p-${targetPad}`)?.classList.add('active');
+        showAislePopup(pad); 
+        moveChar(pad, true, true);
         if (el) setTimeout(() => { el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 210);
     }
 
     function closeSelection() {
-        document.querySelectorAll('.aisle, .result-item').forEach(x => x.classList.remove('active', 'selected'));
+        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
         moveChar('entrance', false, false);
     }
 
@@ -2126,6 +2123,7 @@
         if (visualPad === 'KAS') { cPos = document.getElementById('p-11')?.offsetLeft || sPos; targetBottom = `${kasTarget}%`; }
         else if (visualPad === 'VMB') { cPos = (document.getElementById('p-8')?.offsetLeft || sPos) + 15; targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; }
         else if (visualPad === 'KOFFIE') { cPos = (document.getElementById('coffeeCorner')?.offsetLeft || sPos) + 10; targetBottom = `${kasTarget}%`; }
+        else if (visualPad === '0AW') { cPos = sPos; targetBottom = active ? `92%` : `${walkLineBottom}%`; }
         else if (visualPad !== 'entrance' && !isNaN(visualPad)) { const t = document.getElementById(`p-${visualPad}`); if(t) { cPos = t.offsetLeft + (t.offsetWidth / 2); targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; } }
         
         char.style.animation = 'none';
