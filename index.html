@@ -217,7 +217,19 @@
         .flag-btn.active { opacity: 1; filter: grayscale(0%); background: #f1f5f9; transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn-reset { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 6px 10px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
 
-        .results-header { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; flex-shrink: 0; z-index: 1; position: relative; }
+        /* INCREASED Z-INDEX AND MARGIN TO PREVENT SEARCH BAR AND CHIPS INTERFERENCE */
+        .search-area-wrapper { display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0; width: 100%; z-index: 50; position: relative; }
+        
+        .search-wrap { position: relative; height: 48px; background: #fff; flex: 1; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 4px 6px rgba(10,85,215,0.1); display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; }
+        .search-wrap:focus-within { box-shadow: 0 0 0 4px rgba(10, 85, 215, 0.3); }
+        .input-layer { flex: 1; height: 100%; padding: 0 10px 0 12px; font-family: inherit; font-size: 1.1rem; font-weight: 900; border: none; background: transparent; outline: none; z-index: 2; color: var(--primary-dark); width: 100%; }
+        #searchGhost { position: absolute; left: 0; top: 0; height: 100%; display: flex; align-items: center; padding-left: 12px; font-family: inherit; z-index: 1; color: #94a3b8; pointer-events: none; font-size: 1.1rem; font-weight: 900; white-space: pre; overflow: hidden; }
+        
+        .search-actions { display: flex; align-items: center; padding-right: 5px; z-index: 3; gap: 5px; }
+        .clear-btn { background: #e2e8f0; border: none; border-radius: 6px; width: 32px; height: 32px; font-weight: 900; font-size: 1rem; color: var(--text-main); cursor: pointer; display: none; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .search-btn { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 0 10px; height: 36px; font-weight: 900; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+
+        .results-header { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; flex-shrink: 0; z-index: 10; position: relative; }
         .searching .results-header { border-bottom: 2px solid var(--border-neutral); padding-bottom: 6px; }
 
         .meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; min-height: 20px; }
@@ -259,17 +271,6 @@
             box-shadow: 0 4px 10px rgba(10, 85, 215, 0.2);
             transform: translateY(-1px);
         }
-
-        .search-area-wrapper { display: flex; gap: 8px; margin-bottom: 8px; flex-shrink: 0; width: 100%; z-index: 1; }
-        
-        .search-wrap { position: relative; height: 48px; background: #fff; flex: 1; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 4px 6px rgba(10,85,215,0.1); display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; }
-        .search-wrap:focus-within { box-shadow: 0 0 0 4px rgba(10, 85, 215, 0.3); }
-        .input-layer { flex: 1; height: 100%; padding: 0 10px 0 12px; font-size: 1.1rem; font-weight: 900; border: none; background: transparent; outline: none; z-index: 2; color: var(--primary-dark); width: 100%; }
-        #searchGhost { position: absolute; left: 0; top: 0; height: 100%; display: flex; align-items: center; padding-left: 12px; z-index: 1; color: #94a3b8; pointer-events: none; font-size: 1.1rem; font-weight: 900; white-space: pre; overflow: hidden; }
-        
-        .search-actions { display: flex; align-items: center; padding-right: 5px; z-index: 3; gap: 5px; }
-        .clear-btn { background: #e2e8f0; border: none; border-radius: 6px; width: 32px; height: 32px; font-weight: 900; font-size: 1rem; color: var(--text-main); cursor: pointer; display: none; align-items: center; justify-content: center; transition: all 0.2s ease; }
-        .search-btn { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 0 10px; height: 36px; font-weight: 900; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
 
         .result-meta { font-size: 1rem; font-weight: 900; color: var(--primary); display: none; align-items: center; margin: 0; padding: 0; border: none; }
         .results-list { flex: 1 1 auto; display: none; flex-direction: column; gap: 6px; overflow-y: auto; overflow-x: hidden; padding-bottom: 5px; position: relative; z-index: 2; width: 100%; min-height: 0; }
@@ -382,8 +383,8 @@
         .entrance-label::before { content: var(--txt-entrance); }
         
         #cashierZone {
-            position: absolute; bottom: 0; left: calc(100% / 17 * 8); width: calc(100% / 17 * 5); display: flex; justify-content: space-between; align-items: flex-end;
-            height: 14px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+            position: absolute; bottom: -5px; left: calc(100% / 17 * 8); width: calc(100% / 17 * 5); display: flex; justify-content: space-between; align-items: flex-end;
+            height: 5px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
         }
         .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
         .cashier-desk::before { content: ''; position: absolute; top: -4px; right: 15%; width: 35%; height: 4px; background: #00e5ff; border-radius: 1px; border: 1px solid #222; box-shadow: 0 0 4px rgba(0, 229, 255, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
@@ -394,8 +395,8 @@
         }
 
         #coffeeCorner {
-            position: absolute; bottom: 0; right: calc(100% / 17 * 0.2); width: calc(100% / 17 * 1.4); display: flex; justify-content: center; align-items: flex-end;
-            height: 13px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1px solid #0f172a; border-top: 3px solid #b45309; border-radius: 3px;
+            position: absolute; bottom: -5px; right: calc(100% / 17 * 0.2); width: calc(100% / 17 * 1.4); display: flex; justify-content: center; align-items: flex-end;
+            height: 6px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1px solid #0f172a; border-top: 3px solid #b45309; border-radius: 3px;
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 5px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         #coffeeCorner:hover { transform: translateZ(12px); }
@@ -481,6 +482,11 @@
 
         @media (hover: hover) { body.dark-mode .category-chip:hover:not(.active) { background: #334155; color: #f8fafc; border-color: #475569; } }
 
+        #spellCheckArea:hover { background: #e0f2fe; border-color: #7dd3fc; transform: translateY(-1px); }
+        body.dark-mode #spellCheckArea { background: rgba(10, 85, 215, 0.15); border-color: rgba(10, 85, 215, 0.4); color: #bae6fd; }
+        body.dark-mode #spellCheckArea:hover { background: rgba(10, 85, 215, 0.25); border-color: rgba(10, 85, 215, 0.6); }
+        body.dark-mode #spellCheckSuggestion { color: var(--accent); }
+
         /* --- FOOTER STYLES (Single Line) --- */
         .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); }
         .app-footer .footer-content { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 0 10px; }
@@ -503,12 +509,12 @@
 
         <!-- 3D Animated Blueprint Background -->
         <div class="intro-bg">
-            <!-- Floating Commercial Aisle Tags -->
+            <!-- Floating Commercial Aisle Tags 
             <div class="floating-tags-container">
                 <div class="float-tag" style="--tx: -35%; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint <span>•</span> Фарби</div>
                 <div class="float-tag" style="--tx: 25%; --td: -7s;"><i>🛠️</i> Gereedschap <span>•</span> Tools <span>•</span> Інструменти</div>
                 <div class="float-tag" style="--tx: -15%; --td: -14s;"><i>🪵</i> Hout <span>•</span> Timber <span>•</span> Деревина</div>
-            </div>
+            </div>-->
 
             <!-- Path SVG and Top-Down Shoppers (Strict 3 Colors) -->
             <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
@@ -557,7 +563,8 @@
         
         <div class="intro-content">
             <div class="video-container">
-                <video id="introVideo" autoplay loop playsinline controls muted src="dutch1.mp4">
+                <div class="video-placeholder-text">Video Placeholder</div>
+                <video id="introVideo" autoplay loop playsinline controls muted src="https://www.w3schools.com/html/mov_bbb.mp4">
                     Your browser does not support HTML video.
                 </video>
             </div>
@@ -624,6 +631,12 @@
                 <div class="meta-row">
                     <div id="resultCount" class="result-meta"></div>
                 </div>
+                
+                <div id="spellCheckArea" style="display:none; padding: 10px; background: #f0f6ff; border-radius: 8px; margin-bottom: 8px; font-weight: 800; color: var(--text-main); font-size: 0.95rem; cursor: pointer; border: 2px dashed #bae6fd; align-items: center; gap: 8px; transition: all 0.2s ease;">
+                    <span style="font-size:1.2rem">💡</span> 
+                    <span><span id="spellCheckPrefix">Bedoelde je:</span> <span id="spellCheckSuggestion" style="text-decoration: underline; color: var(--primary);"></span>?</span>
+                </div>
+
                 <div class="filter-wrapper" id="categoryChips">
                     <!-- Modern Chips populated by JS -->
                 </div>
@@ -702,7 +715,7 @@
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
             entrance: "INGANG", left: "LINKS", right: "RECHTS", sect: "Sectie", pad: "PAD", zijde: "ZIJDE", kassa: "KASSA",
             serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek",
-            backWallShort: "ACHTERWAND", backWallLong: "Achterwand",
+            backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
             moreRes: "meer resultaten. Verfijn je zoekopdracht.",
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
@@ -721,7 +734,7 @@
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
             entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner",
-            backWallShort: "BACK WALL", backWallLong: "Back wall",
+            backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
             moreRes: "more results. Please refine your search.",
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
@@ -740,7 +753,7 @@
             noResDesc: "Перевірте орфографію.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУК ЧЕКА", 
             entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
             serviceDesk: "Сервісна стійка", salesDesk: "Стійка продажу", coffeeCorner: "Кавовий куточок",
-            backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна",
+            backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
             moreRes: "більше результатів. Уточніть свій пошук.",
             groups: { 
                 "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент та суміші", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en циліндри": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Власне використання (різне)",
@@ -1681,7 +1694,7 @@
             "Hoofdgroep": "Eigen gebruik",
             "Subgroep": "Eigen gebruik diversen",
             "Locatie2": "Pad VM Links, Sectie 02"
-        },
+        }
 
     ];
 
@@ -1750,6 +1763,8 @@
         if(lblKassa) lblKassa.innerText = t.kassa;
         const lblCoffee = document.getElementById('label-coffee');
         if(lblCoffee) lblCoffee.innerText = t.coffeeCorner;
+        const lblSpell = document.getElementById('spellCheckPrefix');
+        if(lblSpell) lblSpell.innerText = t.didYouMean;
         
         // Update special locations translations
         const awLoc = specialLocations.find(s => s.id === '0AW');
@@ -1760,9 +1775,9 @@
         
         // Dynamic Video Switching per Language
         const videoSrcs = {
-            nl: "dutch1.mp4",
-            en: "eng.mp4",
-            uk: "uk1.mp4"
+            nl: "https://www.w3schools.com/html/mov_bbb.mp4",
+            en: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+            uk: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4"
         };
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
@@ -1819,12 +1834,16 @@
     }
 
     function selectCategory(cat) {
+        const container = document.getElementById('categoryChips');
+        const currentScroll = container ? container.scrollLeft : 0; // Save exact scroll position
+        
         currentCategory = cat;
         renderCategoryChips();
         handleSearch();
-        const activeChip = document.querySelector('.category-chip.active');
-        if (activeChip) {
-            activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        
+        // Restore scroll position so it doesn't jump or move to the left
+        if (document.getElementById('categoryChips')) {
+            document.getElementById('categoryChips').scrollLeft = currentScroll;
         }
     }
 
@@ -1838,14 +1857,23 @@
     };
 
     function boot() {
+        window.dictSet = new Set();
         data.forEach(item => {
             if(!item._searchStr) {
-                const fullText = `${item["ArtikelNr."]} ${item["Schaplocatie code"]} ${item["Artikel omsch."]}`;
+                // Include Categories and Subcategories in the invisible search string!
+                const fullText = `${item["ArtikelNr."]} ${item["Schaplocatie code"]} ${item["Artikel omsch."]} ${item["Hoofdgroep"] || ''} ${item["Subgroep"] || ''}`;
                 item._searchStr = normalizeStr(fullText);
                 item._cleanArt = item["ArtikelNr."].toString().replace(/[-\s]/g, '').toLowerCase();
                 item._nameNorm = normalizeStr(item["Artikel omsch."]);
+                item._nameWords = item._nameNorm.split(/\s+/).filter(w => w.length > 0);
             }
+            item._nameWords.forEach(w => {
+                let cw = w.replace(/[^a-z]/g, '');
+                if (cw.length > 3) window.dictSet.add(cw);
+            });
         });
+        window.dictArray = Array.from(window.dictSet);
+
         const grid = document.getElementById('mapGrid'), svg = document.getElementById('pathLayer'), char = document.getElementById('mainChar');
         const cashiers = document.getElementById('cashierZone'), coffee = document.getElementById('coffeeCorner');
         const backWall = document.getElementById('p-0AW');
@@ -1911,6 +1939,25 @@
         modal.addEventListener('touchmove', handlePan, {passive: true});
     }
 
+    // Levenshtein distance for fuzzy matching (Typo Tolerance)
+    function levenshteinDistance(a, b) {
+        if (!a || !b) return (a || b).length;
+        const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
+        for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
+        for (let j = 0; j <= b.length; j += 1) matrix[j][0] = j;
+        for (let j = 1; j <= b.length; j += 1) {
+            for (let i = 1; i <= a.length; i += 1) {
+                const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
+                matrix[j][i] = Math.min(
+                    matrix[j][i - 1] + 1, // deletion
+                    matrix[j - 1][i] + 1, // insertion
+                    matrix[j - 1][i - 1] + indicator // substitution
+                );
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
     function normalizeStr(str) {
         return str.toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -1968,14 +2015,15 @@
     function clearSearch() {
         closeSelection(); document.getElementById('searchBox').value = '';
         currentCategory = 'all'; renderCategoryChips();
+        document.getElementById('spellCheckArea').style.display = 'none';
         document.getElementById('searchBox').focus(); handleSearch(); 
     }
 
     let searchTimeout = null;
     function handleSearch() {
         const input = document.getElementById('searchBox');
-        const val = input.value.trim(); 
-        const lowerVal = val.toLowerCase();
+        const rawVal = input.value; 
+        const val = rawVal.trim(); 
         const app = document.getElementById('mainApp');
         const ghost = document.getElementById('searchGhost');
         const clearBtn = document.getElementById('clearBtn');
@@ -1989,12 +2037,15 @@
         }
         
         app.classList.add('searching');
-        const normVal = normalizeStr(val);
 
-        if (val.length > 1) {
-            const suggestionItem = data.find(i => i._nameNorm.startsWith(normVal) && (currentCategory === 'all' || i["Hoofdgroep"] === currentCategory));
-            ghost.textContent = suggestionItem ? val + suggestionItem["Artikel omsch."].slice(val.length) : "";
-        } else { ghost.textContent = ""; }
+        // Ghost text auto-completion logic (uses raw un-trimmed value to preserve exact spacing alignment)
+        if (rawVal.length > 1) {
+            const normRaw = normalizeStr(rawVal);
+            const suggestionItem = data.find(i => i._nameNorm.startsWith(normRaw) && (currentCategory === 'all' || i["Hoofdgroep"] === currentCategory));
+            ghost.textContent = suggestionItem ? rawVal + suggestionItem["Artikel omsch."].substring(rawVal.length) : "";
+        } else { 
+            ghost.textContent = ""; 
+        }
 
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => { executeHeavySearch(val, normalizeStr(val), counter, currentCategory); }, 100);
@@ -2006,29 +2057,104 @@
         const tokens = normVal.split(/\s+/).filter(w => w.length > 0);
         const rawCodeSearch = originalVal.replace(/[-\s]/g, '').toLowerCase();
         
+        const spellArea = document.getElementById('spellCheckArea');
+        const spellSuggestion = document.getElementById('spellCheckSuggestion');
+
         if (tokens.length === 0 && catFilter === 'all') {
              list.innerHTML = "";
+             spellArea.style.display = 'none';
              return;
         }
 
+        // Spell checking logic
+        let correctedTokens = tokens.map(token => {
+            let cleanToken = token.replace(/[^a-z]/g, '');
+            if (cleanToken.length <= 3) return token;
+            if (window.dictSet.has(cleanToken)) return token;
+            
+            let bestMatch = cleanToken;
+            let minDist = 2; // Maximum allowable typos
+            
+            for (let word of window.dictArray) {
+                if (Math.abs(word.length - cleanToken.length) > 2) continue;
+                if (word[0] !== cleanToken[0] && word[1] !== cleanToken[1]) continue; // Quick heuristic to vastly speed up loop
+                
+                let dist = levenshteinDistance(cleanToken, word);
+                if (dist < minDist) { 
+                    minDist = dist;
+                    bestMatch = word;
+                }
+            }
+            return token.replace(cleanToken, bestMatch);
+        });
+
+        let correctedString = correctedTokens.join(" ");
+        if (correctedString !== normVal && tokens.length > 0) {
+            spellArea.style.display = 'flex';
+            spellSuggestion.textContent = correctedString;
+            spellArea.onclick = () => {
+                document.getElementById('searchBox').value = correctedString;
+                handleSearch();
+            };
+        } else {
+            spellArea.style.display = 'none';
+        }
+
+        // Pre-compile Regex for immense speed optimization inside the loop
+        const compiledTokens = tokens.map(token => ({
+            text: token,
+            len: token.length,
+            exact: new RegExp(`\\b${token}\\b`, 'i'),
+            prefix: new RegExp(`\\b${token}`, 'i')
+        }));
+
         const results = data.reduce((acc, item) => {
             if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) return acc;
+            
             let score = 0;
-            const target = item._searchStr, name = item._nameNorm;
-            if (item._cleanArt === rawCodeSearch) score += 5000;
-            else if (item._cleanArt.includes(rawCodeSearch) && rawCodeSearch.length > 3) score += 1000;
-            if (name.startsWith(normVal)) score += 2000;
+            const target = item._searchStr, name = item._nameNorm, nameWords = item._nameWords;
+            
+            // 1. Core ID/Name Exact Targeting
+            if (item._cleanArt === rawCodeSearch) score += 10000;
+            else if (item._cleanArt.includes(rawCodeSearch) && rawCodeSearch.length > 2) score += 2000;
+            
+            if (name.startsWith(normVal)) score += 3000;
+            else if (name.includes(normVal)) score += 1000;
+
             let tokensFound = 0;
-            tokens.forEach(token => {
-                if (target.includes(token)) {
+            
+            // 2. Tokenized Smart Matching
+            compiledTokens.forEach(tInfo => {
+                let tokenScore = 0;
+                
+                // Exact word match
+                if (tInfo.exact.test(target)) tokenScore = 500;
+                // Prefix word match (e.g. typing "schr" for "schroef")
+                else if (tInfo.prefix.test(target)) tokenScore = 200;
+                // Substring match
+                else if (target.includes(tInfo.text)) tokenScore = 50;
+                // Fuzzy match for longer words (Typo Tolerance)
+                else if (tInfo.len >= 4 && nameWords) {
+                    let minDistance = 999;
+                    for (let word of nameWords) {
+                        if (Math.abs(word.length - tInfo.len) > 2) continue; // skip calculations for vast length diffs
+                        const dist = levenshteinDistance(word, tInfo.text);
+                        if (dist < minDistance) minDistance = dist;
+                    }
+                    if (minDistance === 1) tokenScore = 150; // 1 typo allowed
+                    else if (tInfo.len >= 7 && minDistance === 2) tokenScore = 100; // 2 typos allowed for long words
+                }
+
+                if (tokenScore > 0) {
                     tokensFound++;
-                    if (target.includes(' ' + token) || target.startsWith(token)) score += 100;
-                    score += 50; 
+                    score += tokenScore;
                 }
             });
-            if (tokens.length > 0 && tokensFound === 0 && score < 1000) return acc;
-            const matchRatio = tokensFound / tokens.length;
-            if (tokens.length > 0 && matchRatio < 0.7 && score < 1000) return acc;
+
+            // Filtering: Require at least 75% of words to match/fuzzy-match unless there is a strong code match
+            const matchRatio = tokens.length > 0 ? tokensFound / tokens.length : 1;
+            if (tokens.length > 0 && matchRatio < 0.75 && score < 2000) return acc;
+            
             if (score > 0 || (tokens.length === 0 && catFilter !== 'all')) {
                 acc.push({ item, score });
             }
@@ -2120,7 +2246,11 @@
         if (pad === 'LIJ') visualPad = 3;
         if (pad === 'PBM') visualPad = 13;
 
-        if (visualPad === 'KAS') { cPos = document.getElementById('p-11')?.offsetLeft || sPos; targetBottom = `${kasTarget}%`; }
+        if (visualPad === 'KAS') { 
+            const kasZone = document.getElementById('cashierZone');
+            cPos = kasZone ? kasZone.offsetLeft + kasZone.offsetWidth - 30 : sPos; 
+            targetBottom = `${kasTarget}%`; 
+        }
         else if (visualPad === 'VMB') { cPos = (document.getElementById('p-8')?.offsetLeft || sPos) + 15; targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; }
         else if (visualPad === 'KOFFIE') { cPos = (document.getElementById('coffeeCorner')?.offsetLeft || sPos) + 10; targetBottom = `${kasTarget}%`; }
         else if (visualPad === '0AW') { cPos = sPos; targetBottom = active ? `92%` : `${walkLineBottom}%`; }
@@ -2173,9 +2303,14 @@
     }
 
     function handleKeys(e) {
-        if (e.key === "Escape") { if (document.getElementById('imageModal').classList.contains('show')) closeImageModal(); else closeSelection(); }
-        else if ((e.key === "Tab" || e.key === "Enter") && document.getElementById('searchGhost').textContent && e.target.id === 'searchBox') {
-            e.preventDefault(); document.getElementById('searchBox').value = document.getElementById('searchGhost').textContent; handleSearch();
+        const ghost = document.getElementById('searchGhost');
+        if (e.key === "Escape") { 
+            if (document.getElementById('imageModal').classList.contains('show')) closeImageModal(); else closeSelection(); 
+        }
+        else if ((e.key === "Tab" || e.key === "ArrowRight") && ghost.textContent && e.target.id === 'searchBox') {
+            e.preventDefault(); 
+            document.getElementById('searchBox').value = ghost.textContent; 
+            handleSearch();
         }
     }
 </script>
