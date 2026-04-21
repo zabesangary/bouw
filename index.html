@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Bouwmaat Amstel XL - Navigator</title>
     
-    <meta name="theme-color" content="#0a55d7">
+    <meta name="theme-color" content="#005cb9">
     <link id="manifestLink" rel="manifest" href="">
     
     <style>
+        * { outline: none; -webkit-tap-highlight-color: transparent; }
+        
         :root {
-            --primary: #0a55d7; 
-            --primary-dark: #0047ab;
+            --primary: #005cb9; 
+            --primary-dark: #00458b;
             --bg: #f8fafc; 
-            --accent: #ffcc00;
+            --accent: #ff8a00; /* Unified Orange Accent */
             --aisle: #e2e8f0; 
-            --aisle-active: #00e5ff; 
+            --aisle-active: #38bdf8; /* Pure Glowing Blue (No Green) */
             --text-main: #0f172a; 
             --text-muted: #475569;
             --border-neutral: #cbd5e1;
@@ -27,7 +29,7 @@
 
         /* --- HYPER-MODERN 3-COLOR INTRO PAGE --- */
         #introPage {
-            position: fixed; inset: 0; width: 100%; height: 100dvh;
+            position: fixed; inset: 0; width: 100%; height: 100vh; height: 100dvh;
             z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; box-sizing: border-box; color: var(--primary); text-align: center;
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -37,10 +39,15 @@
 
         #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.08); filter: blur(10px); }
 
+        .glow-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; z-index: 0; pointer-events: none; }
+        .orb-1 { width: 300px; height: 300px; top: -100px; left: -100px; background: rgba(0, 92, 185, 0.3); animation: drift 10s ease-in-out infinite alternate; }
+        .orb-2 { width: 400px; height: 400px; bottom: -150px; right: -100px; background: rgba(255, 138, 0, 0.2); animation: drift 15s ease-in-out infinite alternate-reverse; }
+        @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+
         /* Deep 3D Grid Background */
         .intro-bg {
             position: absolute; inset: 0;
-            background: #ffffff;
+            background: transparent;
             z-index: 0; overflow: hidden;
         }
 
@@ -48,8 +55,8 @@
             content: ''; position: absolute;
             width: 200%; height: 200%; top: -50%; left: -50%;
             background-image: 
-                linear-gradient(rgba(10, 85, 215, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(10, 85, 215, 0.1) 1px, transparent 1px);
+                linear-gradient(rgba(0, 92, 185, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 92, 185, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
             transform: perspective(800px) rotateX(60deg);
             animation: mapScroll 15s linear infinite;
@@ -76,7 +83,7 @@
             border-radius: 8px;
             border-bottom: 4px solid var(--accent);
             font-size: 0.85rem; font-weight: 900; white-space: nowrap;
-            box-shadow: 0 20px 40px rgba(10, 85, 215, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 92, 185, 0.2);
             animation: tagFloat 22s linear infinite; animation-delay: var(--td);
             opacity: 0; text-transform: uppercase; letter-spacing: 1px;
             display: flex; align-items: center; gap: 8px;
@@ -93,118 +100,58 @@
         }
 
         /* Animated Navigation Lines & GPS Shoppers */
-        .intro-routes {
-            position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.8;
-        }
-
-        .intro-routes path {
-            fill: none; stroke: var(--primary); opacity: 0.3; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
-        }
-        
+        .intro-routes { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.8; }
+        .intro-routes path { fill: none; stroke: var(--primary); opacity: 0.3; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
         .intro-routes .accent-path { stroke: var(--accent); opacity: 0.5; }
 
-        /* Premium Card */
+        /* Premium Card - Glassy Design */
         .intro-content {
             display: flex; flex-direction: column; align-items: center; max-width: 360px; width: 100%;
-            background: #ffffff;
-            border: 2px solid var(--primary); border-radius: 28px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            border-radius: 28px;
             padding: 32px 24px;
-            box-shadow: 0 20px 50px rgba(10, 85, 215, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 92, 185, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8);
             animation: scaleUpIntro 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; z-index: 10;
         }
 
-        @keyframes scaleUpIntro {
-            from { opacity: 0; transform: translateY(40px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes scaleUpIntro { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
         /* Toggles */
-        .intro-lang-toggles {
-            position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: inline-flex;
-            background: #ffffff; border-radius: 50px;
-            padding: 5px; border: 2px solid var(--primary); box-shadow: 0 8px 20px rgba(10,85,215,0.1);
-            gap: 4px; z-index: 20;
-        }
-        
-        .intro-lang-btn {
-            background: transparent; border: none; color: var(--primary); font-size: 0.85rem; font-weight: 800;
-            padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;
-        }
-
-        .intro-lang-btn:hover { background: rgba(10, 85, 215, 0.1); }
+        .intro-lang-toggles { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: inline-flex; background: #ffffff; border-radius: 50px; padding: 5px; border: 2px solid var(--primary); box-shadow: 0 8px 20px rgba(0,92,185,0.1); gap: 4px; z-index: 20; }
+        .intro-lang-btn { background: transparent; border: none; color: var(--primary); font-size: 0.85rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
+        .intro-lang-btn:hover { background: rgba(0, 92, 185, 0.1); }
         .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
 
         /* Video */
-        .video-container {
-            width: 100%; max-width: 300px; aspect-ratio: 16/9; margin-bottom: 20px;
-            background: var(--primary); border-radius: 14px; overflow: hidden;
-            box-shadow: 0 15px 30px rgba(10, 85, 215, 0.2);
-            border: 2px solid var(--primary);
-            position: relative; transform: translateZ(0);
-        }
+        .video-container { width: 100%; max-width: 300px; aspect-ratio: 16/9; margin-bottom: 20px; background: var(--primary); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 30px rgba(0, 92, 185, 0.2); border: 2px solid var(--primary); position: relative; transform: translateZ(0); }
         .video-container video { width: 100%; height: 100%; object-fit: cover; }
-        .video-placeholder-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
-
-        /* Typography */
-        .intro-h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1; letter-spacing: -1px; color: var(--primary); }
-        .intro-h1 span { color: var(--primary); background: var(--accent); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; }
         
-        .intro-slogan {
-            font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase;
-            letter-spacing: 1.5px; margin-bottom: 16px; background: var(--accent); padding: 4px 10px; border-radius: 6px;
-        }
-
-        .intro-nav-title {
-            font-size: 1.1rem; font-weight: 900; color: var(--primary); text-transform: uppercase;
-            letter-spacing: 0.5px; margin-bottom: 6px;
-        }
-
+        /* Typography */
+        .intro-h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1; letter-spacing: -1px; color: var(--primary); text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+        .intro-h1 span { color: var(--primary); background: var(--accent); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; text-shadow: none; }
+        .intro-slogan { font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; background: var(--accent); padding: 4px 10px; border-radius: 6px; }
+        .intro-nav-title { font-size: 1.1rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .intro-p { font-size: 0.9rem; font-weight: 600; margin: 0 0 24px 0; color: var(--primary); line-height: 1.4; text-align: center; opacity: 0.8; }
 
         /* CTA Button */
-        .intro-btn {
-            background: var(--primary);
-            color: #ffffff; border: none; padding: 14px 24px;
-            border-radius: 14px; font-weight: 900; font-size: 1.05rem; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 25px rgba(10, 85, 215, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
+        .intro-btn { background: var(--primary); color: #ffffff; border: none; padding: 14px 24px; border-radius: 14px; font-weight: 900; font-size: 1.05rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(0, 92, 185, 0.3); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .intro-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
         .intro-btn:hover svg { transform: translateX(5px); }
-
-        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(10, 85, 215, 0.4); background: var(--accent); color: var(--primary); }
-        .intro-btn:active { transform: translateY(1px); box-shadow: 0 5px 10px rgba(10, 85, 215, 0.3); }
+        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 92, 185, 0.4); background: var(--accent); color: var(--primary); }
+        .intro-btn:active { transform: translateY(1px); box-shadow: 0 5px 10px rgba(0, 92, 185, 0.3); }
 
         /* Commercial Ticker */
-        .commercial-ticker {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 32px;
-            background: var(--primary); color: var(--accent);
-            display: flex; align-items: center; overflow: hidden;
-            font-weight: 900; font-size: 0.8rem; letter-spacing: 2px;
-            z-index: 20;
-        }
-        
-        .ticker-track {
-            display: flex; gap: 50px; white-space: nowrap;
-            animation: tickerScroll 30s linear infinite;
-            text-transform: uppercase;
-        }
-        
+        .commercial-ticker { position: absolute; bottom: 0; left: 0; width: 100%; height: 32px; background: var(--primary); color: var(--accent); display: flex; align-items: center; overflow: hidden; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; z-index: 20; }
+        .ticker-track { display: flex; gap: 50px; white-space: nowrap; animation: tickerScroll 30s linear infinite; text-transform: uppercase; }
         .ticker-track span i { color: #ffffff; margin-right: 8px; font-style: normal; }
-
         @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* --- MAIN APP INTERFACE --- */
-        #mainAppWrapper {
-            position: relative; width: 100%; height: 100dvh; display: flex; flex-direction: column;
-            align-items: center; overflow: hidden; box-sizing: border-box;
-            padding: max(8px, env(safe-area-inset-top)) 8px 0;
-        }
-
+        #mainAppWrapper { position: relative; width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; padding: max(8px, env(safe-area-inset-top)) 8px 0; }
         .app-container { width: 100%; max-width: 950px; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; position: relative; z-index: 1; gap: 8px; }
         .logo { display: flex; align-items: center; gap: 6px; }
@@ -217,75 +164,35 @@
         .flag-btn.active { opacity: 1; filter: grayscale(0%); background: #f1f5f9; transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn-reset { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 6px 10px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
 
-        /* INCREASED Z-INDEX AND MARGIN TO PREVENT SEARCH BAR AND CHIPS INTERFERENCE */
         .search-area-wrapper { display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0; width: 100%; z-index: 50; position: relative; }
-        
-        .search-wrap { position: relative; height: 48px; background: #fff; flex: 1; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 4px 6px rgba(10,85,215,0.1); display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; }
-        .search-wrap:focus-within { box-shadow: 0 0 0 4px rgba(10, 85, 215, 0.3); }
-        .input-layer { flex: 1; height: 100%; padding: 0 10px 0 12px; font-family: inherit; font-size: 1.1rem; font-weight: 900; border: none; background: transparent; outline: none; z-index: 2; color: var(--primary-dark); width: 100%; }
+        .search-wrap { position: relative; height: 48px; background: #fff; flex: 1; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 4px 6px rgba(0, 92, 185, 0.1); display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; }
+        .search-wrap:focus-within { box-shadow: 0 0 0 4px rgba(0, 92, 185, 0.3); }
+        .input-layer { flex: 1; height: 100%; padding: 0 10px 0 12px; font-family: inherit; font-size: 1.1rem; font-weight: 900; border: none; background: transparent; outline: none; z-index: 2; color: var(--primary-dark); width: 100%; min-width: 0; }
         #searchGhost { position: absolute; left: 0; top: 0; height: 100%; display: flex; align-items: center; padding-left: 12px; font-family: inherit; z-index: 1; color: #94a3b8; pointer-events: none; font-size: 1.1rem; font-weight: 900; white-space: pre; overflow: hidden; }
-        
         .search-actions { display: flex; align-items: center; padding-right: 5px; z-index: 3; gap: 5px; }
         .clear-btn { background: #e2e8f0; border: none; border-radius: 6px; width: 32px; height: 32px; font-weight: 900; font-size: 1rem; color: var(--text-main); cursor: pointer; display: none; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .search-btn { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 0 10px; height: 36px; font-weight: 900; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
 
-        .results-header { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; flex-shrink: 0; z-index: 10; position: relative; }
-        .searching .results-header { border-bottom: 2px solid var(--border-neutral); padding-bottom: 6px; }
-
-        .meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; min-height: 20px; }
-
-        .filter-wrapper { 
-            width: 100%; 
-            display: flex; 
-            gap: 8px; 
-            overflow-x: auto; 
-            padding: 4px 2px 10px 2px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            mask-image: linear-gradient(to right, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
-        }
+        .filter-wrapper { width: 100%; display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 4px 2px; margin-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; mask-image: linear-gradient(to right, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%); flex-shrink: 0; z-index: 10; }
         .filter-wrapper::-webkit-scrollbar { display: none; }
+        .category-chip { padding: 7px 14px; background: white; border: 2px solid var(--border-neutral); border-radius: 50px; font-size: 0.8rem; font-weight: 800; color: var(--text-muted); white-space: nowrap; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .category-chip.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2); transform: translateY(-1px); }
 
-        .category-chip {
-            padding: 7px 14px;
-            background: white;
-            border: 2px solid var(--border-neutral);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-        }
-        .category-chip.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 10px rgba(10, 85, 215, 0.2);
-            transform: translateY(-1px);
-        }
-
-        .result-meta { font-size: 1rem; font-weight: 900; color: var(--primary); display: none; align-items: center; margin: 0; padding: 0; border: none; }
+        .result-meta-badge { display: none; align-items: center; background: var(--aisle-active); color: #000; font-size: 0.75rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; margin-right: 4px; white-space: nowrap; z-index: 3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .searching .result-meta-badge { display: flex; }
+        
         .results-list { flex: 1 1 auto; display: none; flex-direction: column; gap: 6px; overflow-y: auto; overflow-x: hidden; padding-bottom: 5px; position: relative; z-index: 2; width: 100%; min-height: 0; }
-        .searching .results-list, .searching .result-meta { display: flex; }
-        mark { background: var(--accent); color: #000; border-radius: 3px; padding: 0 2px; font-weight: 900; }
-
+        .searching .results-list { display: flex; }
+        mark { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 2px; font-weight: 900; }
+        
         .promo-banner { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; margin-bottom: 5px; min-height: 0; animation: fadeInPromo 0.4s ease; }
         .promo-banner img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .searching .promo-banner { display: none; }
         @keyframes fadeInPromo { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .result-item { width: 100%; box-sizing: border-box; min-height: 85px; border-radius: 10px; cursor: pointer; display: flex; background: white; border: 3px solid var(--border-neutral); overflow: hidden; outline: none; transition: all 0.2s ease; flex-shrink: 0; }
-        .result-item.selected { min-height: 110px; border-color: var(--primary); background: #f0f6ff; box-shadow: 0 4px 12px rgba(10,85,215,0.25); z-index: 10; position: relative; }
+        .result-item.selected { min-height: 110px; border-color: var(--primary); background: #f0f6ff; box-shadow: 0 4px 12px rgba(0, 92, 185, 0.25); z-index: 10; position: relative; }
         .icon-wrap { width: 55px; height: inherit; background: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border-right: 2px solid var(--border-neutral); flex-shrink: 0; overflow: hidden; position: relative; cursor: zoom-in; }
-        
         .icon-wrap img { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; padding: 4px; box-sizing: border-box; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .icon-wrap:hover img { transform: scale(1.3); }
         .icon-wrap::after { content: '🔍'; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; opacity: 0; transition: all 0.3s ease; pointer-events: none; transform: scale(0.5); }
@@ -296,140 +203,437 @@
         .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
         .tag { background: #e2e8f0; padding: 2px 5px; border-radius: 4px; font-weight: 800; font-size: 0.7rem; color: var(--primary-dark); white-space: nowrap; }
         .tag.sub { background: #dbeafe; color: #1e40af; }
-        .action-btns { display: none; gap: 6px; margin-top: 6px; align-items: flex-start; flex-wrap: wrap; }
-        .result-item.selected .action-btns { display: flex; }
-        .action-btn { background: var(--accent); color: #000; border: none; padding: 5px 12px; border-radius: 5px; font-weight: 900; font-size: 0.8rem; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: auto; transition: all 0.2s ease; }
         
         .badge { width: 80px; background: var(--primary); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4px; flex-shrink: 0; }
         .badge b { font-size: 1.4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2px; text-align: center; width: 100%; word-break: break-word; padding: 0 2px; box-sizing: border-box; }
         .badge span { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
-        .sectie-label { font-size: 0.65rem; font-weight: 800; color: white; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 3px; padding-top: 3px; width: 90%; text-align: center; }
-
-        /* --- IMAGE ZOOM MODAL --- */
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
-        .image-modal.show { opacity: 1; pointer-events: auto; }
-        .image-modal img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: white; padding: 10px; cursor: zoom-in; }
-        .image-modal.show img { transform: scale(1); }
-        .image-modal.show img.is-zoomed { transform: scale(2.5); cursor: zoom-out; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .image-modal-close { position: absolute; top: 20px; right: 20px; background: white; color: var(--text-main); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10001; }
-        .image-modal-close:hover { background: var(--accent); color: black; transform: scale(1.1); }
-        .image-modal-title { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; font-size: 1.1rem; text-align: center; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; max-width: 80%; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10001; pointer-events: none; }
+        .sectie-label-badge { font-size: 0.65rem; font-weight: 800; color: white; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 3px; padding-top: 3px; width: 90%; text-align: center; }
 
         /* --- AISLE POPUP TOAST --- */
-        .aisle-popup {
-            position: fixed; background: var(--primary-dark); color: white; padding: 6px 14px; border-radius: 20px; 
-            font-weight: 900; font-size: 0.85rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 2px solid var(--accent); opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5000; transform: translate(-50%, -50%) scale(0.8); white-space: nowrap;
-        }
+        .aisle-popup { position: fixed; background: var(--primary-dark); color: white; padding: 6px 14px; border-radius: 20px; font-weight: 900; font-size: 0.85rem; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid var(--accent); opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 5000; transform: translate(-50%, -50%) scale(0.8); white-space: nowrap; }
         .aisle-popup.show { opacity: 1; transform: translate(-50%, -100%) scale(1); }
 
-        /* --- MAP SECTION --- */
-        .map-section { width: 100%; max-width: 950px; height: 70px; flex-shrink: 0; perspective: 1000px; margin-top: 0px; margin-bottom: 118px; position: relative; z-index: 1; }
+        /* --- MAP SECTION (Expanded & Normal) --- */
+        .map-wrapper { 
+            width: 100%; display: flex; justify-content: center; align-items: center; 
+            flex-shrink: 0; position: relative; z-index: 10; min-height: 180px; margin-top: auto; 
+        }
         
+        .map-expanded-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
+            background: rgba(248, 250, 252, 0.65); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            overflow: hidden;
+        }
+        
+        /* Playful Glowing Orbs for Map Overlay */
+        .map-expanded-overlay::before, .map-expanded-overlay::after {
+            content: ''; position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; animation: overlayBob 12s infinite alternate ease-in-out; pointer-events: none;
+        }
+        .map-expanded-overlay::before {
+            width: 400px; height: 400px; background: rgba(56, 189, 248, 0.4); top: -10%; left: -10%;
+        }
+        .map-expanded-overlay::after {
+            width: 500px; height: 500px; background: rgba(255, 138, 0, 0.25); bottom: -10%; right: -10%; animation-delay: -6s; animation-direction: alternate-reverse;
+        }
+        
+        @keyframes overlayBob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 80px) scale(1.2); }
+        }
+
+        .map-section { width: 100%; max-width: 950px; height: 130px; perspective: 1800px; margin: 15px auto 125px auto; position: relative; z-index: 1; transition: all 0.4s ease; user-select: none; -webkit-user-select: none; }
+        
+        .map-expanded-overlay .map-section { height: 65vh; max-width: 1100px; width: 95vw; margin: 0 auto 10vh auto; perspective: 2000px; }
+
         .floor { 
-            height: 100%; background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-            background-image: linear-gradient(to right, rgba(10, 85, 215, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(10, 85, 215, 0.05) 1px, transparent 1px), linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-            background-size: 15px 15px, 15px 15px, 100% 100%; transform: rotateX(35deg); transform-origin: bottom center; 
-            display: grid; grid-template-columns: repeat(17, 1fr); gap: 8px; padding: 10px 15px 85px; 
-            border: 3px solid var(--border-neutral); border-bottom: 8px solid var(--primary); border-radius: 12px; 
-            position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+            height: 100%; 
+            background-color: #f1f5f9;
+            background-image: 
+                linear-gradient(rgba(0, 92, 185, 0.08) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(0, 92, 185, 0.08) 1px, transparent 1px);
+            background-size: 20px 20px; 
+            transform: rotateX(55deg) scale(0.98); transform-origin: bottom center; 
+            display: grid; grid-template-columns: 0.6fr repeat(16, 1fr) 0.6fr; gap: 18px; padding: 10px 0 85px; 
+            border-radius: 8px; border: 1.5px solid #64748b;
+            position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7), -15px 25px 20px rgba(0,0,0,0.2);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), gap 0.4s ease;
         }
         
-        .aisle { 
-            background: #ffffff; border-radius: 2px; position: relative; cursor: pointer; 
-            transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: translateZ(25px); 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -5px 15px 15px rgba(0,0,0,0.04);
-        }
-        .aisle:hover { transform: translateZ(30px); }
-        
-        .aisle::before {
-            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 25px; background: linear-gradient(to bottom, #f1f5f9, #cbd5e1);
-            transform-origin: top; transform: rotateX(-90deg); border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; box-sizing: border-box; transition: all 0.3s ease;
-        }
-        .aisle::after {
-            content: ''; position: absolute; top: 0; left: 100%; width: 25px; height: 100%; background: linear-gradient(to right, #f8fafc, #e2e8f0);
-            transform-origin: left; transform: rotateY(90deg); border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; box-sizing: border-box; transition: all 0.3s ease;
+        .map-expanded-overlay .floor { transform: rotateX(42deg) scale(0.95); gap: 24px; transform-origin: center 80%; }
+
+        /* ANTI-ALIASING FIX FOR 3D FACES TO PREVENT WHITE LINES ON HOVER */
+        .floor, .floor::before, .floor::after,
+        .aisle-part, .aisle-part::before, .aisle-part::after, .left-face,
+        .back-wall, .back-wall::before,
+        .paint-table, .paint-table::before, .paint-table::after,
+        .cashier-desk, .cashier-desk::before,
+        #coffeeCorner, #coffeeCorner::before, #coffeeCorner::after,
+        .vending-machine, .vending-screen, .vending-slot {
+            outline: 1px solid transparent;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
-        .aisle.active { background: #e0f2fe; transform: translateZ(35px); box-shadow: -5px 15px 25px rgba(0, 229, 255, 0.2); }
-        .aisle.active::before { background: linear-gradient(to bottom, #bae6fd, #7dd3fc); height: 35px; border-color: #38bdf8; }
-        .aisle.active::after { background: linear-gradient(to right, #e0f2fe, #bae6fd); width: 35px; border-color: #38bdf8; }
-        
-        .aisle-num { 
-            position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
-            font-weight: 900; font-size: 0.65rem; z-index: 30; background: var(--primary); color: white; padding: 2px 5px; 
-            border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); pointer-events: none; transition: all 0.3s ease;
-        }
-        .aisle.active .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-35deg) translateZ(15px) translateY(-10px) scale(1.1); }
-        
-        .back-wall {
-            position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: #cbd5e1;
-            transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
-            border-radius: 8px 8px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .back-wall::before {
-            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
-            transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid var(--border-neutral); box-sizing: border-box; transition: all 0.3s ease;
-        }
-        .back-wall.active { background: #bae6fd; transform: translateZ(45px); box-shadow: 0 -5px 15px rgba(0, 229, 255, 0.2); }
-        .back-wall.active::before { background: linear-gradient(to bottom, #e0f2fe, #7dd3fc); border-color: #38bdf8; height: 45px; }
+        .floor::before { content: ''; position: absolute; top: 100%; left: -1px; width: calc(100% + 2px); height: 15px; background: linear-gradient(to bottom, #94a3b8, #64748b); transform-origin: top; transform: rotateX(-90deg); border-radius: 0 0 8px 8px; border-bottom: 2px solid #475569; box-sizing: border-box; }
+        .floor::after { content: ''; position: absolute; top: -1px; left: 100%; width: 15px; height: calc(100% + 2px); background: linear-gradient(to right, #64748b, #475569); transform-origin: left; transform: rotateY(90deg); border-radius: 0 8px 8px 0; border-right: 1px solid #334155; box-sizing: border-box; }
 
-        .entrance-label { 
-            position: absolute; transform-origin: bottom right; transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); 
-            font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; 
-            border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; white-space: nowrap;
+        .aisle { position: relative; cursor: pointer; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; display: flex; flex-direction: column; justify-content: space-between; gap: 36px; transition: gap 0.4s ease; }
+        .map-expanded-overlay .aisle { gap: 15px; }
+
+        .aisle-part {
+            width: 100%; 
+            background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); 
+            border-radius: 1px; position: relative;
+            transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: translateZ(40px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2), -6px 8px 10px rgba(0,0,0,0.2); border: 1px solid #002e5c;
         }
+        
+        .left-wall-aisle .aisle-part { border-radius: 0 1px 1px 0; border-left: none; }
+        .right-wall-aisle .aisle-part { border-radius: 1px 0 0 1px; border-right: none; }
+        .left-wall-aisle .left-face { display: none; }
+
+        .aisle-part.top { flex: 2; }
+        .aisle-part.bottom { flex: 1; }
+
+        /* PRESERVE INSET SHADOW TO PREVENT WHITE EDGE DISAPPEARANCE */
+        .aisle:hover .aisle-part { transform: translateZ(42px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2), -8px 12px 15px rgba(0,0,0,0.3); }
+        
+        .aisle-part::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; 
+            background: 
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(0,0,0,0.8) 30px, rgba(0,0,0,0.8) 32px),
+                repeating-linear-gradient(to bottom, #3b82f6 0px, #1d4ed8 2px, #0f172a 2px, #0f172a 13px);
+            transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid #020617; border-radius: 0 0 2px 2px; box-sizing: border-box; transition: all 0.3s ease;
+        }
+        .aisle-part::after {
+            content: ''; position: absolute; top: 0; left: 100%; width: 40px; height: 100%; 
+            background: 
+                linear-gradient(to right, transparent 15%, rgba(0,0,0,0.3) 15%, rgba(0,0,0,0.3) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.3) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.3) 90%, transparent 90%),
+                linear-gradient(to right, #475569 0%, #1e293b 100%);
+            transform-origin: left; transform: rotateY(90deg); border-right: 2px solid #000; border-radius: 0 1px 1px 0; box-sizing: border-box; transition: all 0.3s ease;
+        }
+
+        .left-face {
+            position: absolute; top: 0; right: 100%; width: 40px; height: 100%;
+            background: 
+                linear-gradient(to left, transparent 15%, rgba(0,0,0,0.3) 15%, rgba(0,0,0,0.3) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.3) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.3) 90%, transparent 90%),
+                linear-gradient(to left, #475569 0%, #1e293b 100%);
+            transform-origin: right; transform: rotateY(-90deg); border-left: 2px solid #000; border-radius: 1px 0 0 1px; box-sizing: border-box; transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .aisle-part.front-orange { background: linear-gradient(135deg, #ff8a00 0%, #e65c00 100%); border-color: #b34700; }
+        .aisle-part.front-orange::before { 
+            background: 
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(0,0,0,0.8) 30px, rgba(0,0,0,0.8) 32px),
+                repeating-linear-gradient(to bottom, #ea580c 0px, #c2410c 2px, #0f172a 2px, #0f172a 13px);
+        }
+        
+        /* Active Aisle Parts Split Highlights */
+        .aisle-part.active-part {
+            border-color: #ffffff !important;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.3) !important;
+            transform: translateZ(45px);
+        }
+        
+        /* Both Sides */
+        .aisle.active-side-both .aisle-part.active-part { background: #38bdf8 !important; }
+        .aisle.active-side-both .aisle-part.active-part::before {
+            background: repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.4) 30px, rgba(255,255,255,0.4) 32px),
+                        repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, #38bdf8 3px, transparent 3px, transparent 13px), #0369a1 !important;
+            border-bottom-color: #ffffff !important;
+        }
+
+        /* Left Side Highlight Only - Hard White Split */
+        .aisle.active-side-left .aisle-part.active-part { 
+            background: linear-gradient(to right, var(--aisle-active) calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), var(--primary-dark) calc(50% + 1px)) !important; 
+            border-right-color: #001833 !important; 
+        }
+        .aisle.active-side-left .aisle-part.front-orange.active-part { 
+            background: linear-gradient(to right, var(--aisle-active) calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), #b34700 calc(50% + 1px)) !important; 
+            border-right-color: #662900 !important; 
+        }
+        .aisle.active-side-left .aisle-part.active-part::before {
+            background: 
+                linear-gradient(to right, #0369a1 calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), rgba(0,0,0,0.4) calc(50% + 1px)),
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
+                repeating-linear-gradient(to bottom, #3b82f6 0px, #1d4ed8 2px, #0f172a 2px, #0f172a 13px) !important;
+            border-bottom-color: #020617 !important;
+        }
+        .aisle.active-side-left .aisle-part.front-orange.active-part::before {
+            background: 
+                linear-gradient(to right, #0369a1 calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), rgba(0,0,0,0.4) calc(50% + 1px)),
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
+                repeating-linear-gradient(to bottom, #ea580c 0px, #c2410c 2px, #0f172a 2px, #0f172a 13px) !important;
+            border-bottom-color: #020617 !important;
+        }
+
+        /* Right Side Highlight Only - Hard White Split */
+        .aisle.active-side-right .aisle-part.active-part { 
+            background: linear-gradient(to right, var(--primary-dark) calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), var(--aisle-active) calc(50% + 1px)) !important; 
+            border-left-color: #001833 !important; 
+        }
+        .aisle.active-side-right .aisle-part.front-orange.active-part { 
+            background: linear-gradient(to right, #b34700 calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), var(--aisle-active) calc(50% + 1px)) !important; 
+            border-left-color: #662900 !important; 
+        }
+        .aisle.active-side-right .aisle-part.active-part::before {
+            background: 
+                linear-gradient(to right, rgba(0,0,0,0.4) calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), #0369a1 calc(50% + 1px)),
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
+                repeating-linear-gradient(to bottom, #3b82f6 0px, #1d4ed8 2px, #0f172a 2px, #0f172a 13px) !important;
+            border-bottom-color: #020617 !important;
+        }
+        .aisle.active-side-right .aisle-part.front-orange.active-part::before {
+            background: 
+                linear-gradient(to right, rgba(0,0,0,0.4) calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), #0369a1 calc(50% + 1px)),
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
+                repeating-linear-gradient(to bottom, #ea580c 0px, #c2410c 2px, #0f172a 2px, #0f172a 13px) !important;
+            border-bottom-color: #020617 !important;
+        }
+
+        .aisle.active-side-left .aisle-part.active-part .left-face,
+        .aisle.active-side-both .aisle-part.active-part .left-face {
+            background: 
+                linear-gradient(to left, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
+                linear-gradient(to left, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%);
+        }
+
+        /* 3-Level Horizontal Visual Shelves for All Active Right Sides */
+        .aisle.active-side-right .aisle-part.active-part::after,
+        .aisle.active-side-both .aisle-part.active-part::after {
+            background: 
+                linear-gradient(to right, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
+                linear-gradient(to right, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%);
+        }
+
+        /* Section Labels (hidden by default, visible when map is expanded) */
+        .sec-container { 
+            display: none; position: absolute; inset: 0; 
+            flex-direction: column-reverse; justify-content: space-evenly; align-items: center;
+            pointer-events: none; padding: 5px 0; box-sizing: border-box; transform: translateZ(1px); 
+        }
+        .map-expanded-overlay .active .sec-container,
+        .map-expanded-overlay .active-top .sec-container,
+        .map-expanded-overlay .active-bottom .sec-container { display: flex; }
+        .sec-container span {
+            color: #ffffff; font-weight: 900; font-size: 0.45rem; 
+            text-align: center; line-height: 1; 
+            background: rgba(0,0,0,0.5); padding: 2px 4px; border-radius: 2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .map-expanded-overlay .sec-container span { font-size: 0.65rem; padding: 3px 5px; transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease; }
+        .sec-container span.highlighted-sec { background: var(--aisle-active) !important; color: #ffffff !important; transform: translateZ(15px) !important; border-color: #ffffff !important; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 0 10px var(--aisle-active) !important; position: relative; white-space: nowrap; }
+        body.dark-mode .sec-container span { color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.6); }
+
+        /* Aisle Category Labels (Painted on the Roof / Pushed into Path when active) */
+        .aisle-category-label {
+            position: absolute;
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) translateZ(2px) rotate(-90deg);
+            font-weight: 900; font-size: 0.5rem; z-index: 60; 
+            color: #ffffff;
+            pointer-events: none; transition: all 0.4s ease;
+            white-space: normal; 
+            width: 130px; 
+            text-align: center; line-height: 1.2; 
+            opacity: 0; /* Hidden in normal map by default */
+            text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: none; 
+            -webkit-font-smoothing: antialiased;
+            word-wrap: break-word;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        
+        /* NORMAL MAP: Active part shows label prominently */
+        .map-wrapper:not(.map-expanded-overlay) .aisle-part.active-part .aisle-category-label {
+            opacity: 1 !important; 
+            background: var(--primary-dark); 
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            width: auto;
+            min-width: 100px;
+            /* Lifts the label straight up vertically */
+            transform: translate(-50%, -50%) translateZ(30px) rotate(-90deg) scale(1.2) !important;
+            z-index: 1000;
+        }
+        
+        /* Push the label out into the walking path so it doesn't overlap the shelf */
+        .map-wrapper:not(.map-expanded-overlay) .aisle.active-side-left .aisle-part.active-part .aisle-category-label {
+            left: -12px !important;
+        }
+        .map-wrapper:not(.map-expanded-overlay) .aisle.active-side-right .aisle-part.active-part .aisle-category-label {
+            left: calc(100% + 12px) !important;
+        }
+        .map-wrapper:not(.map-expanded-overlay) .aisle.active-side-both .aisle-part.active-part .aisle-category-label {
+            left: 50% !important;
+        }
+
+        /* PREVENT DOUBLE LABELS: Hide the top label when the entire aisle is selected on the compact map */
+        .map-wrapper:not(.map-expanded-overlay) .aisle.active .aisle-part.top .aisle-category-label {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            display: none !important;
+        }
+        
+        /* EXPANDED MAP: Base opacity */
+        .map-expanded-overlay .aisle:not(.active-num) .aisle-category-label,
+        .map-expanded-overlay .aisle-part:not(.active-part) .aisle-category-label {
+            opacity: 0.85; /* Visible in expanded view when not selected */
+        }
+        
+        /* EXPANDED MAP: Hide text label when active to show all section numbers clearly */
+        .map-expanded-overlay .aisle.active-num .aisle-category-label {
+            opacity: 0 !important; 
+            pointer-events: none;
+        }
+
+        body.dark-mode .aisle-category-label { 
+            color: rgba(255, 255, 255, 0.8); 
+            text-shadow: none; 
+        }
+        
+        body.dark-mode .map-wrapper:not(.map-expanded-overlay) .aisle-part.active-part .aisle-category-label {
+            background: #e2e8f0;
+            color: #0f172a;
+            border-color: #0f172a;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
+
+        /* --- PAINT TABLE (Aisle 9 Front) --- */
+        .paint-table { position: absolute; bottom: -22px; left: -5%; width: 45%; height: 18px; background: linear-gradient(145deg, #e2e8f0, #cbd5e1); border-radius: 2px; transform-style: preserve-3d; transform: translateZ(18px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), -5px 10px 10px rgba(0,0,0,0.3); border: 1px solid #94a3b8; cursor: pointer; z-index: 40; }
+        .paint-table::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 18px; background: #94a3b8; transform-origin: top; transform: rotateX(-90deg); border-bottom: 1.5px solid #475569; box-sizing: border-box; transition: all 0.3s ease; }
+        .paint-table::after { content: ''; position: absolute; top: 0; left: 100%; width: 18px; height: 100%; background: linear-gradient(to bottom, #e2e8f0, #cbd5e1); transform-origin: left; transform: rotateY(90deg); border-right: 1.5px solid #475569; box-sizing: border-box; transition: all 0.3s ease; }
+        
+        .aisle-num { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%) rotateX(-55deg) translateZ(50px) translateY(-15px); font-weight: 900; font-size: 0.65rem; z-index: 30; background: var(--primary); color: white; padding: 2px 5px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.3s ease; border: 1.5px solid #002e5c; }
+        .aisle.active-num .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-55deg) translateZ(65px) translateY(-15px) scale(1.1); box-shadow: 0 6px 10px rgba(56, 189, 248, 0.4); border-color: #ffffff; }
+        
+        #p-1L .aisle-num { left: 100%; bottom: 15px; }
+
+        .back-wall { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; border-radius: 6px 6px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), -5px 8px 10px rgba(0,0,0,0.15); border: 2px solid #002e5c; }
+        .back-wall::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 42px), repeating-linear-gradient(to bottom, #1d4ed8 0px, #3b82f6 1.5px, #1e3a8a 3px, transparent 3px, transparent 13px), #0f172a; transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid #002e5c; box-sizing: border-box; transition: all 0.3s ease; }
+        .back-wall.active { background: var(--aisle-active); transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.3); border-color: #ffffff; }
+        .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.4) 40px, rgba(255,255,255,0.4) 42px), repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, var(--aisle-active) 3px, transparent 3px, transparent 13px), #0369a1; border-bottom-color: #ffffff; height: 45px; }
+
+        .entrance-label { position: absolute; transform-origin: bottom right; transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; white-space: nowrap; border: 1.5px solid #b45309; transition: all 0.2s ease; }
+        .entrance-label:hover { background: #e65c00; transform: translateX(-100%) rotateX(-35deg) translateZ(14px) translateY(-14px) scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
         .entrance-label::before { content: var(--txt-entrance); }
+        .desk-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #b45309; }
         
-        #cashierZone {
-            position: absolute; bottom: -5px; left: calc(100% / 17 * 8); width: calc(100% / 17 * 5); display: flex; justify-content: space-between; align-items: flex-end;
-            height: 5px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
-        }
-        .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
-        .cashier-desk::before { content: ''; position: absolute; top: -4px; right: 15%; width: 35%; height: 4px; background: #00e5ff; border-radius: 1px; border: 1px solid #222; box-shadow: 0 0 4px rgba(0, 229, 255, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
+        /* Toggleable 3D Labels */
+        .toggle-label { opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .toggle-label.active-label { opacity: 1; }
+        
+        .desk-label, .coffee-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(0); }
+        .desk-label.active-label, .coffee-label.active-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(-10px); }
 
-        .desk-label {
-            position: absolute; bottom: 100%; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
-            font-weight: 900; font-size: 0.45rem; z-index: 300; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none;
-        }
+        #label-paint { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(18px); }
+        #label-paint.active-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(8px); }
 
-        #coffeeCorner {
-            position: absolute; bottom: -5px; right: calc(100% / 17 * 0.2); width: calc(100% / 17 * 1.4); display: flex; justify-content: center; align-items: flex-end;
-            height: 6px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1px solid #0f172a; border-top: 3px solid #b45309; border-radius: 3px;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 5px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        #cashierZone { position: absolute; bottom: -5px; left: calc(100% / 18 * 8); width: calc(100% / 18 * 5); display: flex; justify-content: space-between; align-items: flex-end; height: 5px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .cashier-desk::before { content: ''; position: absolute; top: -4px; right: 15%; width: 35%; height: 4px; background: #38bdf8; border-radius: 1px; border: 1.5px solid #020617; box-shadow: 0 0 4px rgba(56, 189, 248, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
+
+        #coffeeCorner { position: absolute; bottom: -5px; right: calc(100% / 18 * 0.2); width: calc(100% / 18 * 1.5); display: flex; justify-content: center; align-items: flex-end; height: 6px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1.5px solid #000; border-top: 3px solid #b45309; border-radius: 3px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), -6px 10px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         #coffeeCorner:hover { transform: translateZ(12px); }
-        #coffeeCorner::before { content: ''; position: absolute; top: -6px; left: 8%; width: 32%; height: 6px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
-        #coffeeCorner::after { content: ''; position: absolute; top: -2px; left: 5%; width: 90%; height: 2px; background: #fde047; box-shadow: 0 0 5px #fde047, 0 0 10px #eab308; border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
+        #coffeeCorner::before { content: ''; position: absolute; top: -6px; left: 8%; width: 32%; height: 6px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1.5px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        #coffeeCorner::after { content: ''; position: absolute; top: -2px; left: 5%; width: 90%; height: 2px; background: var(--accent); box-shadow: 0 0 5px var(--accent), 0 0 10px #e65c00; border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
 
-        .vending-machine {
-            position: absolute; bottom: 100%; right: 8%; width: 24%; height: 20px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #020617; border-top: 1px solid #475569; border-left: 1px solid #334155;
-            border-radius: 2px; transform-origin: bottom center; transform: rotateX(-35deg) translateZ(8px) translateY(-1px); box-shadow: -5px 15px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; padding-top: 2px; box-sizing: border-box; z-index: 10;
-        }
+        .vending-machine { position: absolute; bottom: 100%; right: 8%; width: 24%; height: 20px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 1.5px solid #475569; border-left: 1.5px solid #334155; border-radius: 2px; transform-origin: bottom center; transform: rotateX(-35deg) translateZ(8px) translateY(-1px); box-shadow: -5px 10px 10px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; padding-top: 2px; box-sizing: border-box; z-index: 10; }
         .vending-screen { width: 85%; height: 10px; background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)), repeating-linear-gradient(to bottom, #0ea5e9 0px, #0ea5e9 3px, #020617 3px, #020617 5px); border: 1px solid #000; border-radius: 1px; box-shadow: inset 0 0 5px #000, 0 0 8px rgba(14, 165, 233, 0.4); position: relative; }
         .vending-slot { margin-top: 3px; width: 60%; height: 2px; background: #000; border-radius: 1px; border-top: 1px solid #334155; position: relative; }
         .vending-slot::before { content: ''; position: absolute; top: -6px; right: -8px; width: 4px; height: 6px; background: #94a3b8; border-radius: 1px; }
 
-        .coffee-label {
-            position: absolute; bottom: 100%; left: -50%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(40px) translateY(-14px);
-            font-weight: 900; font-size: 0.45rem; z-index: 300; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none;
-        }
-
+        .coffee-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #b45309; }
         .coffee-cup { position: absolute; bottom: 100%; left: 45%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(8px) translateY(-1px); font-size: 0.85rem; pointer-events: none; text-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 20; }
 
-        #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; } 
-        .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; } 
+        #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; transform: translateZ(2px); } 
+        .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(-2px 4px 2px rgba(0,0,0,0.4)); } 
+        @keyframes drawPath { to { stroke-dashoffset: 0; } }
         
-        @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(-35deg) translateZ(60px) translateY(0); } 50% { transform: translateX(-50%) rotateX(-35deg) translateZ(60px) translateY(-4px); } }
-        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(-35deg) translateZ(60px); width: 24px; }
+        .btn-close-map { position: absolute; top: 20px; right: 20px; z-index: 10002; background: var(--primary); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.5rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; align-items: center; justify-content: center; transition: all 0.2s; }
+        .map-expanded-overlay .btn-close-map { display: flex; }
+
+        /* Modern Floating Product Detail Card - Compact Glassy Version */
+        #productDetailCard {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-200px);
+            width: calc(100% - 24px);
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 14px;
+            padding: 12px; 
+            box-shadow: 0 8px 32px rgba(0, 92, 185, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 8px; 
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        #productDetailCard:hover {
+            box-shadow: 0 12px 40px rgba(0, 92, 185, 0.25), inset 0 1px 1px rgba(255, 255, 255, 1);
+        }
+        .map-expanded-overlay #productDetailCard.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .pd-header { display: flex; gap: 10px; align-items: flex-start; }
+        .pd-icon {
+            font-size: 1.3rem;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--primary);
+            border-radius: 8px;
+            width: 38px; 
+            height: 38px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-top: 2px;
+        }
+        .pd-info { flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: left; }
+        
+        /* Title can now wrap naturally without being cut off early by the print button */
+        .pd-title { font-size: 0.95rem; font-weight: 900; color: var(--text-main); margin: 0 0 4px 0; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+        .pd-art { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); }
+        
+        .pd-bottom-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+        
+        .pd-loc-banner { background: rgba(240, 246, 255, 0.6); color: var(--primary-dark); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 900; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255, 255, 255, 0.5); flex-shrink: 0; }
+
+        .pd-print-btn { 
+            background: var(--primary); color: white; border: none; border-radius: 8px; width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,92,185,0.25); cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
+        }
+        .pd-print-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,92,185,0.4); }
+        .pd-print-btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,92,185,0.3); }
+
+        @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(-55deg) translateZ(12px) translateY(0); } 50% { transform: translateX(-50%) rotateX(-55deg) translateZ(12px) translateY(-4px); } }
+        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(-55deg) translateZ(12px); width: 18px; filter: drop-shadow(-4px 8px 4px rgba(0,0,0,0.4)); }
         .user.running { animation: runBob 0.2s infinite alternate; }
-        .user svg { width: 100%; transform: scaleX(var(--char-dir)); transition: transform 0.15s ease; filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3)); }
+        .user svg { width: 100%; transform: scaleX(var(--char-dir)); transform-origin: center; transition: transform 0.15s ease; }
 
         #printArea { display: none; }
         @media print { 
             body { background: white; margin: 0; padding: 0; height: auto; position: static; } 
-            #introPage, .app-container, .map-section, .promo-banner, #aislePopup, .app-footer { display: none !important; } 
+            #introPage, .app-container, .map-wrapper, .promo-banner, #aislePopup, .app-footer { display: none !important; } 
             #printArea { display: block !important; text-align: center; font-family: sans-serif; padding: 30px; border: 8px solid var(--primary); width: 100%; box-sizing: border-box; } 
             #printArea h1 { font-size: 3rem !important; margin: 15px 0; word-break: break-word; }
         }
@@ -440,169 +644,159 @@
             .clear-btn:hover { background: #cbd5e1; }
             .search-btn:hover { background: var(--primary-dark); }
             .result-item:not(.selected):hover { border-color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
-            .action-btn:hover { background: #e6b800; box-shadow: 0 4px 8px rgba(0,0,0,0.15); transform: translateY(-1px); }
             .category-chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); background: #f0f6ff; }
+            .btn-close-map:hover { background: var(--accent); color: black; transform: scale(1.1); }
         }
 
         /* --- DIM MODE --- */
-        body.dark-mode {
-            --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b;
-        }
-        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .lang-flags, body.dark-mode .btn-reset, body.dark-mode .icon-wrap, body.dark-mode .image-modal img { background: #1e293b; color: var(--text-main); }
+        body.dark-mode { --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b; }
+        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .lang-flags, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
         body.dark-mode .flag-btn.active { background: #334155; } body.dark-mode .input-layer { color: var(--text-main); }
         body.dark-mode .tag { background: #334155; color: #cbd5e1; } body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
         body.dark-mode .clear-btn { background: #334155; color: white; } body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
-        body.dark-mode .icon-wrap::after { background: rgba(30, 41, 59, 0.6); }
-        body.dark-mode .floor { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
-        body.dark-mode .aisle { background: #334155; box-shadow: -5px 15px 15px rgba(0,0,0,0.2); }
-        body.dark-mode .aisle::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-color: #475569; }
-        body.dark-mode .aisle::after { background: linear-gradient(to right, #334155, #1e293b); border-color: #475569; }
-        body.dark-mode .back-wall { background: #334155; }
-        body.dark-mode .back-wall::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom-color: #475569; }
-        body.dark-mode .back-wall.active { background: #0284c7; }
-        body.dark-mode .back-wall.active::before { background: linear-gradient(to bottom, #0369a1, #0c4a6e); border-color: #38bdf8; }
+        body.dark-mode .result-meta-badge { background: var(--accent); color: #000; }
+        
+        body.dark-mode .map-expanded-overlay { background: rgba(15, 23, 42, 0.75); }
+        body.dark-mode .map-expanded-overlay::before { background: rgba(2, 132, 199, 0.4); }
+        body.dark-mode .map-expanded-overlay::after { background: rgba(154, 52, 18, 0.3); }
 
-        /* Intro Page Dark Mode Overrides (Strict 3 Colors) */
+        body.dark-mode #productDetailCard { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
+        body.dark-mode .pd-icon { background: rgba(30, 41, 59, 0.6); border-color: rgba(255, 255, 255, 0.1); color: var(--accent); }
+        body.dark-mode .pd-title { color: #f8fafc; }
+        body.dark-mode .pd-art { color: #94a3b8; }
+        body.dark-mode .pd-loc-banner { background: rgba(30, 58, 138, 0.4); color: #bfdbfe; border-color: rgba(255, 255, 255, 0.05); }
+        body.dark-mode .pd-print-btn { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(255, 138, 0, 0.2); }
+        body.dark-mode .pd-print-btn:hover { background: #e65c00; color: #fff;}
+
+        body.dark-mode .floor { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-color: #334155; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), -8px 15px 15px rgba(0,0,0,0.5); }
+        body.dark-mode .floor::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom: 1px solid #000; }
+        body.dark-mode .floor::after { background: linear-gradient(to right, #0f172a, #020617); border-right: 1px solid #000; }
+        
+        body.dark-mode .aisle-part { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); 
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -6px 8px 12px rgba(0,0,0,0.4); 
+        }
+        
+        body.dark-mode .aisle-part::after {
+            background: 
+                linear-gradient(to right, transparent 15%, rgba(0,0,0,0.8) 15%, rgba(0,0,0,0.8) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.8) 45%, rgba(0,0,0,0.8) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.8) 90%, transparent 90%),
+                linear-gradient(to right, #1e293b 0%, #0f172a 100%);
+        }
+
+        body.dark-mode .left-face {
+            background: 
+                linear-gradient(to left, transparent 15%, rgba(0,0,0,0.8) 15%, rgba(0,0,0,0.8) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.8) 45%, rgba(0,0,0,0.8) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.8) 90%, transparent 90%),
+                linear-gradient(to left, #475569 0%, #1e293b 100%);
+        }
+        
+        body.dark-mode .aisle-part.front-orange { 
+            background: linear-gradient(135deg, #9a3412 0%, #7c2d12 100%); 
+            border-color: #000; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -6px 8px 12px rgba(0,0,0,0.4); 
+        }
+        body.dark-mode .aisle-part.front-orange::before { 
+            background: 
+                repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(0,0,0,0.8) 30px, rgba(0,0,0,0.8) 32px),
+                repeating-linear-gradient(to bottom, #c2410c 0px, #7c2d12 2px, #020617 2px, #020617 13px);
+            border-bottom: 2px solid #7c2d12; 
+        }
+
+        body.dark-mode .paint-table { background: linear-gradient(145deg, #334155, #1e293b); border-color: #0f172a; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 10px 10px rgba(0,0,0,0.6); }
+        body.dark-mode .paint-table::before { background: #0f172a; border-bottom-color: #000; }
+        body.dark-mode .paint-table::after { background: #475569; border-right-color: #000; }
+
+        body.dark-mode .back-wall { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 8px 10px rgba(0,0,0,0.4); }
+        body.dark-mode .back-wall::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,0,0,0.5) 40px, rgba(0,0,0,0.5) 43px), repeating-linear-gradient(to bottom, #3b82f6 0px, #60a5fa 1px, #1e40af 3px, transparent 3px, transparent 13px), #020617; border-bottom: 2px solid #1e3a8a; }
+        body.dark-mode .back-wall.active { background: #0284c7; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(2, 132, 199, 0.3); border-color: #ffffff; }
+        body.dark-mode .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,30,60,0.8) 40px, rgba(0,30,60,0.8) 43px), repeating-linear-gradient(to bottom, #0284c7 0px, #0369a1 1px, #075985 3px, transparent 3px, transparent 13px), #082f49; border-bottom-color: #082f49; height: 45px; }
+
+        /* Intro Page Dark Mode Overrides */
         body.dark-mode #introPage { background: #0f172a; color: #ffffff; }
         body.dark-mode .intro-bg { background: #0f172a; }
-        body.dark-mode .intro-bg::before { background-image: linear-gradient(rgba(10, 85, 215, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 85, 215, 0.3) 1px, transparent 1px); }
-        body.dark-mode .orb-1 { background: rgba(10, 85, 215, 0.2); } body.dark-mode .orb-2 { background: rgba(255, 204, 0, 0.1); }
-        body.dark-mode .intro-content { background: #0f172a; border-color: var(--primary); }
+        body.dark-mode .intro-bg::before { background-image: linear-gradient(rgba(0, 92, 185, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 92, 185, 0.3) 1px, transparent 1px); }
+        body.dark-mode .orb-1 { background: rgba(0, 92, 185, 0.2); } body.dark-mode .orb-2 { background: rgba(255, 138, 0, 0.1); }
+        body.dark-mode .intro-content { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
         body.dark-mode .float-tag { background: #0f172a; color: #ffffff; border: 2px solid var(--primary); border-bottom: 4px solid var(--accent); }
-        body.dark-mode .intro-h1 { color: #ffffff; }
+        body.dark-mode .intro-h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         body.dark-mode .intro-h1 span { background: var(--accent); color: #0f172a; }
         body.dark-mode .intro-slogan { background: var(--accent); color: #0f172a; }
         body.dark-mode .intro-nav-title { color: #ffffff; }
         body.dark-mode .intro-p { color: #ffffff; }
         body.dark-mode .intro-lang-toggles { background: #0f172a; border-color: var(--primary); }
         body.dark-mode .intro-lang-btn { color: #ffffff; }
-        body.dark-mode .intro-lang-btn:hover { background: rgba(10,85,215,0.3); }
+        body.dark-mode .intro-lang-btn:hover { background: rgba(0, 92, 185, 0.3); }
         body.dark-mode .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
         body.dark-mode .commercial-ticker { background: var(--primary); color: var(--accent); }
 
-        @media (hover: hover) { body.dark-mode .category-chip:hover:not(.active) { background: #334155; color: #f8fafc; border-color: #475569; } }
-
-        #spellCheckArea:hover { background: #e0f2fe; border-color: #7dd3fc; transform: translateY(-1px); }
-        body.dark-mode #spellCheckArea { background: rgba(10, 85, 215, 0.15); border-color: rgba(10, 85, 215, 0.4); color: #bae6fd; }
-        body.dark-mode #spellCheckArea:hover { background: rgba(10, 85, 215, 0.25); border-color: rgba(10, 85, 215, 0.6); }
-        body.dark-mode #spellCheckSuggestion { color: var(--accent); }
-
-        /* --- FOOTER STYLES (Single Line) --- */
-        .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); }
+        /* --- FOOTER STYLES --- */
+        .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); transition: all 0.3s ease; }
         .app-footer .footer-content { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 0 10px; }
         .app-footer .brand { font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
         .beta-badge { background: var(--accent); color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 900; font-size: 0.6rem; text-transform: uppercase; white-space: nowrap; }
+        
+        .map-section { width: 100%; max-width: 950px; height: 130px; perspective: 1800px; margin: 15px auto 125px auto; position: relative; z-index: 1; transition: all 0.4s ease; user-select: none; -webkit-user-select: none; }
+        .map-expanded-overlay .map-section { height: 65vh; max-width: 1100px; width: 95vw; margin: 0 auto 10vh auto; perspective: 2000px; }
     </style>
 </head>
 <body onload="initApp()">
 
-    <div id="imageModal" class="image-modal" onclick="closeImageModal(event)">
-        <button class="image-modal-close" onclick="closeImageModal(event)">✕</button>
-        <img id="modalImage" src="" alt="Zoomed Product">
-        <div id="modalTitle" class="image-modal-title"></div>
-    </div>
-
     <div id="introPage">
-        <!-- Glowing Ambient Orbs (Reduced to 2 for primary/accent emphasis) -->
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
-
-        <!-- 3D Animated Blueprint Background -->
         <div class="intro-bg">
-            <!-- Floating Commercial Aisle Tags 
             <div class="floating-tags-container">
                 <div class="float-tag" style="--tx: -35%; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint <span>•</span> Фарби</div>
                 <div class="float-tag" style="--tx: 25%; --td: -7s;"><i>🛠️</i> Gereedschap <span>•</span> Tools <span>•</span> Інструменти</div>
                 <div class="float-tag" style="--tx: -15%; --td: -14s;"><i>🪵</i> Hout <span>•</span> Timber <span>•</span> Деревина</div>
-            </div>-->
-
-            <!-- Path SVG and Top-Down Shoppers (Strict 3 Colors) -->
+            </div>
             <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-                <!-- Static Paths -->
                 <path d="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" />
                 <path class="accent-path" d="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" />
                 <path d="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" />
-
-                <!-- Animated Shopper 1 -->
-                <g>
-                    <g transform="rotate(90)">
-                        <rect x="-10" y="-6" width="20" height="12" rx="6" fill="#0a55d7" />
-                        <circle cx="0" cy="0" r="6" fill="#ffffff" />
-                    </g>
-                    <animateMotion dur="16s" repeatCount="indefinite" path="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" rotate="auto" />
-                </g>
-
-                <!-- Animated Shopper 2 -->
-                <g>
-                    <g transform="rotate(90)">
-                        <rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#ffcc00" stroke-width="2" />
-                        <line x1="10" y1="-4" x2="26" y2="-4" stroke="#ffcc00" stroke-width="1" />
-                        <line x1="10" y1="4" x2="26" y2="4" stroke="#ffcc00" stroke-width="1" />
-                        <rect x="-10" y="-7" width="20" height="14" rx="6" fill="#ffcc00" />
-                        <circle cx="0" cy="0" r="6" fill="#ffffff" />
-                    </g>
-                    <animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" />
-                </g>
-
-                <!-- Animated Shopper 3 -->
-                <g>
-                    <g transform="rotate(90)">
-                        <rect x="-9" y="-5" width="18" height="10" rx="5" fill="#0a55d7" />
-                        <circle cx="0" cy="0" r="5" fill="#ffcc00" />
-                    </g>
-                    <animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" />
-                </g>
+                <g><g transform="rotate(90)"><rect x="-10" y="-6" width="20" height="12" rx="6" fill="#005cb9" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="16s" repeatCount="indefinite" path="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" rotate="auto" /></g>
+                <g><g transform="rotate(90)"><rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#ff8a00" stroke-width="2" /><line x1="10" y1="-4" x2="26" y2="-4" stroke="#ff8a00" stroke-width="1" /><line x1="10" y1="4" x2="26" y2="4" stroke="#ff8a00" stroke-width="1" /><rect x="-10" y="-7" width="20" height="14" rx="6" fill="#ff8a00" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" /></g>
+                <g><g transform="rotate(90)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="#005cb9" /><circle cx="0" cy="0" r="5" fill="#ff8a00" /></g><animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" /></g>
             </svg>
         </div>
-
         <div class="intro-lang-toggles">
             <button class="intro-lang-btn active" onclick="setLang('nl')" id="intro-btn-nl">🇳🇱 NL</button>
             <button class="intro-lang-btn" onclick="setLang('en')" id="intro-btn-en">🇬🇧 EN</button>
             <button class="intro-lang-btn" onclick="setLang('uk')" id="intro-btn-uk">🇺🇦 UK</button>
+            <button class="intro-lang-btn" onclick="setLang('pl')" id="intro-btn-pl">🇵🇱 PL</button>
         </div>
-        
         <div class="intro-content">
             <div class="video-container">
-        
-                <video id="introVideo" autoplay loop playsinline controls muted src="dutch.mp4">
-                    Your browser does not support HTML video.
-                </video>
+                <video id="introVideo" autoplay loop playsinline controls muted src="dutch1.mp4"></video>
             </div>
-            
             <h1 class="intro-h1" id="introTitle">BOUWMAAT AMSTEL <span>XL</span></h1>
             <div class="intro-slogan" id="introSlogan">Alles voor de vakman</div>
-            
             <div class="intro-nav-title" id="introNavTitle">Smart Navigator</div>
             <p class="intro-p" id="introText">Vind direct jouw producten in de vestiging.</p>
-            
             <button class="intro-btn" onclick="closeIntro()" id="introBtn">
                 <span id="introBtnText">START ZOEKEN</span>
                 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
         </div>
-
-        <!-- Commercial Ticker Tape -->
         <div class="commercial-ticker">
             <div class="ticker-track">
                 <span><i>•</i> ALLES VOOR DE VAKMAN</span>
                 <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
                 <span><i>•</i> УСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
                 <span><i>•</i> ALLES VOOR DE VAKMAN</span>
                 <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
                 <span><i>•</i> УСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
             </div>
         </div>
     </div>
 
     <div id="mainAppWrapper">
-        <div id="printArea"></div>
-
         <div id="aislePopup" class="aisle-popup"></div>
 
         <div class="app-container" id="mainApp">
             <div class="top-bar">
                 <div class="logo">
-                    <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#0a55d7"/> <img src="https://www.bouwmaat.nl/_nuxt/img/logo.156d07e.svg" alt="logo"> </svg>
+                    <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#005cb9"/> <img src="https://www.bouwmaat.nl/_nuxt/img/logo.156d07e.svg" alt="logo"> </svg>
                     <h1>Amstel <span style="color:var(--accent)">XL</span></h1>
                 </div>
                 <div class="controls">
@@ -611,34 +805,23 @@
                         <button class="flag-btn" onclick="setLang('nl')" id="btn-nl" aria-label="Nederlands">🇳🇱</button>
                         <button class="flag-btn" onclick="setLang('en')" id="btn-en" aria-label="English">🇬🇧</button>
                         <button class="flag-btn" onclick="setLang('uk')" id="btn-uk" aria-label="Українська">🇺🇦</button>
+                        <button class="flag-btn" onclick="setLang('pl')" id="btn-pl" aria-label="Polski">🇵🇱</button>
                     </div>
                     <button id="btnReset" onclick="resetApp()" class="btn-reset" style="display: none;">RESET</button>
                 </div>
             </div>
 
+            <div class="filter-wrapper" id="categoryChips"></div>
+
             <div class="search-area-wrapper">
                 <div class="search-wrap">
                     <div id="searchGhost"></div>
                     <input type="text" id="searchBox" class="input-layer" placeholder="Zoek artikel of code..." autocomplete="off">
+                    <div id="resultCount" class="result-meta-badge"></div>
                     <div class="search-actions">
                         <button id="clearBtn" class="clear-btn" onclick="clearSearch()">✕</button>
                         <button id="btnSearch" class="search-btn" onclick="handleSearch()">🔍</button>
                     </div>
-                </div>
-            </div>
-
-            <div class="results-header">
-                <div class="meta-row">
-                    <div id="resultCount" class="result-meta"></div>
-                </div>
-                
-                <div id="spellCheckArea" style="display:none; padding: 10px; background: #f0f6ff; border-radius: 8px; margin-bottom: 8px; font-weight: 800; color: var(--text-main); font-size: 0.95rem; cursor: pointer; border: 2px dashed #bae6fd; align-items: center; gap: 8px; transition: all 0.2s ease;">
-                    <span style="font-size:1.2rem">💡</span> 
-                    <span><span id="spellCheckPrefix">Bedoelde je:</span> <span id="spellCheckSuggestion" style="text-decoration: underline; color: var(--primary);"></span>?</span>
-                </div>
-
-                <div class="filter-wrapper" id="categoryChips">
-                    <!-- Modern Chips populated by JS -->
                 </div>
             </div>
 
@@ -649,56 +832,60 @@
             <div id="resultsList" class="results-list"></div>
         </div>
 
-        <div class="map-section" aria-hidden="true">
-            <div class="floor" id="mapGrid">
+        <div id="mapWrapper" class="map-wrapper">
+            <button class="btn-close-map" onclick="toggleMapExpand(false)">✕</button>
             
-                <div class="back-wall" id="p-0AW" onclick="handleMapClick('0AW')"></div>
-
-                <div id="cashierZone" onclick="handleMapClick('KAS')">
-                    <div class="cashier-desk"><div class="desk-label" id="label-service">Service desk</div></div>
-                    <div class="cashier-desk"><div class="desk-label" id="label-sales1">Verkoopdesk</div></div>
-                    <div class="cashier-desk"><div class="desk-label" id="label-kassa">Kassa</div></div>
-                </div>
-
-                <div id="coffeeCorner" onclick="handleMapClick('KOFFIE')">
-                    <div class="vending-machine">
-                        <div class="vending-screen"></div>
-                        <div class="vending-slot"></div>
+            <div id="productDetailCard"></div>
+            
+            <div class="map-section" aria-hidden="true" ondblclick="toggleMapExpand(true)">
+                <div class="floor" id="mapGrid">
+                    <div class="back-wall" id="p-0AW" onclick="handleMapClick(event, '0AW', null)"></div>
+                    <div id="cashierZone">
+                        <div class="cashier-desk" id="desk-service" onclick="handleMapClick(event, 'KAS', 'service')"><div class="desk-label toggle-label" id="label-service">Service desk</div></div>
+                        <div class="cashier-desk" id="desk-sales1" onclick="handleMapClick(event, 'KAS', 'sales1')"><div class="desk-label toggle-label" id="label-sales1">Verkoopdesk</div></div>
+                        <div class="cashier-desk" id="desk-kassa" onclick="handleMapClick(event, 'KAS', 'kassa')"><div class="desk-label toggle-label" id="label-kassa">Kassa</div></div>
                     </div>
-                    <div class="coffee-cup">☕</div>
-                    <div class="coffee-label" id="label-coffee">Koffiehoek</div>
-                </div>
-
-                <svg id="pathLayer"><path id="guideLine" class="walking-line" d="" /></svg>
-                <div class="user" id="mainChar" style="bottom: 0%; left: 270px;">
-                    <svg viewBox="0 0 64 100">
-                        <path d="M22 18 Q10 40 18 55 Q32 30 42 18" fill="#4a3000" /><circle cx="32" cy="22" r="14" fill="#ffcdb2" /><path d="M18 22 Q32 8 46 22 Q32 12 18 22" fill="#3a2500" />
-                        <path d="M22 36 L42 36 Q48 50 44 65 L20 65 Q16 50 22 36" fill="#0a55d7" /> 
-                        <path d="M22 38 Q12 55 18 62" stroke="#ffcdb2" stroke-width="5" stroke-linecap="round" fill="none" /><path d="M42 38 Q52 55 46 62" stroke="#ffcdb2" stroke-width="5" stroke-linecap="round" fill="none" />
-                        <path d="M26 65 L26 88" stroke="#0f172a" stroke-width="6" stroke-linecap="round" /><path d="M38 65 L38 88" stroke="#0f172a" stroke-width="6" stroke-linecap="round" />
-                    </svg>
+                    <div id="coffeeCorner" onclick="handleMapClick(event, 'KOFFIE', null)">
+                        <div class="vending-machine">
+                            <div class="vending-screen"></div>
+                            <div class="vending-slot"></div>
+                        </div>
+                        <div class="coffee-cup">☕</div>
+                        <div class="coffee-label toggle-label" id="label-coffee">Koffiehoek</div>
+                    </div>
+                    <svg id="pathLayer"><path id="guideLine" class="walking-line" d="" /></svg>
+                    <div class="user" id="mainChar" style="bottom: 0%; left: 270px;">
+                        <svg viewBox="0 0 64 100">
+                            <path d="M22 18 Q10 40 18 55 Q32 30 42 18" fill="#4a3000" /><circle cx="32" cy="22" r="14" fill="#ffcdb2" /><path d="M18 22 Q32 8 46 22 Q32 12 18 22" fill="#3a2500" />
+                            <path d="M22 36 L42 36 Q48 50 44 65 L20 65 Q16 50 22 36" fill="#005cb9" /> 
+                            <path d="M22 38 Q12 55 18 62" stroke="#ffcdb2" stroke-width="5" stroke-linecap="round" fill="none" /><path d="M42 38 Q52 55 46 62" stroke="#ffcdb2" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M26 65 L26 88" stroke="#0f172a" stroke-width="6" stroke-linecap="round" /><path d="M38 65 L38 88" stroke="#0f172a" stroke-width="6" stroke-linecap="round" />
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
 
         <footer class="app-footer">
             <div class="footer-content">
-                <div class="beta-badge">BETA v1.1</div>
+                <div class="beta-badge">BETA v1.5</div>
                 <div>&copy; 2026 <span class="brand">AISLE WISE&trade;</span></div>
-              
-                <div>All Rights Reserved</div>
+                <div id="footerRights">All Rights Reserved</div>
             </div>
         </footer>
     </div>
+    
+    <div id="printArea"></div>
 
 <script>
-    if (localStorage.getItem('bouwmaat_dim') === '1') document.body.classList.add('dark-mode');
-
-    function toggleDimMode() {
-        const isDim = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('bouwmaat_dim', isDim ? '1' : '0');
-        document.getElementById('btnDimToggle').innerText = isDim ? '☀️' : '🌙';
-    }
+    const icons = { 
+        "Gereedschap": "🛠️", "Hout": "🪵", "IJzerwaren": "🔩", "Sanitair": "🚽", "Algemeen": "🏷️",
+        "Elektra": "🔌", "Verf": "🎨", "Verwarming": "🌡️", "Bouwstoffen": "🧱",
+        "Eigen gebruik": "🏢", "Lokaal": "📍", "Verlichting": "💡", "Hang- en sluitwerk": "🔐",
+        "Verwarming en klimaat": "🌡️", "Emballage": "📦", "Persoonlijke beschermings": "🦺",
+        "Schoonmaak bedrijfswagen": "🧽", "Schoonmaak, bedrijfswagen": "🧽", "Keukens": "🍳", "Lijm, kit en pur": "🧴",
+        "Bevestigingsmateriaal": "🔩", "Bouwmaterialen": "🧱", "Deuren & Kozijnen": "🚪", "Kleding & schoenen": "🥾"
+    };
 
     const i18n = {
         nl: { 
@@ -712,12 +899,14 @@
             resFoundPlural: "RESULTATEN", resFoundSingular: "RESULTAAT", noResTitle: "Geen resultaten voor", 
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
             entrance: "INGANG", left: "LINKS", right: "RECHTS", sect: "Sectie", pad: "PAD", zijde: "ZIJDE", kassa: "KASSA",
-            serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek",
+            serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek", paintDesk: "Verfbalie",
+            expandMap: "KAART VERGROTEN",
             backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
-            moreRes: "meer resultaten. Verfijn je zoekopdracht.",
+            rightsReserved: "Alle rechten voorbehouden", unknownLoc: "Onbekende locatie",
+            backLabels: { 1: "Hout", 2: "Tuinhout", 3: "Vuren ruw/geschaafd", 4: "Vuren geschaafd/hout", 5: "Hout", 6: "Plaatmateriaal hout", 7: "Hout", 8: "Plaatmateriaal hout", 9: "Bouw", 10: "Bouw", 11: "Gipsen/cement/mortels", 12: "Cement/mortels/zand grind", 13: "Stenen/blokken", 14: "Tegels/lijmen", 15: "Tegels/lijmen/isolatie", 16: "Dakbedekking/dakramen", 17: "Sanitair" },
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
-                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Verf benodigdheden/attributen": "Verf benodigdheden/attributen", "Kleding & schoenen": "Kleding & schoenen"
+                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Verf": "Verf", "Kleding & schoenen": "Kleding & schoenen"
             }
         },
         en: { 
@@ -730,10 +919,12 @@
             allCats: "All categories",
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
-            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
-            serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner",
+            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "WALK", zijde: "SIDE", kassa: "CASHIER",
+            serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner", paintDesk: "Paint Desk",
+            expandMap: "EXPAND MAP",
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
-            moreRes: "more results. Please refine your search.",
+            rightsReserved: "All Rights Reserved", unknownLoc: "Unknown location",
+            backLabels: { 1: "Timber", 2: "Garden Timber", 3: "Rough/Planed Pine", 4: "Planed Pine/Timber", 5: "Timber", 6: "Sheet Material", 7: "Timber", 8: "Sheet Material", 9: "Building", 10: "Building", 11: "Plaster/Cement/Mortars", 12: "Cement/Mortars/Sand Gravel", 13: "Stones/Blocks", 14: "Tiles/Adhesives", 15: "Tiles/Adhesives/Insulation", 16: "Roofing/Skylights", 17: "Plumbing" },
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
                 "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Verf benodigdheden/attributen": "Painting Supplies", "Kleding & schoenen": "Clothing & Shoes"
@@ -750,25 +941,52 @@
             resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
             noResDesc: "Перевірте орфографію.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУК ЧЕКА", 
             entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
-            serviceDesk: "Сервісна стійка", salesDesk: "Стійка продажу", coffeeCorner: "Кавовий куточок",
+            serviceDesk: "Сервісна стійка", salesDesk: "Стійка продажу", coffeeCorner: "Кавовий куточок", paintDesk: "Стійка фарб",
+            expandMap: "РОЗГОРНУТИ КАРТУ",
             backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
-            moreRes: "більше результатів. Уточніть свій пошук.",
+            rightsReserved: "Всі права захищено", unknownLoc: "Невідоме розташування",
+            backLabels: { 1: "Деревина", 2: "Садова деревина", 3: "Груба/Стругана сосна", 4: "Стругана сосна/Деревина", 5: "Деревина", 6: "Листовий матеріал", 7: "Деревина", 8: "Листовий матеріал", 9: "Будівництво", 10: "Будівництво", 11: "Штукатурка/Цемент/Суміші", 12: "Цемент/Суміші/Пісок Гравій", 13: "Каміння/Блоки", 14: "Плитка/Клей", 15: "Плитка/Клей/Ізоляція", 16: "Покрівля/Мансардні вікна", 17: "Сантехніка" },
             groups: { 
                 "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Метизи", "Hout": "Деревина", "Bouwstoffen": "Будівельні матеріали", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарби", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Фурнітура та замки", "Emballage": "Тара", "Persoonlijke beschermings": "Індивідуальний захист", "Schoonmaak bedrijfswagen": "Прибирання комерційного авто", "Schoonmaak, bedrijfswagen": "Прибирання авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалети", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Укривні матеріали", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти та шурупи", "Pluggen": "Дюбелі", "Schildersgereedschap": "Малярний інструмент", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент та суміші", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та планки", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Матеріали для сантехніки", "CV-installaties": "Опалювальні системи", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клей", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Їжа, напої та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Аптечка / Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en циліндри": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Власне використання (різне)",
                 "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Verf benodigdheden/attributen": "Малярні аксесуари", "Kleding & schoenen": "Одяг та взуття"
+            }
+        },
+        pl: { 
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Wszystko dla profesjonalisty",
+            introNav: "Inteligentny Nawigator",
+            introP: "Znajdź swoje produkty natychmiast w sklepie.",
+            introBtn: "ROZPOCZNIJ SZUKANIE",
+            placeholder: "Szukaj produktu lub kodu...", search: "🔍 SZUKAJ", reset: "RESET", 
+            allCats: "Wszystkie kategorie",
+            resFoundPlural: "WYNIKÓW", resFoundSingular: "WYNIK", noResTitle: "Brak wyników dla", 
+            noResDesc: "Sprawdź pisownię.", clearBtn: "CZYŚĆ", printBtn: "🖨️ DRUKUJ PARAGON", 
+            entrance: "WEJŚCIE", left: "LEWO", right: "PRAWO", sect: "Sekcja", pad: "ALEJKA", zijde: "STRONA", kassa: "KASA",
+            serviceDesk: "Punkt obsługi", salesDesk: "Punkt sprzedaży", coffeeCorner: "Kącik kawowy", paintDesk: "Mieszalnia farb",
+            expandMap: "POWIĘKSZ MAPĘ",
+            backWallShort: "TYLNA ŚCIANA", backWallLong: "Tylna ściana", didYouMean: "Czy chodziło ci o:",
+            rightsReserved: "Wszelkie prawa zastrzeżone", unknownLoc: "Nieznana lokalizacja",
+            backLabels: { 1: "Drewno", 2: "Drewno ogrodowe", 3: "Sosna surowa/strugana", 4: "Sosna strugana/Drewno", 5: "Drewno", 6: "Płyty drewnopochodne", 7: "Drewno", 8: "Płyty drewnopochodne", 9: "Budowa", 10: "Budowa", 11: "Tynki/Cement/Zaprawy", 12: "Cement/Zaprawy/Piasek Żwir", 13: "Kamienie/Bloczki", 14: "Płytki/Kleje", 15: "Płytki/Kleje/Izolacje", 16: "Pokrycia dachowe/Okna dachowe", 17: "Hydraulika" },
+            groups: { 
+                "Sanitair": "Hydraulika", "Gereedschap": "Narzędzia", "IJzerwaren": "Metalowe", "Hout": "Drewno", "Bouwstoffen": "Materiały sypkie", "Bouwmaterialen": "Materiały budowlane", "Verf": "Farby", "Elektra": "Elektryka", "Verwarming": "Ogrzewanie", "Verwarming en klimaat": "Ogrzewanie i Klimatyzacja", "Algemeen": "Ogólne", "Eigen gebruik": "Do użytku własnego", "Lokaal": "Lokalne", "Verlichting": "Oświetlenie", "Hang- en sluitwerk": "Zawiasy i zamki", "Emballage": "Opakowania", "Persoonlijke beschermings": "BHP", "Schoonmaak bedrijfswagen": "Czyszczenie aut", "Schoonmaak, bedrijfswagen": "Czyszczenie aut", "Keukens": "Kuchnie", "Lijm, kit en pur": "Kleje, silikony i pianki", "Bevestigingsmateriaal": "Zamocowania", "Toilet": "Toalety", "Handgereedschap": "Narzędzia ręczne", "Bevestiging": "Zamocowania", "Balkhout": "Belki drewniane", "Afdekken": "Materiały ochronne", "Elektrisch gereedschap": "Elektronarzędzia", "Sanitair installatie gereedschap": "Narzędzia hydrauliczne", "Toebehoren gereedschap": "Akcesoria do narzędzi", "Zware verankering": "Ciężkie kotwy", "Schroeven": "Śruby i wkręty", "Pluggen": "Kołki", "Schildersgereedschap": "Narzędzia malarskie", "Droge afbouw": "Sucha zabudowa", "Cement en mortels": "Cement i zaprawy", "Stucen": "Tynkowanie", "Plaatmateriaal": "Materiały płytowe", "Afwerklijsten en profielen": "Listwy i profile", "Kranen": "Baterie i krany", "Sanitair installatiemateriaal": "Materiały instalacyjne", "CV-installaties": "Instalacje CO", "Klimaatbeheersing": "Klimatyzacja", "Lijmen": "Kleje", "Kitten": "Silikony i uszczelniacze", "Purschuimen": "Pianki montażowe", "Elektrisch installatiemateriaal": "Materiały elektryczne", "Keukenkasten": "Szafki kuchenne", "Drinken, eten en huishoudelijk": "Art. spożywcze i domowe", "Bedrijfswagen": "Auto firmowe", "Schoonmaak": "Sprzątanie", "EHBO": "Apteczka", "Werkschoenen": "Obuwie robocze", "Sloten en cilinders": "Zamki i wkładki", "Werkverlichting": "Oświetlenie robocze", "Eigen gebruik diversen": "Użytek własny inne",
+                "Deuren & Kozijnen": "Drzwi i Ościeżnice", "Kit, pur & lijm": "Silikon, Piana i Klej", "Verf benodigdheden/attributen": "Akcesoria malarskie", "Kleding & schoenen": "Odzież i obuwie"
             }
         }
     };
 
     const aisleCategories = {
-        1: "Hout", 2: "Hout", 3: "Hout", 
-        4: "Deuren & Kozijnen", 5: "IJzerwaren", 
+        1: "Hout", 2: "Hout", 3: "Hout", 4: "Deuren & Kozijnen", 5: "IJzerwaren", 
         6: "Schroeven", 7: "Kit, pur & lijm", 8: "Verf benodigdheden/attributen", 
-        9: "Verf", 10: "Verf", 
-        11: "Gereedschap", 12: "Gereedschap", 
-        13: "Kleding & schoenen", 
-        14: "Sanitair", 15: "Sanitair", 
+        9: "Verf", 10: "Verf", 11: "Gereedschap", 12: "Gereedschap", 
+        13: "Kleding & schoenen", 14: "Sanitair", 15: "Sanitair", 
         16: "Elektra", 17: "Verwarming"
+    };
+    
+    const backAisleLabels = {
+        1: "HOUT", 2: "TUINHOUT", 3: "VUREN RUW/GESCHAAFD", 4: "VUREN GESCHAAFD/HOUT", 5: "HOUT",
+        6: "PLAATMATERIAAL HOUT", 7: "HOUT", 8: "PLAATMATERIAAL HOUT", 9: "BOUW", 10: "BOUW",
+        11: "GIPSEN/CEMENT/MORTELS", 12: "CEMENT/MORTELS/ZAND GRIND", 13: "STENEN/BLOKKEN",
+        14: "TEGELS/LIJMEN", 15: "TEGELS/LIJMEN/ISOLATIE", 16: "DAKBEDEKKING/DAKRAMEN", 17: "SANITAIR"
     };
 
     const specialLocations = [
@@ -786,15 +1004,33 @@
     let curLang = localStorage.getItem('bouwmaat_lang') || 'nl';
     let data = [];
     let currentCategory = 'all';
+    window.activeMapTarget = null; 
 
+    // Condensed fallback data to prevent truncation
     const fallbackData = [
-                   {
+            {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
             "Hoofdgroep": "Gereedschap",
             "Subgroep": "Afdekken",
             "Locatie2": "Pad 11 Links, Sectie 07"
+        },
+                {
+            "ArtikelNr.": "575266",
+            "Artikel omsch.": "Levelfix Voltpen EM100",
+            "Schaplocatie code": "KAS-023-0300",
+            "Hoofdgroep": "Gereedschap",
+            "Subgroep": "Meetgereedschap",
+            "Locatie2": "Pad KA Links, Sectie 23"
+        },
+           {
+            "ArtikelNr.": "820681",
+            "Artikel omsch.": "ABUS Overval Diskus RVS 120mm",
+            "Schaplocatie code": "05R-001-0350",
+            "Hoofdgroep": "Hang- en sluitwerk",
+            "Subgroep": "Sloten en cilinders",
+            "Locatie2": "Pad 05 Rechts, Sectie 01"
         },
         {
                "ArtikelNr.": "010519",
@@ -803,30 +1039,6 @@
             "Hoofdgroep": "Gereedschap",
             "Subgroep": "Handgereedschap",
             "Locatie2": "Pad 11 Rechts, Sectie 04"
-        },
-         {
-            "ArtikelNr.": "751591",
-            "Artikel omsch.": "Milwaukee Boutenschaar 60cm",
-            "Schaplocatie code": "11L-004-0120",
-            "Hoofdgroep": "Gereedschap",
-            "Subgroep": "Handgereedschap",
-            "Locatie2": "Pad 11 Links, Sectie 04"
-        },
-        {
-            "ArtikelNr.": "751592",
-            "Artikel omsch.": "Milwaukee Boutenschaar 36cm",
-            "Schaplocatie code": "11L-004-0110",
-            "Hoofdgroep": "Gereedschap",
-            "Subgroep": "Handgereedschap",
-            "Locatie2": "Pad 11 Links, Sectie 04"
-        },
-        {
-            "ArtikelNr.": "751595",
-            "Artikel omsch.": "Bouwmaat Schuurvel P180 230x280mm 3st",
-            "Schaplocatie code": "08R-004-0120",
-            "Hoofdgroep": "Verf",
-            "Subgroep": "Schildersgereedschap",
-            "Locatie2": "Pad 08 Rechts, Sectie 04"
         },
           {
             "ArtikelNr.": "10000006",
@@ -1414,6 +1626,55 @@
             "Subgroep": "Klimaatbeheersing",
             "Locatie2": "Pad 09 Rechts, Sectie 07"
         },
+         {
+            "ArtikelNr.": "751591",
+            "Artikel omsch.": "Milwaukee Boutenschaar 60cm",
+            "Schaplocatie code": "11L-004-0120",
+            "Hoofdgroep": "Gereedschap",
+            "Subgroep": "Handgereedschap",
+            "Locatie2": "Pad 11 Links, Sectie 04"
+        },
+        {
+            "ArtikelNr.": "751592",
+            "Artikel omsch.": "Milwaukee Boutenschaar 36cm",
+            "Schaplocatie code": "11L-004-0110",
+            "Hoofdgroep": "Gereedschap",
+            "Subgroep": "Handgereedschap",
+            "Locatie2": "Pad 11 Links, Sectie 04"
+        },
+        {
+            "ArtikelNr.": "751595",
+            "Artikel omsch.": "Bouwmaat Schuurvel P180 230x280mm 3st",
+            "Schaplocatie code": "08R-004-0120",
+            "Hoofdgroep": "Verf",
+            "Subgroep": "Schildersgereedschap",
+            "Locatie2": "Pad 08 Rechts, Sectie 04"
+        },
+
+         {
+            "ArtikelNr.": "751215",
+            "Artikel omsch.": "ProLine Gold Schuurpapier P120 Vel 230x280mm",
+            "Schaplocatie code": "08R-004-0130",
+            "Hoofdgroep": "Verf",
+            "Subgroep": "Schildersgereedschap",
+            "Locatie2": "Pad 08 Rechts, Sectie 04"
+        },
+        {
+            "ArtikelNr.": "751217",
+            "Artikel omsch.": "ProLine Gold Schuurpapier P150 Vel 230x280mm",
+            "Schaplocatie code": "08R-004-0090",
+            "Hoofdgroep": "Verf",
+            "Subgroep": "Schildersgereedschap",
+            "Locatie2": "Pad 08 Rechts, Sectie 04"
+        },
+        {
+            "ArtikelNr.": "751219",
+            "Artikel omsch.": "ProLine Gold Schuurpapier P180 Vel 230x280mm",
+            "Schaplocatie code": "08R-004-0170",
+            "Hoofdgroep": "Verf",
+            "Subgroep": "Schildersgereedschap",
+            "Locatie2": "Pad 08 Rechts, Sectie 04"
+        },
 
            {
             "ArtikelNr.": "749506",
@@ -1431,7 +1692,7 @@
             "Subgroep": "Schildersgereedschap",
             "Locatie2": "Pad 08 Links, Sectie 02"
         },
-        
+
         {
             "ArtikelNr.": "756149",
             "Artikel omsch.": "Knauf Brio Dekvloer 23 WF Gipsvezel Houtvezel 1200x600x23mm+10mm WF",
@@ -1904,9 +2165,7 @@
             "Hoofdgroep": "Eigen gebruik",
             "Subgroep": "Eigen gebruik diversen",
             "Locatie2": "Pad VM Links, Sectie 02"
-        }
-
-
+        },
 
     ];
 
@@ -1925,23 +2184,34 @@
     }
 
     function closeIntro() {
-        document.getElementById('introPage').classList.add('hidden');
+        const intro = document.getElementById('introPage');
+        if (intro) intro.classList.add('hidden');
+        
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
             vidPlayer.muted = true;
             vidPlayer.pause();
         }
-        document.getElementById('btnReset').style.display = '';
+        const resetBtn = document.getElementById('btnReset');
+        if (resetBtn) resetBtn.style.display = '';
     }
 
     function resetApp() {
         closeSelection(); 
-        document.getElementById('searchBox').value = '';
+        const searchBox = document.getElementById('searchBox');
+        if (searchBox) searchBox.value = '';
         currentCategory = 'all';
         renderCategoryChips();
         handleSearch(); 
-        document.getElementById('introPage').classList.remove('hidden');
-        document.getElementById('btnReset').style.display = 'none';
+        
+        toggleMapExpand(false);
+
+        const intro = document.getElementById('introPage');
+        if (intro) intro.classList.remove('hidden');
+        
+        const resetBtn = document.getElementById('btnReset');
+        if (resetBtn) resetBtn.style.display = 'none';
+        
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
             vidPlayer.play().catch(e => console.warn("Video play prevented:", e));
@@ -1949,23 +2219,38 @@
     }
 
     function setLang(lang) {
+        if (!i18n[lang]) lang = 'nl'; // Safety fallback
         curLang = lang;
         localStorage.setItem('bouwmaat_lang', lang);
+        
         document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = document.getElementById(`btn-${lang}`);
         if(activeBtn) activeBtn.classList.add('active');
-        document.querySelectorAll('.intro-lang-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.querySelectorAll('.intro-lang-toggles').forEach(btn => btn.classList.remove('active'));
         const activeIntroBtn = document.getElementById(`intro-btn-${lang}`);
         if(activeIntroBtn) activeIntroBtn.classList.add('active');
+        
         const t = i18n[lang];
-        document.getElementById('introTitle').innerHTML = t.introTitle;
-        document.getElementById('introSlogan').innerText = t.introSlogan;
-        document.getElementById('introNavTitle').innerText = t.introNav;
-        document.getElementById('introText').innerText = t.introP;
-        document.getElementById('introBtnText').innerText = t.introBtn;
-        document.getElementById('searchBox').placeholder = t.placeholder;
-        document.getElementById('btnReset').innerText = t.reset;
-        document.getElementById('btnSearch').innerHTML = window.innerWidth < 400 ? "🔍" : t.search;
+        
+        const elIntroTitle = document.getElementById('introTitle');
+        if(elIntroTitle) elIntroTitle.innerHTML = t.introTitle;
+        const elIntroSlogan = document.getElementById('introSlogan');
+        if(elIntroSlogan) elIntroSlogan.innerText = t.introSlogan;
+        const elIntroNavTitle = document.getElementById('introNavTitle');
+        if(elIntroNavTitle) elIntroNavTitle.innerText = t.introNav;
+        const elIntroText = document.getElementById('introText');
+        if(elIntroText) elIntroText.innerText = t.introP;
+        const elIntroBtnText = document.getElementById('introBtnText');
+        if(elIntroBtnText) elIntroBtnText.innerText = t.introBtn;
+        
+        const elSearchBox = document.getElementById('searchBox');
+        if(elSearchBox) elSearchBox.placeholder = t.placeholder;
+        const elBtnReset = document.getElementById('btnReset');
+        if(elBtnReset) elBtnReset.innerText = t.reset;
+        const elBtnSearch = document.getElementById('btnSearch');
+        if(elBtnSearch) elBtnSearch.innerHTML = window.innerWidth < 400 ? "🔍" : t.search;
+        
         document.documentElement.style.setProperty('--txt-entrance', `"${t.entrance}"`);
         const lblService = document.getElementById('label-service');
         if(lblService) lblService.innerText = t.serviceDesk;
@@ -1975,8 +2260,22 @@
         if(lblKassa) lblKassa.innerText = t.kassa;
         const lblCoffee = document.getElementById('label-coffee');
         if(lblCoffee) lblCoffee.innerText = t.coffeeCorner;
+        const lblPaint = document.getElementById('label-paint');
+        if(lblPaint) lblPaint.innerText = t.paintDesk;
         const lblSpell = document.getElementById('spellCheckPrefix');
         if(lblSpell) lblSpell.innerText = t.didYouMean;
+        
+        // Update map labels with new translations
+        document.querySelectorAll('.cat-label').forEach(el => {
+            const cat = el.dataset.cat;
+            el.innerText = (t.groups && t.groups[cat]) ? t.groups[cat].toUpperCase() : cat.toUpperCase();
+        });
+        document.querySelectorAll('.back-label').forEach(el => {
+            const backId = el.dataset.back;
+            el.innerText = (t.backLabels && t.backLabels[backId]) ? t.backLabels[backId].toUpperCase() : (backAisleLabels[backId] || "").toUpperCase();
+        });
+        const elFooterRights = document.getElementById('footerRights');
+        if (elFooterRights) elFooterRights.innerText = t.rightsReserved;
         
         // Update special locations translations
         const awLoc = specialLocations.find(s => s.id === '0AW');
@@ -1989,7 +2288,8 @@
         const videoSrcs = {
             nl: "dutch1.mp4",
             en: "eng.mp4",
-            uk: "uk1.mp4"
+            uk: "uk1.mp4",
+            pl: "eng.mp4"
         };
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
@@ -2015,7 +2315,6 @@
         allChip.onclick = () => selectCategory('all');
         container.appendChild(allChip);
 
-        // List of all master categories so they always show up in the filter menu
         const allCategories = [
             "Bouwmaterialen", "Hout", "Gereedschap", "Bevestigingsmateriaal", "Verf", 
             "Sanitair", "Elektra", "Verwarming en klimaat", "Lijm, kit en pur",
@@ -2023,14 +2322,12 @@
             "Keukens", "Persoonlijke beschermings", "Eigen gebruik"
         ];
         
-        // Categories to explicitly hide
         const hiddenCategories = [
             "IJzerwaren", "Bouwstoffen", "Verwarming", "Deuren & Kozijnen", 
             "Kleding & schoenen", "Emballage", "Lokaal", "Algemeen",
             "Schoonmaak, bedrijfswagen", "Schoonmaak bedrijfswagen"
         ];
         
-        // Combine predefined list with any dynamic ones found in the data, filtering out hidden ones
         const dataCats = [...new Set(data.map(item => item["Hoofdgroep"]))];
         const combinedCats = [...new Set([...allCategories, ...dataCats])].filter(cat => !hiddenCategories.includes(cat));
 
@@ -2038,7 +2335,7 @@
             if (!cat) return;
             const chip = document.createElement('div');
             chip.className = `category-chip ${currentCategory === cat ? 'active' : ''}`;
-            const transCat = t.groups[cat] || cat;
+            const transCat = (t.groups && t.groups[cat]) ? t.groups[cat] : cat;
             chip.innerHTML = `${icons[cat] || '📦'} ${transCat}`;
             chip.onclick = () => selectCategory(cat);
             container.appendChild(chip);
@@ -2047,41 +2344,30 @@
 
     function selectCategory(cat) {
         const container = document.getElementById('categoryChips');
-        const currentScroll = container ? container.scrollLeft : 0; // Save exact scroll position
+        const currentScroll = container ? container.scrollLeft : 0; 
         
         currentCategory = cat;
         renderCategoryChips();
         handleSearch();
         
-        // Restore scroll position so it doesn't jump or move to the left
         if (document.getElementById('categoryChips')) {
             document.getElementById('categoryChips').scrollLeft = currentScroll;
         }
     }
 
-    const icons = { 
-        "Gereedschap": "🛠️", "Hout": "🪵", "IJzerwaren": "🔩", "Sanitair": "🚽", "Algemeen": "🏷️",
-        "Elektra": "🔌", "Verf": "🎨", "Verwarming": "🌡️", "Bouwstoffen": "🧱",
-        "Eigen gebruik": "🏢", "Lokaal": "📍", "Verlichting": "💡", "Hang- en sluitwerk": "🔐",
-        "Verwarming en klimaat": "🌡️", "Emballage": "📦", "Persoonlijke beschermings": "🦺",
-        "Schoonmaak bedrijfswagen": "🧽", "Schoonmaak, bedrijfswagen": "🧽", "Keukens": "🍳", "Lijm, kit en pur": "🧴",
-        "Bevestigingsmateriaal": "🔩", "Bouwmaterialen": "🧱", "Deuren & Kozijnen": "🚪", "Kleding & schoenen": "🥾"
-    };
-
     function boot() {
         window.dictSet = new Set();
         data.forEach(item => {
             if(!item._searchStr) {
-                // Include Categories and Subcategories in the invisible search string!
-                const fullText = `${item["ArtikelNr."]} ${item["Schaplocatie code"]} ${item["Artikel omsch."]} ${item["Hoofdgroep"] || ''} ${item["Subgroep"] || ''}`;
+                const fullText = `${item["ArtikelNr."] || ''} ${item["Schaplocatie code"] || ''} ${item["Artikel omsch."] || ''} ${item["Hoofdgroep"] || ''} ${item["Subgroep"] || ''}`;
                 item._searchStr = normalizeStr(fullText);
-                item._cleanArt = item["ArtikelNr."].toString().replace(/[-\s]/g, '').toLowerCase();
-                item._nameNorm = normalizeStr(item["Artikel omsch."]);
+                item._cleanArt = (item["ArtikelNr."] || '').toString().replace(/[-\s]/g, '').toLowerCase();
+                item._nameNorm = normalizeStr(item["Artikel omsch."] || '');
                 item._nameWords = item._nameNorm.split(/\s+/).filter(w => w.length > 0);
             }
             item._nameWords.forEach(w => {
-                let cw = w.replace(/[^a-z]/g, '');
-                if (cw.length > 3) window.dictSet.add(cw);
+                let cw = w.replace(/[^a-z0-9]/g, '');
+                if (cw.length >= 2) window.dictSet.add(cw); // Verzamelt nu ook kortere woorden/getallen voor suggesties
             });
         });
         window.dictArray = Array.from(window.dictSet);
@@ -2089,69 +2375,151 @@
         const grid = document.getElementById('mapGrid'), svg = document.getElementById('pathLayer'), char = document.getElementById('mainChar');
         const cashiers = document.getElementById('cashierZone'), coffee = document.getElementById('coffeeCorner');
         const backWall = document.getElementById('p-0AW');
-        svg.remove(); char.remove(); cashiers.remove(); coffee.remove(); backWall.remove();
+        if(svg) svg.remove(); 
+        if(char) char.remove(); 
+        if(cashiers) cashiers.remove(); 
+        if(coffee) coffee.remove(); 
+        if(backWall) backWall.remove();
+        
+        if (!grid) return; 
+
+        // Generate Section Numbers
+        let bottomSecs = ''; for(let s=1; s<=6; s++) bottomSecs += `<span>${s}</span>`;
+        let topSecs = ''; for(let s=7; s<=17; s++) topSecs += `<span>${s}</span>`;
+        
+        // Solid wall stretches (1 through 17)
+        let allSecs = ''; for(let s=1; s<=17; s++) allSecs += `<span>${s}</span>`;
+
+        // Left Boundary Wall (Aisle 1 Left - Stretches all the way to entrance wall)
+        const lw = document.createElement('div');
+        lw.className = 'aisle left-wall-aisle';
+        lw.id = 'p-1L';
+        lw.style.marginBottom = '-75px'; // Extends the wall down into the entrance padding
+        lw.innerHTML = `
+            <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick(event, '1L', 'full')">
+                <div class="left-face"></div>
+                <div class="aisle-category-label cat-label" data-cat="Hout">HOUT</div>
+                <div class="sec-container">${allSecs}</div>
+            </div>
+            <div class="aisle-num" id="badge-1L">1L</div>
+        `;
+        grid.appendChild(lw);
+
         for (let i = 1; i <= 17; i++) {
             const div = document.createElement('div');
-            div.className = 'aisle'; div.id = `p-${i}`; div.dataset.num = i;
-            div.innerHTML = `<div class="aisle-num">${i}</div>`;
-            div.onclick = () => handleMapClick(i);
+            div.className = 'aisle' + (i === 17 ? ' right-wall-aisle' : ''); 
+            div.id = `p-${i}`; div.dataset.num = i;
+            
+            let colorClass = '';
+            if (i >= 3 && i <= 13) {
+                colorClass = 'front-orange';
+            }
+            
+            let catLabelTop = backAisleLabels[i] ? `<div class="aisle-category-label back-label" data-back="${i}">${backAisleLabels[i]}</div>` : '';
+            let catLabelBottom = aisleCategories[i] ? `<div class="aisle-category-label cat-label" data-cat="${aisleCategories[i]}">${aisleCategories[i]}</div>` : '';
+            
+            if (i === 9) {
+                div.innerHTML = `
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'top')">
+                        <div class="left-face"></div>
+                        ${catLabelTop}
+                        <div class="sec-container">${topSecs}</div>
+                    </div>
+                    <div class="aisle-part bottom ${colorClass}" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'bottom')">
+                        <div class="left-face"></div>
+                        ${catLabelBottom}
+                        <div class="sec-container">${bottomSecs}</div>
+                    </div>
+                    <div class="paint-table" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'paint')">
+                        <div class="desk-label toggle-label" id="label-paint" style="top: 100%; left: 50%;">Verfbalie</div>
+                    </div>
+                    <div class="aisle-num" style="bottom: -45px;">${i}</div>
+                `;
+            } else if (i === 17) {
+                // Aisle 17 is one continuous block on the right wall
+                div.innerHTML = `
+                    <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'full')">
+                        <div class="left-face"></div>
+                        <div class="aisle-category-label cat-label" data-cat="Sanitair">SANITAIR</div>
+                        <div class="sec-container">${allSecs}</div>
+                    </div>
+                    <div class="aisle-num">${i}</div>
+                `;
+            } else {
+                // All standard aisles split into top and bottom
+                div.innerHTML = `
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'top')">
+                        <div class="left-face"></div>
+                        ${catLabelTop}
+                        <div class="sec-container">${topSecs}</div>
+                    </div>
+                    <div class="aisle-part bottom ${colorClass}" onclick="event.stopPropagation(); handleMapClick(event, '${i}', 'bottom')">
+                        <div class="left-face"></div>
+                        ${catLabelBottom}
+                        <div class="sec-container">${bottomSecs}</div>
+                    </div>
+                    <div class="aisle-num">${i}</div>
+                `;
+            }
             grid.appendChild(div);
         }
+
         const entLabel = document.createElement('div');
         entLabel.className = 'entrance-label'; entLabel.id = 'entranceText';
-        grid.append(backWall, cashiers, coffee, svg, entLabel, char);
+
+        if (backWall) {
+            // Horizontal shelf positions along the back wall
+            let bwSecs = '';
+            for(let s=1; s<=17; s++) {
+                bwSecs += `<span data-sec="${s}" style="transform: rotateX(-35deg) translateZ(20px) translateY(-15px); font-size: 0.55rem; padding: 3px 6px;">${s}</span>`;
+            }
+            backWall.innerHTML = `<div class="sec-container" style="flex-direction: row; width: 100%; height: 100%; justify-content: space-evenly; align-items: center; padding: 0 10px;">${bwSecs}</div>`;
+            grid.appendChild(backWall);
+        }
+        
+        if (cashiers) grid.appendChild(cashiers);
+        if (coffee) grid.appendChild(coffee);
+        if (svg) grid.appendChild(svg);
+        grid.appendChild(entLabel);
+        if (char) grid.appendChild(char);
+        
         const dimBtn = document.getElementById('btnDimToggle');
         if(dimBtn) dimBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        setLang(curLang); 
-        setTimeout(() => {
-            const sPos = 270;
-            entLabel.style.left = `calc(${sPos}px - 22px)`; entLabel.style.bottom = `0%`;
-            moveChar('entrance', false, false);
-        }, 50); 
-        document.getElementById('searchBox').addEventListener('input', handleSearch);
-        document.getElementById('searchBox').addEventListener('keydown', handleKeys);
-        window.addEventListener('resize', () => setLang(curLang));
         
-        setupImageZoom(); 
-    }
-
-    function setupImageZoom() {
-        const modal = document.getElementById('imageModal');
-        const img = document.getElementById('modalImage');
-
-        function handlePan(e) {
-            if (!img.classList.contains('is-zoomed')) return;
-            
-            let clientX = e.clientX;
-            let clientY = e.clientY;
-            
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            }
-
-            if (clientX === undefined || clientY === undefined) return;
-
-            const x = (clientX / window.innerWidth) * 100;
-            const y = (clientY / window.innerHeight) * 100;
-            img.style.transformOrigin = `${x}% ${y}%`;
-        }
-
-        img.addEventListener('click', (e) => {
-            e.stopPropagation();
-            img.classList.toggle('is-zoomed');
-            if (img.classList.contains('is-zoomed')) {
-                handlePan(e);
+        setLang(curLang); 
+        
+        setTimeout(() => {
+            const aisle5 = document.getElementById('p-5');
+            const aisle6 = document.getElementById('p-6');
+            let entranceX = 270;
+            if (aisle5 && aisle6) {
+                entranceX = aisle5.offsetLeft + aisle5.offsetWidth + (aisle6.offsetLeft - (aisle5.offsetLeft + aisle5.offsetWidth)) / 2;
             } else {
-                img.style.transformOrigin = 'center center';
+                const centerAisle = document.getElementById('p-9');
+                entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
             }
-        });
-
-        modal.addEventListener('mousemove', handlePan);
-        modal.addEventListener('touchmove', handlePan, {passive: true});
+            window.entrancePosX = entranceX;
+            // 3px spacing to the left of the character
+            entLabel.style.left = `calc(${entranceX}px - 12px)`; 
+            entLabel.style.bottom = `0%`;
+            entLabel.onclick = closeSelection;
+            moveChar('entrance', false, false, null, null);
+        }, 50); 
+        
+        const elSearchBox = document.getElementById('searchBox');
+        if(elSearchBox) {
+            elSearchBox.addEventListener('input', handleSearch);
+            elSearchBox.addEventListener('keydown', handleKeys);
+        }
+        window.addEventListener('resize', () => setLang(curLang));
     }
 
-    // Levenshtein distance for fuzzy matching (Typo Tolerance)
+    function toggleDimMode() {
+        document.body.classList.toggle('dark-mode');
+        const dimBtn = document.getElementById('btnDimToggle');
+        if(dimBtn) dimBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    }
+
     function levenshteinDistance(a, b) {
         if (!a || !b) return (a || b).length;
         const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
@@ -2160,53 +2528,33 @@
         for (let j = 1; j <= b.length; j += 1) {
             for (let i = 1; i <= a.length; i += 1) {
                 const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
-                matrix[j][i] = Math.min(
-                    matrix[j][i - 1] + 1, // deletion
-                    matrix[j - 1][i] + 1, // insertion
-                    matrix[j - 1][i - 1] + indicator // substitution
-                );
+                matrix[j][i] = Math.min(matrix[j][i - 1] + 1, matrix[j - 1][i] + 1, matrix[j - 1][i - 1] + indicator);
             }
         }
         return matrix[b.length][a.length];
     }
 
     function normalizeStr(str) {
-        return str.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            .replace(/[-]/g, ' ');
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[-]/g, ' ');
     }
 
     let popupTimer;
     function showAislePopup(num) {
         if(num === 'SPECIAL' || num === 'entrance') return;
+        if(num === 'KAS' || num === 'KOFFIE' || num === 'paint') return; // Redundant popup suppressed since 3D labels handle it beautifully
         const popup = document.getElementById('aislePopup');
-        let targetEl;
-        let popupText = "";
-        const t = i18n[curLang];
-        if (num === 'KAS') {
-            targetEl = document.getElementById('cashierZone');
-            popupText = `<span style="color:var(--accent)">${t.kassa}</span>`;
-        } else if (num === 'VMB') {
-            targetEl = document.getElementById('p-8');
-            popupText = `<span style="color:var(--accent)">VERF BALIE</span>`;
-        } else if (num === 'KOFFIE') {
-            targetEl = document.getElementById('coffeeCorner');
-            popupText = `<span style="color:var(--accent)">KOFFIE</span>`;
-        } else if (num === '0AW') {
-            targetEl = document.getElementById('p-0AW');
-            popupText = `<span style="color:var(--accent)">${t.backWallShort}</span>`;
-        } else if (num === 'LIJ') {
-            targetEl = document.getElementById('p-3');
-            popupText = `<span style="color:var(--accent)">LIJSTEN</span>`;
-        } else if (num === 'PBM') {
-            targetEl = document.getElementById('p-13');
-            popupText = `<span style="color:var(--accent)">PBM</span>`;
-        } else {
+        if(!popup) return;
+        let targetEl, popupText = "";
+        const t = i18n[curLang] || i18n['nl'];
+        
+        if (num === '0AW') { targetEl = document.getElementById('p-0AW'); popupText = t.backWallShort; }
+        else if (!isNaN(num) || num === '1L') {
             targetEl = document.getElementById(`p-${num}`);
-            const cat = aisleCategories[num] || "Algemeen";
-            const translatedCat = t.groups[cat] || cat;
-            popupText = `<span style="color:var(--accent)">${t.pad} ${num}:</span> ${translatedCat}`;
+            const displayNum = num === '1L' ? '1' : num;
+            const translatedCat = (t.groups && t.groups[aisleCategories[displayNum]]) ? t.groups[aisleCategories[displayNum]] : (aisleCategories[displayNum] || "Algemeen");
+            popupText = `${t.pad} ${num}: ${translatedCat}`;
         }
+        
         if(!targetEl) return;
         const rect = targetEl.getBoundingClientRect();
         popup.style.left = `${rect.left + (rect.width / 2)}px`;
@@ -2217,313 +2565,823 @@
         popupTimer = setTimeout(() => { popup.classList.remove('show'); }, 2500);
     }
 
-    function handleMapClick(id) {
-        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
-        document.getElementById(`p-${id}`)?.classList.add('active');
-        showAislePopup(id);
-        moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE');
+    function handleMapClick(e, id, part) {
+        const wrapper = document.getElementById('mapWrapper');
+        const isExpanded = wrapper.classList.contains('map-expanded-overlay');
+        
+        const originalPart = part;
+        // On the first (compact) map, do not divide the aisle section when clicked
+        if (!isExpanded && (part === 'top' || part === 'bottom')) {
+            part = 'full';
+        }
+
+        document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
+            x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right');
+        });
+        document.querySelectorAll('.aisle-part').forEach(x => x.classList.remove('active-part'));
+        document.querySelectorAll('.highlighted-sec').forEach(span => {
+            span.classList.remove('highlighted-sec');
+            if (span.dataset.origText) span.innerText = span.dataset.origText;
+        });
+        document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+        
+        const el = document.getElementById(`p-${id}`);
+        let sideForLabel = 'L';
+        let isRightClick = false;
+        
+        if (e && e.currentTarget) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            isRightClick = (e.clientX - rect.left) > (rect.width / 2);
+        }
+        
+        let pathNum = id;
+        let sideStr = 'Rechts';
+        let secToHighlight = null;
+
+        if (id !== '0AW' && id !== 'KAS' && id !== 'KOFFIE') {
+            if (e && e.currentTarget && originalPart !== 'paint') {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickY = e.clientY - rect.top;
+                const ratio = 1 - Math.max(0, Math.min(1, clickY / rect.height)); 
+                
+                if (originalPart === 'top') {
+                    secToHighlight = (7 + Math.floor(ratio * 10.99)).toString();
+                } else if (originalPart === 'bottom') {
+                    secToHighlight = (1 + Math.floor(ratio * 5.99)).toString();
+                } else if (originalPart === 'full') {
+                    secToHighlight = (1 + Math.floor(ratio * 16.99)).toString();
+                }
+            } else if (originalPart === 'paint') {
+                secToHighlight = '1';
+            } else {
+                secToHighlight = '8'; 
+            }
+        }
+
+        if(el) {
+            el.classList.add('active-num');
+            
+            if (id === '1L') {
+                el.classList.add('active-side-right');
+                sideForLabel = 'R';
+                pathNum = '1';
+                sideStr = 'Links';
+            } else if (id === '17') {
+                el.classList.add('active-side-left');
+                sideForLabel = 'L';
+                pathNum = '17';
+                sideStr = 'Rechts';
+            } else {
+                if (part === 'paint') {
+                    el.classList.add('active-side-left');
+                    sideForLabel = 'L';
+                    pathNum = '9';
+                    sideStr = 'Rechts';
+                } else if (isRightClick) {
+                    el.classList.add('active-side-right');
+                    sideForLabel = 'R';
+                    pathNum = (parseInt(id) + 1).toString();
+                    sideStr = 'Links';
+                } else {
+                    el.classList.add('active-side-left');
+                    sideForLabel = 'L';
+                    pathNum = id;
+                    sideStr = 'Rechts';
+                }
+            }
+            
+            if (part === 'top') {
+                el.classList.add('active-top');
+                const pt = el.querySelector('.aisle-part.top');
+                if(pt) pt.classList.add('active-part');
+            } else if (part === 'bottom') {
+                el.classList.add('active-bottom');
+                const pt = el.querySelector('.aisle-part.bottom');
+                if(pt) pt.classList.add('active-part');
+            } else if (id == 9 && part === 'paint') {
+                el.classList.add('active-bottom'); 
+                const pt = el.querySelector('.aisle-part.bottom');
+                if(pt) pt.classList.add('active-part');
+                const lbl = document.getElementById('label-paint');
+                if (lbl) lbl.classList.add('active-label');
+            } else {
+                el.classList.add('active'); // Catches 'full' triggers like Aisle 17 or unexpanded maps
+                el.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
+            }
+
+            if (secToHighlight) {
+                el.querySelectorAll('.sec-container span').forEach(span => {
+                    if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                    if (span.dataset.origText === secToHighlight) {
+                        span.classList.add('highlighted-sec');
+                        span.innerText = span.dataset.origText + ' ' + sideForLabel; 
+                    } else {
+                        span.innerText = span.dataset.origText;
+                    }
+                });
+            }
+        } else if (id === '0AW' || id === 'KAS' || id === 'KOFFIE') {
+            const specialEl = document.getElementById(id === '0AW' ? 'p-0AW' : (id === 'KAS' ? 'cashierZone' : 'coffeeCorner'));
+            if(specialEl) specialEl.classList.add('active');
+
+            if (id === '0AW') {
+                specialEl.querySelectorAll('.sec-container span').forEach(span => {
+                    if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                    if (span.dataset.origText === '9' || span.dataset.sec === '9') {
+                        span.classList.add('highlighted-sec');
+                    } else {
+                        span.innerText = span.dataset.origText;
+                    }
+                });
+            }
+
+            if (id === 'KAS') {
+                const lbl = document.getElementById('label-' + (part || 'kassa'));
+                if (lbl) lbl.classList.add('active-label');
+            } else if (id === 'KOFFIE') {
+                const lbl = document.getElementById('label-coffee');
+                if (lbl) lbl.classList.add('active-label');
+            }
+        }
+        
+        window.activeMapTarget = { pad: pathNum, sec: secToHighlight, side: sideStr, subTarget: part };
+        
+        // Single click just moves char. Double click handles expansion.
+        moveChar(pathNum, true, pathNum !== 'KAS' && pathNum !== 'KOFFIE', secToHighlight, sideStr);
+    }
+
+    function toggleMapExpand(expand) {
+        const wrapper = document.getElementById('mapWrapper');
+        const path = document.getElementById('guideLine');
+        if (!wrapper) return;
+        
+        if (path) path.setAttribute('d', ''); // Clear path before animating
+        
+        if (expand) {
+            wrapper.classList.add('map-expanded-overlay');
+        } else {
+            wrapper.classList.remove('map-expanded-overlay');
+        }
+        
+        setTimeout(() => {
+            if (window.activeMapTarget) {
+                moveChar(window.activeMapTarget.pad, true, true, window.activeMapTarget.sec, window.activeMapTarget.side);
+            } else {
+                moveChar('entrance', false, false, null, null);
+            }
+        }, 450); 
     }
 
     function clearSearch() {
-        closeSelection(); document.getElementById('searchBox').value = '';
-        currentCategory = 'all'; renderCategoryChips();
-        document.getElementById('spellCheckArea').style.display = 'none';
-        document.getElementById('searchBox').focus(); handleSearch(); 
+        closeSelection(); 
+        const searchBox = document.getElementById('searchBox');
+        const ghost = document.getElementById('searchGhost');
+        if(searchBox) {
+            searchBox.value = '';
+            searchBox.focus(); 
+        }
+        if (ghost) {
+            ghost.innerHTML = '';
+            ghost.dataset.suggestion = '';
+        }
+        currentCategory = 'all'; 
+        renderCategoryChips();
+        handleSearch(); 
     }
 
-    let searchTimeout = null;
     function handleSearch() {
         const input = document.getElementById('searchBox');
-        const rawVal = input.value; 
-        const val = rawVal.trim(); 
+        if (!input) return; 
+        const val = input.value; 
+        const trimVal = val.trim();
         const app = document.getElementById('mainApp');
         const ghost = document.getElementById('searchGhost');
         const clearBtn = document.getElementById('clearBtn');
-        const counter = document.getElementById('resultCount');
-
-        clearBtn.style.display = (val || currentCategory !== 'all') ? 'flex' : 'none';
-
-        if(!val && currentCategory === 'all') { 
-            ghost.textContent = ""; app.classList.remove('searching'); counter.textContent = ""; 
-            clearTimeout(searchTimeout); return; 
-        }
+        if(clearBtn) clearBtn.style.display = (trimVal || currentCategory !== 'all') ? 'flex' : 'none';
         
-        app.classList.add('searching');
-
-        // Ghost text auto-completion logic (uses raw un-trimmed value to preserve exact spacing alignment)
-        if (rawVal.length > 1) {
-            const normRaw = normalizeStr(rawVal);
-            const suggestionItem = data.find(i => i._nameNorm.startsWith(normRaw) && (currentCategory === 'all' || i["Hoofdgroep"] === currentCategory));
-            ghost.textContent = suggestionItem ? rawVal + suggestionItem["Artikel omsch."].substring(rawVal.length) : "";
-        } else { 
-            ghost.textContent = ""; 
+        // --- 1. Autocomplete / Suggestion Logic ---
+        if (val && val === val.trimStart()) {
+            const tokens = val.toLowerCase().split(/\s+/);
+            const lastToken = tokens[tokens.length - 1];
+            const normLast = lastToken.replace(/[^a-z0-9]/g, '');
+            
+            if (normLast.length >= 1) { // Nu suggesties vanaf de allereerste letter
+                const match = window.dictArray.find(w => w.startsWith(normLast));
+                if (match) {
+                    const suggestionSuffix = match.substring(normLast.length);
+                    const safeVal = val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    ghost.innerHTML = `<span style="visibility:hidden;">${safeVal}</span>${suggestionSuffix}`;
+                    ghost.dataset.suggestion = val + suggestionSuffix;
+                } else {
+                    ghost.innerHTML = ""; ghost.dataset.suggestion = "";
+                }
+            } else {
+                ghost.innerHTML = ""; ghost.dataset.suggestion = "";
+            }
+        } else {
+            ghost.innerHTML = ""; ghost.dataset.suggestion = "";
         }
 
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => { executeHeavySearch(val, normalizeStr(val), counter, currentCategory); }, 100);
+        if(!trimVal && currentCategory === 'all') { 
+            if(ghost) ghost.innerHTML = "";
+            if(app) app.classList.remove('searching'); return; 
+        }
+        if(app) app.classList.add('searching');
+        executeHeavySearch(trimVal, normalizeStr(trimVal), document.getElementById('resultCount'), currentCategory);
     }
 
     function executeHeavySearch(originalVal, normVal, counter, catFilter) {
-        const t = i18n[curLang]; 
+        const t = i18n[curLang] || i18n['nl']; 
         const list = document.getElementById('resultsList');
-        const tokens = normVal.split(/\s+/).filter(w => w.length > 0);
-        const rawCodeSearch = originalVal.replace(/[-\s]/g, '').toLowerCase();
+        if (!list) return;
         
-        const spellArea = document.getElementById('spellCheckArea');
-        const spellSuggestion = document.getElementById('spellCheckSuggestion');
-
-        if (tokens.length === 0 && catFilter === 'all') {
-             list.innerHTML = "";
-             spellArea.style.display = 'none';
-             return;
-        }
-
-        // Spell checking logic
-        let correctedTokens = tokens.map(token => {
-            let cleanToken = token.replace(/[^a-z]/g, '');
-            if (cleanToken.length <= 3) return token;
-            if (window.dictSet.has(cleanToken)) return token;
-            
-            let bestMatch = cleanToken;
-            let minDist = 2; // Maximum allowable typos
-            
-            for (let word of window.dictArray) {
-                if (Math.abs(word.length - cleanToken.length) > 2) continue;
-                if (word[0] !== cleanToken[0] && word[1] !== cleanToken[1]) continue; // Quick heuristic to vastly speed up loop
-                
-                let dist = levenshteinDistance(cleanToken, word);
-                if (dist < minDist) { 
-                    minDist = dist;
-                    bestMatch = word;
-                }
-            }
-            return token.replace(cleanToken, bestMatch);
+        const tokens = normVal.split(/\s+/).filter(w => w.length > 0);
+        let results = data.filter(item => {
+            if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) return false;
+            return tokens.every(tok => item._searchStr.includes(tok));
         });
-
-        let correctedString = correctedTokens.join(" ");
-        if (correctedString !== normVal && tokens.length > 0) {
-            spellArea.style.display = 'flex';
-            spellSuggestion.textContent = correctedString;
-            spellArea.onclick = () => {
-                document.getElementById('searchBox').value = correctedString;
-                handleSearch();
-            };
-        } else {
-            spellArea.style.display = 'none';
-        }
-
-        // Pre-compile Regex for immense speed optimization inside the loop
-        const compiledTokens = tokens.map(token => ({
-            text: token,
-            len: token.length,
-            exact: new RegExp(`\\b${token}\\b`, 'i'),
-            prefix: new RegExp(`\\b${token}`, 'i')
-        }));
-
-        const results = data.reduce((acc, item) => {
-            if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) return acc;
-            
-            let score = 0;
-            const target = item._searchStr, name = item._nameNorm, nameWords = item._nameWords;
-            
-            // 1. Core ID/Name Exact Targeting
-            if (item._cleanArt === rawCodeSearch) score += 10000;
-            else if (item._cleanArt.includes(rawCodeSearch) && rawCodeSearch.length > 2) score += 2000;
-            
-            if (name.startsWith(normVal)) score += 3000;
-            else if (name.includes(normVal)) score += 1000;
-
-            let tokensFound = 0;
-            
-            // 2. Tokenized Smart Matching
-            compiledTokens.forEach(tInfo => {
-                let tokenScore = 0;
-                
-                // Exact word match
-                if (tInfo.exact.test(target)) tokenScore = 500;
-                // Prefix word match (e.g. typing "schr" for "schroef")
-                else if (tInfo.prefix.test(target)) tokenScore = 200;
-                // Substring match
-                else if (target.includes(tInfo.text)) tokenScore = 50;
-                // Fuzzy match for longer words (Typo Tolerance)
-                else if (tInfo.len >= 4 && nameWords) {
-                    let minDistance = 999;
-                    for (let word of nameWords) {
-                        if (Math.abs(word.length - tInfo.len) > 2) continue; // skip calculations for vast length diffs
-                        const dist = levenshteinDistance(word, tInfo.text);
-                        if (dist < minDistance) minDistance = dist;
-                    }
-                    if (minDistance === 1) tokenScore = 150; // 1 typo allowed
-                    else if (tInfo.len >= 7 && minDistance === 2) tokenScore = 100; // 2 typos allowed for long words
-                }
-
-                if (tokenScore > 0) {
-                    tokensFound++;
-                    score += tokenScore;
-                }
+        
+        // --- 2. Typo Tolerance / Fuzzy Search Fallback ---
+        if (results.length === 0 && tokens.length > 0) {
+            results = data.filter(item => {
+                if (catFilter !== 'all' && item["Hoofdgroep"] !== catFilter) return false;
+                return tokens.every(tok => {
+                    if (item._searchStr.includes(tok)) return true;
+                    if (tok.length <= 2) return false; 
+                    return item._nameWords.some(w => {
+                        if (w.length <= 2 || Math.abs(w.length - tok.length) > 2) return false;
+                        return levenshteinDistance(tok, w) <= 1; 
+                    });
+                });
             });
-
-            // Filtering: Require at least 75% of words to match/fuzzy-match unless there is a strong code match
-            const matchRatio = tokens.length > 0 ? tokensFound / tokens.length : 1;
-            if (tokens.length > 0 && matchRatio < 0.75 && score < 2000) return acc;
-            
-            if (score > 0 || (tokens.length === 0 && catFilter !== 'all')) {
-                acc.push({ item, score });
-            }
-            return acc;
-        }, []);
-
-        results.sort((a, b) => b.score - a.score || a.item["Artikel omsch."].localeCompare(b.item["Artikel omsch."]));
+        }
+        
+        if (counter) {
+            counter.innerText = `${results.length} ${results.length === 1 ? t.resFoundSingular : t.resFoundPlural}`;
+        }
+        
         if (results.length === 0) {
-            counter.textContent = `0 ${t.resFoundPlural}`;
-            list.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--text-muted);"><b style="font-size: 1.2rem; color: var(--text-main);">${t.noResTitle} "${originalVal}"</b><p>${t.noResDesc}</p></div>`;
+            list.innerHTML = `<div style="text-align:center; padding: 40px; font-weight: bold; color: var(--text-muted);">${t.noResTitle} "${originalVal.replace(/</g, "&lt;")}"</div>`;
             return;
         }
-        counter.textContent = `${results.length} ${results.length > 1 ? t.resFoundPlural : t.resFoundSingular}`;
-        const MAX_RESULTS = 40, displayMatches = results.slice(0, MAX_RESULTS);
-        const regex = tokens.length > 0 ? new RegExp(`(${tokens.map(tk => tk.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi') : null;
-        const hl = (txt) => (regex && originalVal) ? txt.toString().replace(regex, `<mark>$1</mark>`) : txt;
-        
-        list.innerHTML = displayMatches.map(({item}) => {
-            const locStr = (item["Locatie2"] + " " + item["Schaplocatie code"]).toUpperCase();
-            const matchedSpecial = specialLocations.find(s => locStr.includes(s.id));
-            let padDisplay, padArg, sideStr, printLoc;
-            if (matchedSpecial) {
-                padDisplay = matchedSpecial.short; printLoc = matchedSpecial.long; padArg = matchedSpecial.id; sideStr = ""; 
-            } else {
-                const padNumMatch = item["Locatie2"].match(/\d+/), pad = padNumMatch ? parseInt(padNumMatch[0]) : 7;
-                padDisplay = `P${pad}`; printLoc = `${t.pad} ${pad}`; padArg = pad; sideStr = item["Locatie2"].includes("Rechts") ? t.right : t.left;
-            }
-            const secNum = item["Locatie2"].match(/Sectie\s+(\d+)/i)?.[1] || "01";
-            const safeArgPad = typeof padArg === 'string' ? `'${padArg}'` : padArg;
-            const safeName = String(item["Artikel omsch."]).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-            const safeAlt = String(item["Artikel omsch."]).replace(/"/g, "&quot;");
+
+        // --- 3. Advanced Highlighting Logic ---
+        const rawTokens = originalVal.split(/\s+/).filter(w => w.length > 0);
+        const highlightText = (text) => {
+            if (!text) return '';
+            let str = String(text);
+            if (rawTokens.length === 0) return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             
-            const displayHoofd = t.groups[item["Hoofdgroep"]] || item["Hoofdgroep"] || '';
-            const displaySub = t.groups[item["Subgroep"]] || item["Subgroep"] || '';
+            const validTokens = rawTokens.filter(t => t.trim().length > 0).sort((a,b) => b.length - a.length);
+            if (validTokens.length === 0) return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-            let badgeFontSize = '1.4rem';
-            if (matchedSpecial) {
-                const len = padDisplay.length;
-                if (len >= 10) badgeFontSize = '0.55rem';
-                else if (len >= 8) badgeFontSize = '0.65rem';
-                else if (len >= 6) badgeFontSize = '0.75rem';
-                else if (len >= 4) badgeFontSize = '0.95rem';
-                else badgeFontSize = '1.2rem';
-            } else {
-                badgeFontSize = padDisplay.length > 3 ? '1.1rem' : '1.4rem';
+            const escapedTokens = validTokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            const regex = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
+            
+            // Veilige markering die HTML entiteiten niet breekt
+            str = str.replace(regex, '\u0001$1\u0002');
+            str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            str = str.replace(/\u0001/g, '<mark>').replace(/\u0002/g, '</mark>');
+            return str;
+        };
+
+        list.innerHTML = results.map(item => {
+            const loc2 = item.Locatie2 || '';
+            const loc2Up = loc2.toUpperCase();
+            
+            // Robust parsing for special pads or normal pads
+            let pad = '0AW';
+            let padDisplay = '0AW';
+            let subTarget = '';
+            
+            if (loc2Up.includes('PAD KA') || loc2Up.includes('KAS')) { 
+                pad = 'KAS'; padDisplay = 'KAS'; 
+                if (loc2Up.includes('SERVICE')) subTarget = 'service';
+                else if (loc2Up.includes('VERKOOP') || (item["Artikel omsch."] && item["Artikel omsch."].toUpperCase().includes('KEUKEN'))) subTarget = 'sales1';
+                else subTarget = 'kassa';
+            }
+            else if (loc2Up.includes('PAD VM') || loc2Up.includes('VMB')) { pad = '9'; padDisplay = 'VMB'; subTarget = 'paint'; }
+            else if (loc2Up.includes('PAD LI') || loc2Up.includes('LIJ')) { pad = '2'; padDisplay = 'LIJ'; }
+            else if (loc2Up.includes('PAD BA') || loc2Up.includes('BAL')) { pad = 'KAS'; padDisplay = 'BAL'; subTarget = 'service'; }
+            else if (loc2Up.includes('PAD PB') || loc2Up.includes('PBM')) { pad = '13'; padDisplay = 'PBM'; }
+            else if (loc2Up.includes('KOFFIE')) { pad = 'KOFFIE'; padDisplay = 'KOF'; subTarget = 'coffee'; }
+            else if (loc2Up.includes('0A') || loc2Up.includes('AW')) { pad = '0AW'; padDisplay = '0AW'; }
+            else {
+                const padMatch = loc2.match(/Pad\s*0*(\d+)/i);
+                if (padMatch) {
+                    pad = parseInt(padMatch[1], 10).toString();
+                    padDisplay = pad;
+                } else {
+                    const fallbackMatch = loc2.match(/0*(\d+)/);
+                    if (fallbackMatch) {
+                        const num = parseInt(fallbackMatch[1], 10);
+                        if (num > 0 && num <= 17) {
+                            pad = num.toString();
+                            padDisplay = pad;
+                        }
+                    }
+                }
             }
 
-            return `
-            <div class="result-item" role="button" tabindex="0" onclick="selectItem(${safeArgPad}, this)">
-                <div class="icon-wrap">
-                    <img src="img/${item["ArtikelNr."]}.webp" 
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" 
-                         onclick="openImageModal(event, this.src, '${safeName}')"
-                         alt="${safeAlt}" loading="lazy" />
-                    <div style="display:none; font-size: 1.8rem;">${icons[item["Hoofdgroep"]] || '📦'}</div>
+            const secMatch = loc2.match(/Sectie\s+(\d+)/i);
+            const sec = secMatch ? parseInt(secMatch[1], 10).toString() : '1';
+            const sideRaw = loc2.includes('Rechts') ? 'Rechts' : 'Links';
+            const sideTrans = sideRaw === 'Rechts' ? t.right : t.left;
+            
+            let isSpecial = isNaN(parseInt(pad, 10)) || pad === '0AW' || padDisplay === 'VMB' || padDisplay === 'LIJ' || padDisplay === 'BAL' || padDisplay === 'PBM';
+
+            let badgeHtml = '';
+            if (isSpecial) {
+                badgeHtml = `
+                <div class="badge" style="background: var(--primary-dark);">
+                    <span>LOC</span>
+                    <b style="font-size: 1.1rem;">${padDisplay}</b>
+                </div>`;
+            } else {
+                badgeHtml = `
+                <div class="badge">
+                    <span>${t.pad}</span>
+                    <b>${padDisplay}</b>
+                    <div class="sectie-label-badge">${sideTrans}<br>${t.sect} ${sec}</div>
+                </div>`;
+            }
+
+            const catIcon = icons[item["Hoofdgroep"]] || '📦';
+            const tUnknownLoc = t.unknownLoc || "Onbekende locatie";
+            
+            // Toepassen van Highlighting op de weergave
+            const safeArtNrHighlight = highlightText(item["ArtikelNr."]);
+            const safeOmschHighlight = highlightText(item["Artikel omsch."]);
+            const hgHighlight = highlightText(item["Hoofdgroep"]);
+            const sgHighlight = highlightText(item["Subgroep"]);
+            
+            // Raw properties voor code-executie in onclick
+            const safeArtNr = String(item["ArtikelNr."] || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            
+            return `<div class="result-item" onclick="selectItem('${pad}', '${sec}', '${sideRaw}', this, '${subTarget}', '${safeArtNr}')">
+                <div class="icon-wrap">${catIcon}</div>
+                <div class="info">
+                    <h3>${safeOmschHighlight}</h3>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; margin-bottom: 4px;">Art. ${safeArtNrHighlight}</div>
+                    <div class="tags">
+                        <span class="tag">${hgHighlight}</span>
+                        <span class="tag sub">${sgHighlight}</span>
+                    </div>
                 </div>
-                <div class="info"><h3>${hl(item["Artikel omsch."])}</h3><div class="tags"><span class="tag">ART. ${hl(item["ArtikelNr."])}</span> <span class="tag">${hl(displayHoofd).toUpperCase()}</span><span class="tag sub">${hl(displaySub)}</span></div><div class="action-btns"><button class="action-btn" onclick="printTicket(event, '${safeName}', '${printLoc}', '${sideStr}', '${secNum}')">${t.printBtn}</button></div></div>
-                <div class="badge"><b style="font-size: ${badgeFontSize};">${padDisplay}</b>${sideStr ? `<span>${sideStr}</span>` : ''}<div class="sectie-label">${t.sect} ${secNum}</div></div>
+                ${badgeHtml}
             </div>`;
-        }).join('') + (results.length > MAX_RESULTS ? `<div style="text-align:center; padding: 15px; color: var(--text-muted); font-weight: 800; font-size: 0.9rem;">+ ${results.length - MAX_RESULTS} ${t.moreRes}</div>` : '');
+        }).join('');
     }
 
-    function selectItem(pad, el) {
-        if (el && el.classList.contains('selected')) return;
-        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
+    let currentSelectedProduct = null;
+
+    function getMapTarget(pad, side) {
+        let targetPad = pad;
+        let isRightOfRack = false; // Als true, looproute ligt aan de rechterkant van de stelling (dus de karakter loopt 'voor' de stelling)
+        
+        if (!isNaN(pad)) {
+            // Als de looproute Pad X is
+            if (side && side.toLowerCase().includes('link')) {
+                // Linkerkant van looproute X = rechterkant van stelling X-1
+                if (pad === '1') {
+                    targetPad = '1L';
+                    isRightOfRack = true;
+                } else {
+                    targetPad = (parseInt(pad) - 1).toString();
+                    isRightOfRack = true;
+                }
+            } else {
+                // Rechterkant van looproute X = linkerkant van stelling X
+                targetPad = pad.toString();
+                isRightOfRack = false;
+            }
+        } else if (pad === '1L') {
+            targetPad = '1L';
+            isRightOfRack = true;
+        }
+        return { targetPad, isRightOfRack };
+    }
+
+    function selectItem(pad, sec, side, el, subTarget = '', artNr = null) {
+        document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
+            x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right');
+        });
+        document.querySelectorAll('.aisle-part').forEach(x => x.classList.remove('active-part'));
+        document.querySelectorAll('.highlighted-sec').forEach(span => {
+            span.classList.remove('highlighted-sec');
+            if (span.dataset.origText) span.innerText = span.dataset.origText;
+        });
+        document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
         if (el) el.classList.add('selected');
         
-        let targetPad = pad;
-        if (pad === 'LIJ') targetPad = 3;
-        if (pad === 'PBM') targetPad = 13;
+        const card = document.getElementById('productDetailCard');
+        const t = i18n[curLang] || i18n['nl'];
+        const tUnknownLoc = t.unknownLoc || "Onbekende locatie";
+        if (card) {
+            if (artNr) {
+                currentSelectedProduct = { pad, sec, side, el, subTarget, artNr };
+                const item = data.find(d => String(d["ArtikelNr."]) === String(artNr));
+                if (item) {
+                    const catIcon = icons[item["Hoofdgroep"]] || '📦';
+                    
+                    // Robust string escaping to prevent JS syntax errors from items with quotes like 3/8''
+                    const nameStr = item["Artikel omsch."] || '';
+                    const htmlSafeName = nameStr.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    const jsSafeName = nameStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    
+                    const locStr = item["Locatie2"] || item["Schaplocatie code"] || '';
+                    const jsSafeLoc = locStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    const displayLoc = item["Locatie2"] || item["Schaplocatie code"] || tUnknownLoc;
+                    
+                    card.innerHTML = `
+                        <div class="pd-header">
+                            <div class="pd-icon">${catIcon}</div>
+                            <div class="pd-info">
+                                <h3 class="pd-title" title="${htmlSafeName}">${htmlSafeName}</h3>
+                                <div class="pd-art">Art. ${item["ArtikelNr."]}</div>
+                            </div>
+                        </div>
+                        <div class="pd-bottom-row">
+                            <div class="pd-loc-banner">
+                                📍 ${displayLoc}
+                            </div>
+                            <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${item["ArtikelNr."]}', '${jsSafeLoc}')">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            </button>
+                        </div>
+                    `;
+                    card.onclick = () => {
+                        // Fully re-select the item to restore the specific section highlight
+                        selectItem(pad, sec, side, el, subTarget, artNr);
+                    };
+                    card.classList.add('show');
+                }
+            } else if (!currentSelectedProduct) {
+                card.classList.remove('show');
+            }
+        }
+
+        const { targetPad, isRightOfRack } = getMapTarget(pad, side);
+        const padEl = document.getElementById(`p-${targetPad}`);
         
-        document.getElementById(`p-${targetPad}`)?.classList.add('active');
-        showAislePopup(pad); 
-        moveChar(pad, true, true);
-        if (el) setTimeout(() => { el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 210);
+        if (padEl) {
+            padEl.classList.add('active-num');
+            if (isRightOfRack) {
+                padEl.classList.add('active-side-right');
+            } else {
+                padEl.classList.add('active-side-left');
+            }
+            
+            if (targetPad === '1L' || targetPad === '17') {
+                padEl.classList.add('active');
+                padEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
+            } else {
+                const isTop = parseInt(sec) > 6;
+                padEl.classList.add(isTop ? 'active-top' : 'active-bottom');
+                const targetPart = padEl.querySelector(isTop ? '.aisle-part.top' : '.aisle-part.bottom');
+                if (targetPart) targetPart.classList.add('active-part');
+            }
+            if (sec) {
+                padEl.querySelectorAll('.sec-container span').forEach(span => {
+                    if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                    if (span.dataset.origText === sec.toString()) {
+                        span.classList.add('highlighted-sec');
+                        const sideChar = (side && side.toLowerCase().includes('recht')) ? 'R' : 'L';
+                        span.innerText = span.dataset.origText + ' ' + sideChar;
+                    } else {
+                        span.innerText = span.dataset.origText;
+                    }
+                });
+            }
+        } else if (pad === '0AW') {
+            const backWall = document.getElementById('p-0AW');
+            if (backWall) {
+                backWall.classList.add('active');
+                if (sec) {
+                    backWall.querySelectorAll('.sec-container span').forEach(span => {
+                        if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                        if (span.dataset.sec === sec.toString() || span.dataset.origText === sec.toString()) {
+                            span.classList.add('highlighted-sec');
+                        } else {
+                            span.innerText = span.dataset.origText;
+                        }
+                    });
+                }
+            }
+        } else if (pad === 'KAS') {
+            const cashierEl = document.getElementById('cashierZone');
+            if(cashierEl) cashierEl.classList.add('active');
+            if (subTarget) {
+                const lbl = document.getElementById('label-' + subTarget);
+                if (lbl) lbl.classList.add('active-label');
+            } else {
+                const lbl = document.getElementById('label-kassa');
+                if (lbl) lbl.classList.add('active-label');
+            }
+        } else if (pad === 'KOFFIE') {
+            const cofEl = document.getElementById('coffeeCorner');
+            if(cofEl) cofEl.classList.add('active');
+            const lbl = document.getElementById('label-coffee');
+            if (lbl) lbl.classList.add('active-label');
+        }
+
+        if (pad === '9' && subTarget === 'paint') {
+            const lbl = document.getElementById('label-paint');
+            if (lbl) lbl.classList.add('active-label');
+        }
+
+        let pathNum = pad;
+        if (pad !== 'KAS' && pad !== 'KOFFIE' && pad !== '0AW' && pad !== 'entrance' && !isNaN(pad)) {
+             if (side && side.toLowerCase().includes('link')) {
+                 pathNum = (parseInt(pad) - 1).toString();
+                 if(pathNum === '0') pathNum = '1L';
+             }
+        }
+
+        window.activeMapTarget = { pad: pathNum, sec, side, subTarget };
+        
+        // Auto-expand the map as an overlay when a product is selected from search results
+        const wrapper = document.getElementById('mapWrapper');
+        if (!wrapper.classList.contains('map-expanded-overlay')) {
+            toggleMapExpand(true);
+        } else {
+            moveChar(pathNum, true, true, sec, side);
+        }
     }
 
     function closeSelection() {
-        document.querySelectorAll('.aisle, .back-wall, .result-item').forEach(x => x.classList.remove('active', 'selected'));
-        moveChar('entrance', false, false);
+        document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
+            x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right');
+        });
+        document.querySelectorAll('.aisle-part').forEach(x => x.classList.remove('active-part'));
+        document.querySelectorAll('.highlighted-sec').forEach(span => {
+            span.classList.remove('highlighted-sec');
+            if (span.dataset.origText) span.innerText = span.dataset.origText;
+        });
+        document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+        
+        const card = document.getElementById('productDetailCard');
+        if (card) {
+            card.classList.remove('show');
+        }
+
+        const floor = document.getElementById('mapGrid');
+        if (floor) floor.classList.remove('zoomed');
+        window.isZoomed = false;
+        
+        currentSelectedProduct = null;
+        window.activeMapTarget = null;
+        moveChar('entrance', false, false, null, null);
     }
 
-    function moveChar(pad, active, line) {
+    function moveChar(pad, active, line, sec, side) {
         const char = document.getElementById('mainChar'), path = document.getElementById('guideLine');
-        const sPos = 270, walkLineBottom = 26, aisleTarget = 85, kasTarget = 12;
-        let cPos = sPos, targetBottom = '0%';
-        
-        let visualPad = pad;
-        if (pad === 'LIJ') visualPad = 3;
-        if (pad === 'PBM') visualPad = 13;
+        const grid = document.getElementById('mapGrid');
+        if (!char || !path || !grid) return; 
 
-        if (visualPad === 'KAS') { 
-            const kasZone = document.getElementById('cashierZone');
-            cPos = kasZone ? kasZone.offsetLeft + kasZone.offsetWidth - 30 : sPos; 
-            targetBottom = `${kasTarget}%`; 
-        }
-        else if (visualPad === 'VMB') { cPos = (document.getElementById('p-8')?.offsetLeft || sPos) + 15; targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; }
-        else if (visualPad === 'KOFFIE') { cPos = (document.getElementById('coffeeCorner')?.offsetLeft || sPos) + 10; targetBottom = `${kasTarget}%`; }
-        else if (visualPad === '0AW') { cPos = sPos; targetBottom = active ? `92%` : `${walkLineBottom}%`; }
-        else if (visualPad !== 'entrance' && !isNaN(visualPad)) { const t = document.getElementById(`p-${visualPad}`); if(t) { cPos = t.offsetLeft + (t.offsetWidth / 2); targetBottom = active ? `${aisleTarget}%` : `${walkLineBottom}%`; } }
+        const sPos = window.entrancePosX || 270;
+        let cPos = sPos, targetBottom = '0%'; 
+
+        let aisleTarget = 75; 
         
-        char.style.animation = 'none';
-        if (line && pad !== 'entrance') {
-            const svgH = path.parentElement.clientHeight || 120, startY = svgH, bY = svgH * (1 - (walkLineBottom / 100)), tY = svgH * (1 - (parseFloat(targetBottom) / 100));
-            path.setAttribute("d", `M ${sPos} ${startY} L ${sPos} ${bY} L ${cPos} ${bY} L ${cPos} ${tY}`);
-            const len = path.getTotalLength(); path.style.transition = 'none'; path.style.strokeDasharray = len; path.style.strokeDashoffset = len; void path.offsetWidth;
-            path.style.transition = `stroke-dashoffset 1400ms linear`; path.style.strokeDashoffset = "0";
-            let styleTag = document.getElementById('walk-keyframes') || document.head.appendChild(Object.assign(document.createElement('style'), {id: 'walk-keyframes'}));
-            styleTag.innerHTML = `@keyframes walkAnim { 0% { left: ${sPos}px; bottom: 0%; } 25% { left: ${sPos}px; bottom: ${walkLineBottom}%; } 75% { left: ${cPos}px; bottom: ${walkLineBottom}%; } 100% { left: ${cPos}px; bottom: ${targetBottom}; } }`;
-            char.classList.add('running'); char.style.animation = `walkAnim 1400ms linear forwards`;
+        if (pad === 'KAS') { 
+            const kasEl = document.getElementById('cashierZone');
+            let targetDesk = kasEl;
+            const sub = window.activeMapTarget ? window.activeMapTarget.subTarget : null;
+            if (sub === 'service') targetDesk = document.getElementById('desk-service');
+            else if (sub === 'sales1') targetDesk = document.getElementById('desk-sales1');
+            else if (sub === 'kassa') targetDesk = document.getElementById('desk-kassa');
+
+            if (targetDesk && targetDesk.id !== 'cashierZone') {
+                cPos = kasEl.offsetLeft + targetDesk.offsetLeft + (targetDesk.offsetWidth / 2);
+            } else if (kasEl) {
+                cPos = kasEl.offsetLeft + (kasEl.offsetWidth / 2);
+            } else {
+                cPos = 400;
+            }
+            targetBottom = '12%'; 
+        }
+        else if (pad === 'KOFFIE') {
+            const cofEl = document.getElementById('coffeeCorner');
+            cPos = cofEl ? cofEl.offsetLeft + 20 : 800;
+            targetBottom = '8%';
+        }
+        else if (pad === '0AW') { 
+            cPos = sPos; 
+            targetBottom = active ? '100%' : '0%'; 
+            if (active && sec && !isNaN(sec)) {
+                const s = parseInt(sec);
+                cPos = 40 + ((s - 1) / 16) * (grid.offsetWidth - 80);
+            }
+        }
+        else if (pad !== 'entrance') {
+            let targetPad = pad;
+            let isRightOfRack = false;
+
+            if (pad === '1L') {
+                targetPad = '1L';
+                isRightOfRack = true; // Path is on the right of the 1L rack
+            } else if (!isNaN(pad)) {
+                 // For product selections, 'pad' passed here has already been resolved to the PATH number.
+                 // We need to figure out the shelf alignment.
+                 // If side is Links, the product is on the rack to the RIGHT of the path.
+                 // Wait, in selectItem we resolved pathNum. Let's trust pathNum.
+                 // If side == Links, shelf is on Left of path. Rack is on Left. Path is right of rack.
+                 // If side == Rechts, shelf is on Right of path. Rack is on Right. Path is left of rack.
+                 if (side && side.toLowerCase().includes('link')) {
+                     targetPad = pad; // The path number
+                     isRightOfRack = true; // The path is on the right of the shelf we are targeting
+                 } else {
+                     targetPad = pad; // The path number
+                     isRightOfRack = false; // The path is on the left of the shelf we are targeting
+                 }
+            }
+
+            const t = document.getElementById(`p-${targetPad}`);
+            if(t) {
+                if (sec && !isNaN(sec)) {
+                    // Try DOM calculation first
+                    const padElForSec = isRightOfRack ? document.getElementById(`p-${targetPad}`) : document.getElementById(`p-${(parseInt(targetPad)+1)}`);
+                    let targetSpan = null;
+                    if (padElForSec) {
+                        const spans = padElForSec.querySelectorAll('.sec-container span');
+                        spans.forEach(sp => {
+                            if (sp.dataset.origText === sec.toString()) {
+                                targetSpan = sp;
+                            }
+                        });
+                    }
+                    if (targetSpan) {
+                        let el = targetSpan;
+                        let topOffset = 0;
+                        while(el && el.id !== 'mapGrid' && el.tagName !== 'BODY') {
+                            topOffset += el.offsetTop;
+                            el = el.offsetParent;
+                        }
+                        aisleTarget = 100 - ((topOffset + (targetSpan.offsetHeight / 2)) / grid.offsetHeight * 100);
+                    } else {
+                        // Math Fallback
+                        const s = parseInt(sec);
+                        if (targetPad === '1' || targetPad === '17' || targetPad === '1L') {
+                            aisleTarget = 15 + ((s - 1) / 16) * 70;
+                        } else {
+                            if (s <= 6) { aisleTarget = 15 + ((s - 1) / 5) * 20; } 
+                            else { aisleTarget = 48 + ((s - 7) / 10) * 37; }
+                        }
+                    }
+                }
+
+                // Path centering logic
+                if (isRightOfRack) {
+                    let nextPadNum = targetPad === '1L' ? '1' : (parseInt(targetPad) + 1).toString();
+                    const nextT = document.getElementById(`p-${nextPadNum}`);
+                    if (nextT) {
+                        cPos = t.offsetLeft + t.offsetWidth + ((nextT.offsetLeft - (t.offsetLeft + t.offsetWidth)) / 2);
+                    } else {
+                        cPos = t.offsetLeft + t.offsetWidth + 12;
+                    }
+                } else {
+                    let prevPadNum = targetPad === '1' ? '1L' : (parseInt(targetPad) - 1).toString();
+                    const prevT = document.getElementById(`p-${prevPadNum}`);
+                    if (prevT) {
+                        cPos = prevT.offsetLeft + prevT.offsetWidth + ((t.offsetLeft - (prevT.offsetLeft + prevT.offsetWidth)) / 2);
+                    } else {
+                        cPos = t.offsetLeft - 12;
+                    }
+                }
+                targetBottom = active ? `${aisleTarget}%` : `0%`;
+            }
+        }
+
+        let finalX = cPos;
+        if (active && pad !== 'entrance' && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== '0AW') {
+            let isRightOfRack = false;
+            if (pad === '1L' || (side && side.toLowerCase().includes('link'))) {
+                isRightOfRack = true;
+            }
+            
+            const t = document.getElementById(`p-${pad}`);
+            if (t) {
+                 if (isRightOfRack) {
+                     finalX = t.offsetLeft + t.offsetWidth + 8; // Step left towards the left shelf
+                 } else {
+                     let rackOnRightId = (parseInt(pad) + 1).toString();
+                     const rightRack = document.getElementById(`p-${rackOnRightId}`);
+                     if (rightRack) {
+                         finalX = rightRack.offsetLeft - 8; // Step right towards the right shelf
+                     }
+                 }
+            }
+        }
+
+        if (window.charMoveTimeouts) window.charMoveTimeouts.forEach(clearTimeout);
+        window.charMoveTimeouts = [];
+
+        char.style.transition = 'none';
+        char.style.left = `${sPos}px`;
+        char.style.bottom = '0%';
+        char.classList.remove('running');
+        document.documentElement.style.setProperty('--char-dir', '1');
+
+        char.getBoundingClientRect();
+
+        if (!active || pad === 'entrance') {
+            path.setAttribute('d', '');
+            path.style.animation = 'none';
+            return;
+        }
+
+        const floorHeight = grid.offsetHeight;
+        const startY = floorHeight;
+        const midY = floorHeight - (8 / 100 * floorHeight); 
+        const targetBVal = parseFloat(targetBottom);
+        const endY = floorHeight - (targetBVal / 100 * floorHeight);
+
+        const d1 = startY - midY; 
+        const d2 = Math.abs(cPos - sPos);
+        const d3 = Math.abs(midY - endY); 
+        const d4 = Math.abs(finalX - cPos);
+        const totalDist = d1 + d2 + d3 + d4 || 1;
+        const totalTime = 1600; 
+        const t1 = (d1 / totalDist) * totalTime;
+        const t2 = (d2 / totalDist) * totalTime;
+        const t3 = (d3 / totalDist) * totalTime;
+        const t4 = (d4 / totalDist) * totalTime;
+
+        const pathStr = `M ${sPos},${startY} L ${sPos},${midY} L ${cPos},${midY} L ${cPos},${endY} L ${finalX},${endY}`;
+        const newPath = path.cloneNode(true);
+        newPath.setAttribute('d', pathStr);
+        newPath.style.strokeDasharray = totalDist;
+        newPath.style.strokeDashoffset = totalDist;
+        newPath.style.animation = 'none';
+        path.parentNode.replaceChild(newPath, path);
+        
+        newPath.getBoundingClientRect();
+        newPath.style.animation = `drawPath 1.6s linear forwards`;
+
+        char.classList.add('running');
+        
+        char.style.transition = `bottom ${t1}ms linear`;
+        char.style.bottom = '8%';
+
+        window.charMoveTimeouts.push(setTimeout(() => {
             document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
-            setTimeout(() => { char.classList.remove('running'); char.style.animation = 'none'; char.style.left = `${cPos}px`; char.style.bottom = targetBottom; }, 1400);
-        } else {
-            path.setAttribute("d", ""); char.classList.remove('running'); char.style.transition = 'left 0.8s ease, bottom 0.8s ease';
-            document.documentElement.style.setProperty('--char-dir', cPos < char.offsetLeft ? '-1' : '1');
-            char.style.left = `${cPos}px`; char.style.bottom = targetBottom;
-        }
+            char.style.transition = `left ${t2}ms linear`;
+            char.style.left = `${cPos}px`;
+        }, t1));
+
+        window.charMoveTimeouts.push(setTimeout(() => {
+            // Walk straight up the aisle facing forward
+            document.documentElement.style.setProperty('--char-dir', '1');
+            char.style.transition = `bottom ${t3}ms linear`;
+            char.style.bottom = targetBottom;
+        }, t1 + t2));
+
+        window.charMoveTimeouts.push(setTimeout(() => {
+            if (active && pad !== 'entrance' && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== '0AW') {
+                 const turnDir = (side && side.toLowerCase().includes('link')) ? '-1' : '1';
+                 document.documentElement.style.setProperty('--char-dir', turnDir);
+                 
+                 char.style.transition = `left ${t4}ms linear`;
+                 char.style.left = `${finalX}px`;
+            } else {
+                 document.documentElement.style.setProperty('--char-dir', '1');
+            }
+        }, t1 + t2 + t3));
+
+        window.charMoveTimeouts.push(setTimeout(() => {
+            char.classList.remove('running');
+        }, totalTime));
     }
 
-    function printTicket(e, name, loc, side, sec) {
-        e.stopPropagation();
-        const t = i18n[curLang];
-        document.getElementById('printArea').innerHTML = `<h2 style="color:var(--primary);">BOUWMAAT AMSTEL XL</h2><hr><h2>${name}</h2><h1>${loc}</h1>${side ? `<h2>${t.zijde}: ${side}</h2>` : ''}<h3>${t.sect}: ${sec}</h3><hr><p>${new Date().toLocaleString()}</p>`;
+    function handleKeys(e) { 
+        if (e.key === "Escape") clearSearch(); 
+        if (e.key === "Tab" || e.key === "ArrowRight") {
+            const ghost = document.getElementById('searchGhost');
+            if (ghost && ghost.dataset.suggestion) {
+                e.preventDefault();
+                const searchBox = document.getElementById('searchBox');
+                searchBox.value = ghost.dataset.suggestion;
+                handleSearch();
+            }
+        }
+    }
+    
+    function closeImageModal() {}
+
+    function printTicket(name, art, loc) {
+        const printArea = document.getElementById('printArea');
+        if(printArea) {
+            printArea.innerHTML = `
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: #005cb9;">BOUWMAAT AMSTEL XL</div>
+                <hr style="border: 2px solid #005cb9; margin-bottom: 20px;">
+                <div style="font-size: 1.2rem; font-weight: 900; margin-bottom: 10px;">${name}</div>
+                <div style="font-size: 1rem; color: #475569; font-weight: 800; margin-bottom: 20px;">Art: ${art}</div>
+                <div style="font-size: 1rem; font-weight: 800; text-transform: uppercase;">LOCATIE:</div>
+                <h1 style="font-size: 3.5rem; color: #005cb9; margin: 10px 0;">${loc}</h1>
+            `;
+        }
         window.print();
-    }
-
-    function openImageModal(e, src, title) {
-        e.stopPropagation(); 
-        const img = document.getElementById('modalImage');
-        img.src = src; 
-        document.getElementById('modalTitle').textContent = title; 
-        document.getElementById('imageModal').classList.add('show');
-        img.classList.remove('is-zoomed');
-        img.style.transformOrigin = 'center center';
-    }
-
-    function closeImageModal(e) { 
-        if (e) e.stopPropagation(); 
-        const modal = document.getElementById('imageModal');
-        const img = document.getElementById('modalImage');
-        modal.classList.remove('show'); 
-        setTimeout(() => {
-            img.classList.remove('is-zoomed');
-            img.style.transformOrigin = 'center center';
-        }, 300);
-    }
-
-    function handleKeys(e) {
-        const ghost = document.getElementById('searchGhost');
-        if (e.key === "Escape") { 
-            if (document.getElementById('imageModal').classList.contains('show')) closeImageModal(); else closeSelection(); 
-        }
-        else if ((e.key === "Tab" || e.key === "ArrowRight") && ghost.textContent && e.target.id === 'searchBox') {
-            e.preventDefault(); 
-            document.getElementById('searchBox').value = ghost.textContent; 
-            handleSearch();
-        }
     }
 </script>
 </body>
