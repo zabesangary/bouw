@@ -215,6 +215,11 @@
         .map-wrapper { 
             width: 100%; display: flex; justify-content: center; align-items: center; 
             flex-shrink: 0; position: relative; z-index: 10; min-height: 180px; margin-top: auto; 
+            --char-rx: -55deg;
+            --char-tz: 20px;
+            --char-scale: 1;
+            --path-stroke: 4px;
+            --path-tz: 6px;
         }
         
         .map-expanded-overlay {
@@ -223,6 +228,11 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; box-sizing: border-box; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             overflow: hidden;
+            --char-rx: -42deg;
+            --char-tz: 30px;
+            --char-scale: 1.6;
+            --path-stroke: 8px;
+            --path-tz: 12px;
         }
         
         /* Playful Glowing Orbs for Map Overlay */
@@ -409,26 +419,41 @@
             opacity: 0; transition: opacity 0.3s;
         }
 
-        /* In expanded view, ALL labels rest on the roof */
-        .map-expanded-overlay .aisle:not(.active-num) .aisle-category-label {
-            opacity: 0.85;
-            top: 50%; left: 50%;
-            /* Rotate -90deg so it lays flat on the aisle top */
-            transform: translate(-50%, -50%) translateZ(15px) rotate(-90deg) scale(0.9);
-            background: transparent;
-            color: #ffffff;
-            padding: 0 4px;
-            border-radius: 0;
-            border: none;
-            box-shadow: none;
-            width: max-content;
-            max-width: 160px;
-            min-width: 0;
-            font-size: 0.85rem;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        /* In expanded view, ALL labels rest flat on the roof, ALWAYS visible, NO popup animation */
+        .map-expanded-overlay .aisle .aisle-category-label {
+            opacity: 0.85 !important;
+            top: 50% !important; left: 50% !important;
+            /* Rotate -90deg so it lays flat along the aisle length */
+            /* We use calc on top and left to ensure perfect centering inside the container */
+            transform: translate(-50%, -50%) translateZ(16px) rotate(-90deg) scale(1) !important;
+            background: transparent !important;
+            color: #ffffff !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: max-content !important;
+            max-width: none !important; /* Allow it to stretch along the long aisle */
+            min-width: 0 !important;
+            font-size: 9px !important; /* Fixed small font size as requested */
+            letter-spacing: 1px !important;
+            white-space: nowrap !important; /* Force single line to avoid spilling sideways into other aisles */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8) !important;
+            visibility: visible !important;
+            pointer-events: none !important;
+            transition: none !important; /* Removes all animation/transition */
         }
 
-        /* Popup state */
+        .map-expanded-overlay .aisle.active-num .aisle-category-label {
+            opacity: 0 !important; 
+            visibility: hidden !important; 
+        }
+
+        .map-expanded-overlay .aisle .aisle-category-label::after {
+            display: none !important; /* Hide popup triangle in expanded view */
+        }
+
+        /* Popup state for normal (non-expanded) map */
         .aisle.show-label-popup .aisle-category-label {
             opacity: 1 !important; 
             box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
@@ -437,35 +462,35 @@
             max-width: 140px !important;
             padding: 5px 10px !important;
         }
-        .map-expanded-overlay .aisle.show-label-popup .aisle-category-label {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            transition: none !important;
-            pointer-events: none;
-        }
+        
         .aisle.show-label-popup .aisle-category-label::after {
             opacity: 1;
         }
 
-        /* Hide label completely when selected but timer has ended */
+        /* Hide label completely when selected but timer has ended (normal map only) */
         .aisle.active-num:not(.show-label-popup) .aisle-category-label {
-            opacity: 0 !important;
+            opacity: 0;
+        }
+        .map-expanded-overlay .aisle.active-num:not(.show-label-popup) .aisle-category-label {
+            opacity: 0 !important; 
+            visibility: hidden !important;
         }
 
         body.dark-mode .aisle-category-label { 
             color: #fff; 
         }
-        body.dark-mode .map-expanded-overlay .aisle:not(.active-num) .aisle-category-label {
-            background: transparent;
-            color: rgba(255, 255, 255, 0.9);
-            border: none;
-            box-shadow: none;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        
+        body.dark-mode .map-expanded-overlay .aisle .aisle-category-label {
+            background: transparent !important;
+            color: rgba(255, 255, 255, 0.8) !important;
+            border: none !important;
+            box-shadow: none !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9) !important;
         }
-        body.dark-mode .map-expanded-overlay .aisle.show-label-popup .aisle-category-label {
+        
+        body.dark-mode .map-expanded-overlay .aisle.active-num .aisle-category-label {
             opacity: 0 !important;
             visibility: hidden !important;
-            transition: none !important;
         }
 
         /* --- PAINT TABLE (Aisle 9 Front) --- */
@@ -477,6 +502,10 @@
         .aisle.active-num .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-55deg) translateZ(65px) translateY(-15px) scale(1.1); box-shadow: 0 6px 10px rgba(56, 189, 248, 0.4); border-color: #ffffff; }
         
         #p-1L .aisle-num { left: 100%; bottom: 15px; }
+
+        .backwall-label { position: absolute; top: -20px; left: 50%; transform: translateX(-50%) rotateX(-55deg) translateZ(20px); font-weight: 900; font-size: 0.65rem; z-index: 60; background: var(--primary); color: #ffffff; padding: 4px 10px; border-radius: 6px; border: 1px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.4s ease; white-space: nowrap; text-transform: uppercase; opacity: 0; visibility: hidden; }
+        .map-expanded-overlay .backwall-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) scale(0.8); opacity: 0; visibility: hidden; }
+        .back-wall.active .backwall-label { background: var(--primary); color: #ffffff; transform: translateX(-50%) rotateX(-55deg) translateZ(40px) scale(1.1); box-shadow: 0 8px 16px rgba(0,0,0,0.4); opacity: 1 !important; visibility: visible !important; }
 
         .back-wall { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; border-radius: 6px 6px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), -5px 8px 10px rgba(0,0,0,0.15); border: 2px solid #002e5c; }
         .back-wall::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 42px), repeating-linear-gradient(to bottom, #1d4ed8 0px, #3b82f6 1.5px, #1e3a8a 3px, transparent 3px, transparent 13px), #0f172a; transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid #002e5c; box-sizing: border-box; transition: all 0.3s ease; }
@@ -515,8 +544,8 @@
         .coffee-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #b45309; }
         .coffee-cup { position: absolute; bottom: 100%; left: 45%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(8px) translateY(-1px); font-size: 0.85rem; pointer-events: none; text-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 20; }
 
-        #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; transform: translateZ(2px); } 
-        .walking-line { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(-2px 4px 2px rgba(0,0,0,0.4)); } 
+        #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; transform: translateZ(var(--path-tz)); overflow: visible; transition: transform 0.4s ease; } 
+        .walking-line { fill: none; stroke: var(--accent); stroke-width: var(--path-stroke); stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(-2px 4px 2px rgba(0,0,0,0.4)); transition: stroke-width 0.4s ease; } 
         @keyframes drawPath { to { stroke-dashoffset: 0; } }
         
         .btn-close-map { position: absolute; top: 20px; right: 20px; z-index: 10002; background: var(--primary); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.5rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; align-items: center; justify-content: center; transition: all 0.2s; }
@@ -594,8 +623,8 @@
         .pd-print-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,92,185,0.4); }
         .pd-print-btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,92,185,0.3); }
 
-        @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(-55deg) translateZ(12px) translateY(0); } 50% { transform: translateX(-50%) rotateX(-55deg) translateZ(12px) translateY(-4px); } }
-        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(-55deg) translateZ(12px); width: 18px; }
+        @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) translateY(0) scale(var(--char-scale)); } 50% { transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) translateY(-4px) scale(var(--char-scale)); } }
+        .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) scale(var(--char-scale)); width: 18px; }
         .user.running { animation: runBob 0.2s infinite alternate; }
         .user svg { width: 100%; transform: scaleX(var(--char-dir)); transition: transform 0.15s ease; filter: drop-shadow(-4px 8px 4px rgba(0,0,0,0.4)); }
 
@@ -907,7 +936,7 @@
 
     // Condensed fallback data to prevent truncation
     const fallbackData = [
-                {
+               {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2177,6 +2206,8 @@
         if(lblPaint) lblPaint.innerText = t.paintDesk;
         const lblSpell = document.getElementById('spellCheckPrefix');
         if(lblSpell) lblSpell.innerText = t.didYouMean;
+        const lblBackWall = document.getElementById('label-backwall');
+        if(lblBackWall) lblBackWall.innerText = t.backWallShort;
         
         // Update special locations translations
         const awLoc = specialLocations.find(s => s.id === '0AW');
@@ -2304,9 +2335,12 @@
         lw.id = 'p-1L';
         lw.style.marginBottom = '-75px'; // Extends the wall down into the entrance padding
         lw.innerHTML = `
-            <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full')">
+            <div class="aisle-part" style="flex: 1; display: flex; align-items: center; justify-content: center;" onclick="event.stopPropagation(); handleMapClick('1L', 'full')">
                 <div class="left-face"></div>
-                <div class="aisle-category-label label-full">HOUT</div>
+                <!-- Nested container for centering the label regardless of parent height extension -->
+                <div style="position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">
+                    <div class="aisle-category-label label-full">HOUT</div>
+                </div>
                 <div class="sec-container">${allSecs}</div>
             </div>
             <div class="aisle-num" id="badge-1L">1L</div>
@@ -2384,7 +2418,10 @@
             for(let s=1; s<=17; s++) {
                 bwSecs += `<span data-sec="${s}" style="transform: rotateX(-55deg) translateZ(10px) translateY(20px); font-size: 0.55rem; padding: 3px 6px; pointer-events: auto; cursor: pointer;" onclick="event.stopPropagation(); handleMapClick('0AW', 'full', '${s}')">${s}</span>`;
             }
-            backWall.innerHTML = `<div class="sec-container" style="flex-direction: row; width: 100%; height: 100%; justify-content: space-evenly; align-items: center; padding: 0 10px;">${bwSecs}</div>`;
+            backWall.innerHTML = `
+                <div class="backwall-label" id="label-backwall">ACHTERWAND</div>
+                <div class="sec-container" style="flex-direction: row; width: 100%; height: 100%; justify-content: space-evenly; align-items: center; padding: 0 10px;">${bwSecs}</div>
+            `;
             grid.appendChild(backWall);
         }
         
@@ -2555,9 +2592,11 @@
     function toggleMapExpand(expand) {
         const wrapper = document.getElementById('mapWrapper');
         const path = document.getElementById('guideLine');
+        const char = document.getElementById('mainChar');
         if (!wrapper) return;
         
         if (path) path.setAttribute('d', ''); // Clear path before animating
+        if (char) char.style.transition = 'transform 0.4s ease'; // Make resize/tilt animation smooth
         
         if (expand) {
             wrapper.classList.add('map-expanded-overlay');
@@ -3033,7 +3072,9 @@
             const { targetPad, isRightOfRack } = getMapTarget(pad, side);
             const t = document.getElementById(`p-${targetPad}`);
             if(t) {
-                cPos = isRightOfRack ? t.offsetLeft + t.offsetWidth + 12 : t.offsetLeft - 12;
+                const isExpanded = document.getElementById('mapWrapper').classList.contains('map-expanded-overlay');
+                const gapOffset = isExpanded ? 12 : 9; // Perfectly center based on the 24px or 18px grid gap
+                cPos = isRightOfRack ? t.offsetLeft + t.offsetWidth + gapOffset : t.offsetLeft - gapOffset;
                 targetBottom = active ? `${aisleTarget}%` : `0%`;
             }
         }
@@ -3083,19 +3124,19 @@
 
         char.classList.add('running');
         
-        char.style.transition = `bottom ${t1}ms linear`;
+        char.style.transition = `bottom ${t1}ms linear, transform 0.4s ease`;
         char.style.bottom = '8%';
 
         window.charMoveTimeouts.push(setTimeout(() => {
             // Draai naar links of rechts tijdens het wandelen op het hoofdpad
             document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
-            char.style.transition = `left ${t2}ms linear`;
+            char.style.transition = `left ${t2}ms linear, transform 0.4s ease`;
             char.style.left = `${cPos}px`;
         }, t1));
 
         window.charMoveTimeouts.push(setTimeout(() => {
             // Wandel naar boven in het gangpad
-            char.style.transition = `bottom ${t3}ms linear`;
+            char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
             char.style.bottom = targetBottom;
         }, t1 + t2));
 
