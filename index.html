@@ -152,8 +152,9 @@
         #mainAppWrapper { position: relative; width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; padding: max(8px, env(safe-area-inset-top)) 8px 0; }
         .app-container { width: 100%; max-width: 950px; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; position: relative; z-index: 1; gap: 8px; }
-        .logo { display: flex; align-items: center; gap: 6px; }
-        .logo h1 { font-size: 1.2rem; font-weight: 900; color: var(--primary); margin: 0; text-transform: uppercase; }
+        .logo { display: flex; align-items: flex-end; gap: 6px; }
+        .logo h1 { display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; color: var(--primary); margin: 0; text-transform: uppercase; white-space: nowrap; line-height: 0.85; padding-bottom: 2px; letter-spacing: -0.5px; }
+        .logo h1 span { background: var(--primary); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 0.7rem; margin-left: 4px; letter-spacing: 0; }
         .logo svg { width: 26px; height: 26px; }
 
         .controls { display: flex; gap: 6px; align-items: center; }
@@ -277,6 +278,7 @@
         .aisle { position: relative; cursor: pointer; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; display: flex; flex-direction: column; justify-content: space-between; gap: 36px; transition: gap 0.4s ease; }
         .map-expanded-overlay .aisle { gap: 15px; }
 
+        /* Default Active Aisle Parts Highlights (FULL GLOW FOR NORMAL MAP) */
         .aisle-part {
             width: 100%; 
             background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); 
@@ -318,47 +320,56 @@
             pointer-events: none;
         }
 
-        /* Active Aisle Parts Highlights */
+        /* Default Active Aisle Parts Highlights (FULL GLOW FOR NORMAL MAP) */
         .aisle-part.active-part {
+            background: #38bdf8 !important;
             border-color: #ffffff !important;
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.3) !important;
             transform: translateZ(45px);
         }
-        
-        .aisle.active-side-both .aisle-part.active-part { background: #38bdf8 !important; }
-        .aisle.active-side-both .aisle-part.active-part::before {
+        .aisle-part.active-part::before {
             background: repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.4) 30px, rgba(255,255,255,0.4) 32px),
                         repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, #38bdf8 3px, transparent 3px, transparent 13px), #0369a1 !important;
             border-bottom-color: #ffffff !important;
         }
+        .aisle-part.active-part .left-face {
+            background: 
+                linear-gradient(to left, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
+                linear-gradient(to left, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%) !important;
+        }
+        .aisle-part.active-part::after {
+            background: 
+                linear-gradient(to right, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
+                linear-gradient(to right, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%) !important;
+        }
 
-        .aisle.active-side-left .aisle-part.active-part { background: linear-gradient(to right, #38bdf8 50%, #005cb9 50%) !important; border-right-color: #002e5c !important; }
-        .aisle.active-side-left .aisle-part.active-part::before {
+        /* --- SEPARATED GLOW: ONLY IN EXPANDED MAP --- */
+        .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part { background: linear-gradient(to right, #38bdf8 50%, #005cb9 50%) !important; border-right-color: #002e5c !important; }
+        .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part::before {
             background: linear-gradient(to right, #0369a1 50%, transparent 50%),
                         repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
                         repeating-linear-gradient(to bottom, #3b82f6 0px, #1d4ed8 2px, #0f172a 2px, #0f172a 13px) !important;
             border-bottom-color: #020617 !important;
         }
-        .aisle.active-side-left .aisle-part.active-part .left-face,
-        .aisle.active-side-both .aisle-part.active-part .left-face {
+        /* Revert right face to dark */
+        .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part::after {
             background: 
-                linear-gradient(to left, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
-                linear-gradient(to left, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%);
+                linear-gradient(to right, transparent 15%, rgba(0,0,0,0.3) 15%, rgba(0,0,0,0.3) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.3) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.3) 90%, transparent 90%),
+                linear-gradient(to right, #475569 0%, #1e293b 100%) !important;
         }
 
-        .aisle.active-side-right .aisle-part.active-part { background: linear-gradient(to right, #005cb9 50%, #38bdf8 50%) !important; border-left-color: #002e5c !important; }
-        .aisle.active-side-right .aisle-part.active-part::before {
+        .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part { background: linear-gradient(to right, #005cb9 50%, #38bdf8 50%) !important; border-left-color: #002e5c !important; }
+        .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part::before {
             background: linear-gradient(to right, transparent 50%, #0369a1 50%),
                         repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
                         repeating-linear-gradient(to bottom, #3b82f6 0px, #1d4ed8 2px, #0f172a 2px, #0f172a 13px) !important;
             border-bottom-color: #020617 !important;
         }
-
-        .aisle.active-side-right .aisle-part.active-part::after,
-        .aisle.active-side-both .aisle-part.active-part::after {
+        /* Revert left face to dark */
+        .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part .left-face {
             background: 
-                linear-gradient(to right, transparent 15%, rgba(0,30,60,0.6) 15%, rgba(0,30,60,0.6) 30%, transparent 30%, transparent 45%, rgba(0,30,60,0.6) 45%, rgba(0,30,60,0.6) 60%, transparent 60%, transparent 75%, rgba(0,30,60,0.6) 75%, rgba(0,30,60,0.6) 90%, transparent 90%),
-                linear-gradient(to right, #38bdf8 0%, #bae6fd 15%, #0284c7 85%, #0369a1 100%);
+                linear-gradient(to left, transparent 15%, rgba(0,0,0,0.3) 15%, rgba(0,0,0,0.3) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.3) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.3) 90%, transparent 90%),
+                linear-gradient(to left, #475569 0%, #1e293b 100%) !important;
         }
 
         /* Section Labels */
@@ -444,7 +455,7 @@
             transition: none !important; /* Removes all animation/transition */
         }
 
-        .map-expanded-overlay .aisle.active-num .aisle-category-label {
+        .map-expanded-overlay .aisle.active .aisle-category-label {
             opacity: 0 !important; 
             visibility: hidden !important; 
         }
@@ -456,11 +467,12 @@
         /* Popup state for normal (non-expanded) map */
         .aisle.show-label-popup .aisle-category-label {
             opacity: 1 !important; 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
-            transform: translate(-50%, -50%) translateZ(65px) rotateX(-55deg) scale(1.3) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important;
             z-index: 100;
-            max-width: 140px !important;
-            padding: 5px 10px !important;
+            max-width: 100px !important;
+            padding: 4px 8px !important;
+            font-size: 0.5rem !important;
         }
         
         .aisle.show-label-popup .aisle-category-label::after {
@@ -468,10 +480,10 @@
         }
 
         /* Hide label completely when selected but timer has ended (normal map only) */
-        .aisle.active-num:not(.show-label-popup) .aisle-category-label {
+        .aisle.active:not(.show-label-popup) .aisle-category-label {
             opacity: 0;
         }
-        .map-expanded-overlay .aisle.active-num:not(.show-label-popup) .aisle-category-label {
+        .map-expanded-overlay .aisle.active:not(.show-label-popup) .aisle-category-label {
             opacity: 0 !important; 
             visibility: hidden !important;
         }
@@ -488,7 +500,7 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.9) !important;
         }
         
-        body.dark-mode .map-expanded-overlay .aisle.active-num .aisle-category-label {
+        body.dark-mode .map-expanded-overlay .aisle.active .aisle-category-label {
             opacity: 0 !important;
             visibility: hidden !important;
         }
@@ -515,7 +527,7 @@
         .entrance-label { position: absolute; transform-origin: bottom right; transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; white-space: nowrap; border: 1.5px solid #b45309; transition: all 0.2s ease; }
         .entrance-label:hover { background: #e65c00; transform: translateX(-100%) rotateX(-35deg) translateZ(14px) translateY(-14px) scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
         .entrance-label::before { content: var(--txt-entrance); }
-        .desk-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #b45309; }
+        .desk-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #0096c7; }
         
         /* Toggleable 3D Labels */
         .toggle-label { opacity: 0; pointer-events: none; transition: all 0.3s ease; }
@@ -524,8 +536,73 @@
         .desk-label, .coffee-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(0); }
         .desk-label.active-label, .coffee-label.active-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(-10px); }
 
-        #label-paint { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(18px); }
-        #label-paint.active-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(8px); }
+        /* Paint Desk Label - Mimics Aisle Label */
+        #label-paint { 
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) translateZ(20px) rotateX(-55deg) scale(0.8); 
+            font-size: 0.55rem; 
+            padding: 3px 6px; 
+            border-radius: 6px;
+            background: var(--primary);
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0; 
+            pointer-events: none;
+            text-align: center;
+        }
+        #label-paint::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 4px; border-style: solid;
+            border-color: var(--primary) transparent transparent transparent;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        #label-paint.active-label { 
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important; 
+            background: var(--aisle-active) !important; 
+            color: #000 !important; 
+            border-color: #ffffff !important; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; 
+            visibility: visible !important;
+        }
+        #label-paint.active-label::after {
+            opacity: 1 !important; 
+            border-color: var(--aisle-active) transparent transparent transparent !important;
+        }
+
+        /* Paint Desk Label in Expanded Map (Hidden by default, visible only when clicked) */
+        .map-expanded-overlay #label-paint {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: none !important;
+        }
+        .map-expanded-overlay #label-paint::after {
+            display: none !important;
+        }
+        .map-expanded-overlay #label-paint.active-label {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important; 
+            background: var(--aisle-active) !important; 
+            color: #000 !important; 
+            border-color: #ffffff !important; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; 
+            text-shadow: none !important;
+            padding: 4px 8px !important;
+            border-radius: 6px !important;
+            font-size: 0.55rem !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        }
+        .map-expanded-overlay #label-paint.active-label::after {
+            display: block !important;
+            opacity: 1 !important;
+            border-color: var(--aisle-active) transparent transparent transparent !important;
+        }
 
         #cashierZone { position: absolute; bottom: -5px; left: calc(100% / 18 * 8); width: calc(100% / 18 * 5); display: flex; justify-content: space-between; align-items: flex-end; height: 5px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
         .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
@@ -648,6 +725,8 @@
 
         /* --- DIM MODE --- */
         body.dark-mode { --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b; }
+        body.dark-mode .logo h1 { color: var(--text-main); }
+        body.dark-mode .logo h1 span { background: var(--accent); color: #000; }
         body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .lang-flags, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
         body.dark-mode .flag-btn.active { background: #334155; } body.dark-mode .input-layer { color: var(--text-main); }
         body.dark-mode .tag { background: #334155; color: #cbd5e1; } body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
@@ -675,22 +754,39 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); 
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -6px 8px 12px rgba(0,0,0,0.4); 
         }
-        
-        body.dark-mode .aisle-part::after {
-            background: 
-                linear-gradient(to right, transparent 15%, rgba(0,0,0,0.8) 15%, rgba(0,0,0,0.8) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.8) 45%, rgba(0,0,0,0.8) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.8) 90%, transparent 90%),
-                linear-gradient(to right, #1e293b 0%, #0f172a 100%);
+        body.dark-mode .paint-table { background: linear-gradient(135deg, #9333ea, #4f46e5, #0284c7, #059669); border-color: #312e81; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 10px 10px rgba(0,0,0,0.6); }
+        body.dark-mode .paint-table::before { background: linear-gradient(to right, #6b21a8, #3730a3, #075985, #065f46); border-bottom-color: #000; }
+        body.dark-mode .paint-table::after { background: #065f46; border-right-color: #000; }
+
+        body.dark-mode #label-paint {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.8);
+            border: none;
+            box-shadow: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        }
+        body.dark-mode #label-paint.active-label {
+            background: var(--aisle-active) !important;
+            color: #000 !important;
+            border: 1px solid #ffffff !important;
+            text-shadow: none !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
         }
 
-        body.dark-mode .left-face {
-            background: 
-                linear-gradient(to left, transparent 15%, rgba(0,0,0,0.8) 15%, rgba(0,0,0,0.8) 30%, transparent 30%, transparent 45%, rgba(0,0,0,0.8) 45%, rgba(0,0,0,0.8) 60%, transparent 60%, transparent 75%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.8) 90%, transparent 90%),
-                linear-gradient(to left, #475569 0%, #1e293b 100%);
+        body.dark-mode .map-expanded-overlay #label-paint {
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
         
-        body.dark-mode .paint-table { background: linear-gradient(145deg, #334155, #1e293b); border-color: #0f172a; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 10px 10px rgba(0,0,0,0.6); }
-        body.dark-mode .paint-table::before { background: #0f172a; border-bottom-color: #000; }
-        body.dark-mode .paint-table::after { background: #475569; border-right-color: #000; }
+        body.dark-mode .map-expanded-overlay #label-paint.active-label {
+            opacity: 1 !important;
+            visibility: visible !important;
+            background: var(--aisle-active) !important;
+            color: #000 !important;
+            border: 1px solid #ffffff !important;
+            text-shadow: none !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+        }
 
         body.dark-mode .back-wall { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 8px 10px rgba(0,0,0,0.4); }
         body.dark-mode .back-wall::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,0,0,0.5) 40px, rgba(0,0,0,0.5) 43px), repeating-linear-gradient(to bottom, #3b82f6 0px, #60a5fa 1px, #1e40af 3px, transparent 3px, transparent 13px), #020617; border-bottom: 2px solid #1e3a8a; }
@@ -780,7 +876,7 @@
             <div class="top-bar">
                 <div class="logo">
                     <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#005cb9"/> <img src="https://www.bouwmaat.nl/_nuxt/img/logo.156d07e.svg" alt="logo"> </svg>
-                    <h1>Amstel <span style="color:var(--accent)">XL</span></h1>
+                    <h1>Amstel <span>XL</span></h1>
                 </div>
                 <div class="controls">
                     <button id="btnDimToggle" onclick="toggleDimMode()" class="btn-reset" style="padding: 4px 8px; font-size: 1.1rem; border-radius: 50%;" title="Toggle Dim Mode">🌙</button>
@@ -898,12 +994,12 @@
             allCats: "All categories",
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
-            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "WALK", zijde: "SIDE", kassa: "CASHIER",
+            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner", paintDesk: "Paint Desk",
             expandMap: "EXPAND MAP",
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
             groups: { 
-                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
+                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke Protection": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
                 "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Verf": "Painting Supplies", "Kleding & schoenen": "Clothing & Shoes"
             }
         }
@@ -936,7 +1032,7 @@
 
     // Condensed fallback data to prevent truncation
     const fallbackData = [
-               {
+                   {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2096,6 +2192,7 @@
         }
 
 
+
     ];
 
     // VEILIGE GETTERS
@@ -2388,7 +2485,7 @@
                         <div class="sec-container">${botS}</div>
                     </div>
                     <div class="paint-table" onclick="event.stopPropagation(); handleMapClick(${i}, 'paint')">
-                        <div class="desk-label toggle-label" id="label-paint" style="top: 100%; left: 50%;">Verfbalie</div>
+                        <div class="aisle-category-label" id="label-paint">Verfbalie</div>
                     </div>
                     <div class="aisle-num">${i}</div>
                 `;
@@ -2602,13 +2699,16 @@
             wrapper.classList.add('map-expanded-overlay');
         } else {
             wrapper.classList.remove('map-expanded-overlay');
+            closeSelection(); // Reset the map and character to the entrance
         }
         
         setTimeout(() => {
-            if (window.activeMapTarget) {
-                moveChar(window.activeMapTarget.pad, true, true, window.activeMapTarget.sec, window.activeMapTarget.side, window.activeMapTarget.subTarget);
-            } else {
-                moveChar('entrance', false, false, null, null, null);
+            if (expand) {
+                if (window.activeMapTarget) {
+                    moveChar(window.activeMapTarget.pad, true, true, window.activeMapTarget.sec, window.activeMapTarget.side, window.activeMapTarget.subTarget);
+                } else {
+                    moveChar('entrance', false, false, null, null, null);
+                }
             }
         }, 450); 
     }
@@ -2836,17 +2936,36 @@
     let currentSelectedProduct = null;
 
     function getMapTarget(pad, side) {
-        let targetPad = pad;
+        let rackPad = pad;
+        let badgePad = pad;
+        let rackSideClass = 'active-side-both';
         let isRightOfRack = false; 
         
-        if (pad === '1L') {
-            targetPad = '1L';
-            isRightOfRack = true;
-        } else {
-            targetPad = pad.toString();
-            isRightOfRack = false;
+        if (isNaN(parseInt(pad, 10)) && pad !== '1L') {
+            return { rackPad, badgePad, isRightOfRack, rackSideClass };
         }
-        return { targetPad, isRightOfRack };
+
+        const padNum = parseInt(pad, 10);
+        const isLeft = side && side.toLowerCase().includes('link');
+        const isRight = side && side.toLowerCase().includes('recht');
+
+        if (isLeft) {
+            // Aisle N Left: Walk in Path N, item is on the right face of Rack N-1
+            rackPad = padNum === 1 ? '1L' : (padNum - 1).toString();
+            rackSideClass = 'active-side-right'; 
+            isRightOfRack = true; 
+        } else if (isRight) {
+            // Aisle N Right: Walk in Path N, item is on the left face of Rack N
+            rackPad = padNum.toString();
+            rackSideClass = 'active-side-left'; 
+            isRightOfRack = false; 
+        } else {
+            rackPad = padNum.toString();
+            rackSideClass = 'active-side-both';
+            isRightOfRack = false; 
+        }
+        
+        return { rackPad, badgePad, isRightOfRack, rackSideClass };
     }
 
     function selectItem(pad, sec, side, el, subTarget = '', artNr = null) {
@@ -2926,15 +3045,34 @@
                 }
             }
 
-            const { targetPad, isRightOfRack } = getMapTarget(pad, side);
-            const padEl = document.getElementById(`p-${targetPad}`);
+            const { rackPad, badgePad, isRightOfRack, rackSideClass } = getMapTarget(pad, side);
             
-            if (padEl) {
-                padEl.classList.add('active-num', 'active', 'active-side-both');
-                padEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
+            // 1. Highlight the aisle number badge strictly for the searched path
+            const badgeEl = document.getElementById(`p-${badgePad}`);
+            if (badgeEl) {
+                badgeEl.classList.add('active-num');
+            }
+
+            // 2. Highlight the specific physical rack face
+            const rackEl = document.getElementById(`p-${rackPad}`);
+            
+            if (rackEl) {
+                rackEl.classList.add('active', rackSideClass);
+                
+                const wrapper = document.getElementById('mapWrapper');
+                const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
+                
+                if (!isExpanded) {
+                    rackEl.classList.add('show-label-popup');
+                    window.labelPopupTimer = setTimeout(() => {
+                        if(rackEl) rackEl.classList.remove('show-label-popup');
+                    }, 3000);
+                }
+                
+                rackEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
 
                 if (sec) {
-                    padEl.querySelectorAll('.sec-container span').forEach(span => {
+                    rackEl.querySelectorAll('.sec-container span').forEach(span => {
                         if (!span.dataset.origText) span.dataset.origText = span.innerText;
                         if (span.dataset.origText === sec.toString()) {
                             span.classList.add('highlighted-sec');
@@ -3043,7 +3181,16 @@
             }
         }
 
-        if (pad === 'KAS') { 
+        if (String(pad) === '9' && subTarget === 'paint') {
+            const p9 = document.getElementById('p-9');
+            if (p9) {
+                // Dynamically calculate the physical bottom edge of the desk based on grid padding
+                const distFromBottom = grid.offsetHeight - (p9.offsetTop + p9.offsetHeight) - 35; 
+                cPos = p9.offsetLeft + (p9.offsetWidth * 0.05); // Stand perfectly centered in front of the desk
+                targetBottom = `${(distFromBottom / grid.offsetHeight) * 100}%`; // Walk right up to the desk edge
+            }
+        }
+        else if (pad === 'KAS') { 
             const kasEl = document.getElementById('cashierZone');
             let targetDesk = null;
             if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
@@ -3069,8 +3216,8 @@
             }
         }
         else if (pad !== 'entrance' && (!isNaN(pad) || pad === '1L')) {
-            const { targetPad, isRightOfRack } = getMapTarget(pad, side);
-            const t = document.getElementById(`p-${targetPad}`);
+            const { rackPad, isRightOfRack } = getMapTarget(pad, side);
+            const t = document.getElementById(`p-${rackPad}`);
             if(t) {
                 const isExpanded = document.getElementById('mapWrapper').classList.contains('map-expanded-overlay');
                 const gapOffset = isExpanded ? 12 : 9; // Perfectly center based on the 24px or 18px grid gap
@@ -3135,7 +3282,7 @@
         }, t1));
 
         window.charMoveTimeouts.push(setTimeout(() => {
-            // Wandel naar boven in het gangpad
+            // Wandel naar boven in het gangpad (of naar de balie)
             char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
             char.style.bottom = targetBottom;
         }, t1 + t2));
@@ -3145,8 +3292,14 @@
             
             // Draai pas op het allerlaatste moment naar de juiste schappen!
             if (active && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== '0AW' && pad !== 'entrance') {
-                const isLeft = side && side.toLowerCase().includes('link');
-                document.documentElement.style.setProperty('--char-dir', isLeft ? '-1' : '1');
+                if (String(pad) === '9' && subTarget === 'paint') {
+                    document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly forward toward the paint desk
+                } else {
+                    const { isRightOfRack } = getMapTarget(pad, side);
+                    // If standing to the right of the rack, the target face is on our left -> face left (-1)
+                    // If standing to the left of the rack, the target face is on our right -> face right (1)
+                    document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
+                }
             } else {
                 document.documentElement.style.setProperty('--char-dir', '1');
             }
