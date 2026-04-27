@@ -13,14 +13,15 @@
             --primary: #005cb9; 
             --primary-dark: #00458b;
             --bg: #f8fafc; 
-            --accent: #ff8a00; /* Unified Orange Accent */
+            --accent: #005cb9; /* Unified to Logo Blue */
             --aisle: #e2e8f0; 
-            --aisle-active: #38bdf8; /* Pure Glowing Blue (No Green) */
+            --aisle-active: #005cb9; /* Unified to Logo Blue */
             --text-main: #0f172a; 
             --text-muted: #475569;
             --border-neutral: #cbd5e1;
             --char-dir: 1; 
             --txt-entrance: "INGANG"; 
+            --txt-exit: "UITGANG";
         }
 
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; background: var(--bg); font-family: system-ui, -apple-system, sans-serif;}
@@ -39,7 +40,7 @@
 
         .glow-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; z-index: 0; pointer-events: none; }
         .orb-1 { width: 300px; height: 300px; top: -100px; left: -100px; background: rgba(0, 92, 185, 0.3); animation: drift 10s ease-in-out infinite alternate; }
-        .orb-2 { width: 400px; height: 400px; bottom: -150px; right: -100px; background: rgba(255, 138, 0, 0.2); animation: drift 15s ease-in-out infinite alternate-reverse; }
+        .orb-2 { width: 400px; height: 400px; bottom: -150px; right: -100px; background: rgba(0, 92, 185, 0.2); animation: drift 15s ease-in-out infinite alternate-reverse; }
         @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
 
         /* Deep 3D Grid Background */
@@ -79,7 +80,7 @@
             color: #ffffff;
             padding: 8px 24px;
             border-radius: 8px;
-            border-bottom: 4px solid var(--accent);
+            border-bottom: 4px solid var(--primary-dark);
             font-size: 0.85rem; font-weight: 900; white-space: nowrap;
             box-shadow: 0 20px 40px rgba(0, 92, 185, 0.2);
             animation: tagFloat 22s linear infinite; animation-delay: var(--td);
@@ -87,8 +88,8 @@
             display: flex; align-items: center; gap: 8px;
         }
 
-        .float-tag span { color: var(--accent); font-size: 1.2rem; line-height: 0; }
-        .float-tag i { color: var(--accent); font-style: normal; }
+        .float-tag span { color: #ffffff; font-size: 1.2rem; line-height: 0; }
+        .float-tag i { color: #ffffff; font-style: normal; }
 
         @keyframes tagFloat {
             0% { bottom: -10%; opacity: 0; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(0.8); }
@@ -118,11 +119,11 @@
 
         @keyframes scaleUpIntro { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* Toggles */
-        .intro-lang-toggles { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: inline-flex; background: #ffffff; border-radius: 50px; padding: 5px; border: 2px solid var(--primary); box-shadow: 0 8px 20px rgba(0,92,185,0.1); gap: 4px; z-index: 20; }
-        .intro-lang-btn { background: transparent; border: none; color: var(--primary); font-size: 0.85rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
-        .intro-lang-btn:hover { background: rgba(0, 92, 185, 0.1); }
-        .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
+        /* Intro Language Toggles - Floating Pill Style */
+        .intro-lang-segment { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: flex; background: #ffffff; border-radius: 50px; padding: 6px; z-index: 20; border: 2px solid rgba(0, 92, 185, 0.1); box-shadow: 0 10px 30px rgba(0, 92, 185, 0.15); gap: 4px; }
+        .intro-lang-btn { background: transparent; border: none; font-size: 0.85rem; font-weight: 900; color: var(--text-muted); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px; }
+        .intro-lang-btn:hover:not(.active) { background: var(--bg); color: var(--primary); }
+        .intro-lang-btn.active { background: var(--primary); color: #ffffff; box-shadow: 0 4px 12px rgba(0, 92, 185, 0.3); transform: translateY(-1px); }
 
         /* Video */
         .video-container { width: 100%; max-width: 300px; aspect-ratio: 16/9; margin-bottom: 20px; background: var(--primary); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 30px rgba(0, 92, 185, 0.2); border: 2px solid var(--primary); position: relative; transform: translateZ(0); }
@@ -130,8 +131,8 @@
         
         /* Typography */
         .intro-h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1; letter-spacing: -1px; color: var(--primary); text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
-        .intro-h1 span { color: var(--primary); background: var(--accent); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; text-shadow: none; }
-        .intro-slogan { font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; background: var(--accent); padding: 4px 10px; border-radius: 6px; }
+        .intro-h1 span { color: #ffffff; background: var(--primary); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; text-shadow: none; border: 1px solid rgba(255,255,255,0.3); }
+        .intro-slogan { font-size: 0.75rem; font-weight: 900; color: #ffffff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; background: var(--primary); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); }
         .intro-nav-title { font-size: 1.1rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .intro-p { font-size: 0.9rem; font-weight: 600; margin: 0 0 24px 0; color: var(--primary); line-height: 1.4; text-align: center; opacity: 0.8; }
 
@@ -139,11 +140,11 @@
         .intro-btn { background: var(--primary); color: #ffffff; border: none; padding: 14px 24px; border-radius: 14px; font-weight: 900; font-size: 1.05rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(0, 92, 185, 0.3); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .intro-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
         .intro-btn:hover svg { transform: translateX(5px); }
-        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 92, 185, 0.4); background: var(--accent); color: var(--primary); }
+        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 92, 185, 0.4); background: var(--primary-dark); color: #ffffff; }
         .intro-btn:active { transform: translateY(1px); box-shadow: 0 5px 10px rgba(0, 92, 185, 0.3); }
 
         /* Commercial Ticker */
-        .commercial-ticker { position: absolute; bottom: 0; left: 0; width: 100%; height: 32px; background: var(--primary); color: var(--accent); display: flex; align-items: center; overflow: hidden; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; z-index: 20; }
+        .commercial-ticker { position: absolute; bottom: 0; left: 0; width: 100%; height: 32px; background: var(--primary-dark); color: #ffffff; display: flex; align-items: center; overflow: hidden; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; z-index: 20; border-top: 1px solid rgba(255,255,255,0.2); }
         .ticker-track { display: flex; gap: 50px; white-space: nowrap; animation: tickerScroll 30s linear infinite; text-transform: uppercase; }
         .ticker-track span i { color: #ffffff; margin-right: 8px; font-style: normal; }
         @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -158,9 +159,13 @@
         .logo svg { width: 26px; height: 26px; }
 
         .controls { display: flex; gap: 6px; align-items: center; }
-        .lang-flags { display: flex; gap: 4px; background: white; padding: 3px; border-radius: 8px; border: 2px solid var(--border-neutral); align-items: center; }
-        .flag-btn { background: transparent; border: none; font-size: 1.1rem; line-height: 1; padding: 3px 5px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; opacity: 0.4; filter: grayscale(100%); }
-        .flag-btn.active { opacity: 1; filter: grayscale(0%); background: #f1f5f9; transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        /* Main App Language Toggles - Floating Pill Style */
+        .lang-segment { display: flex; background: #ffffff; border-radius: 50px; padding: 4px; gap: 4px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 2px solid var(--border-neutral); }
+        .lang-btn { background: transparent; border: none; font-size: 0.75rem; font-weight: 900; color: var(--text-muted); padding: 6px 12px; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; letter-spacing: 0.5px; }
+        .lang-btn:hover:not(.active) { background: var(--bg); color: var(--primary); }
+        .lang-btn.active { background: var(--primary); color: #ffffff; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2); transform: translateY(-1px); }
+        
         .btn-reset { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 6px 10px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
 
         .search-area-wrapper { display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0; width: 100%; z-index: 50; position: relative; }
@@ -177,7 +182,7 @@
         .category-chip { padding: 7px 14px; background: white; border: 2px solid var(--border-neutral); border-radius: 50px; font-size: 0.8rem; font-weight: 800; color: var(--text-muted); white-space: nowrap; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
         .category-chip.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2); transform: translateY(-1px); }
 
-        .result-meta-badge { display: none; align-items: center; background: var(--aisle-active); color: #000; font-size: 0.75rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; margin-right: 4px; white-space: nowrap; z-index: 3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .result-meta-badge { display: none; align-items: center; background: var(--aisle-active); color: #ffffff; font-size: 0.75rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; margin-right: 4px; white-space: nowrap; z-index: 3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .searching .result-meta-badge { display: flex; }
         
         .results-list { flex: 1 1 auto; display: none; flex-direction: column; gap: 6px; overflow-y: auto; overflow-x: hidden; padding-bottom: 5px; position: relative; z-index: 2; width: 100%; min-height: 0; }
@@ -232,7 +237,7 @@
             --char-rx: -42deg;
             --char-tz: 30px;
             --char-scale: 1.6;
-            --path-stroke: 8px;
+            --path-stroke: 12px;
             --path-tz: 12px;
         }
         
@@ -241,10 +246,10 @@
             content: ''; position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; animation: overlayBob 12s infinite alternate ease-in-out; pointer-events: none;
         }
         .map-expanded-overlay::before {
-            width: 400px; height: 400px; background: rgba(56, 189, 248, 0.4); top: -10%; left: -10%;
+            width: 400px; height: 400px; background: rgba(0, 92, 185, 0.4); top: -10%; left: -10%;
         }
         .map-expanded-overlay::after {
-            width: 500px; height: 500px; background: rgba(255, 138, 0, 0.25); bottom: -10%; right: -10%; animation-delay: -6s; animation-direction: alternate-reverse;
+            width: 500px; height: 500px; background: rgba(0, 92, 185, 0.25); bottom: -10%; right: -10%; animation-delay: -6s; animation-direction: alternate-reverse;
         }
         
         @keyframes overlayBob {
@@ -324,7 +329,7 @@
         .aisle-part.active-part {
             background: #38bdf8 !important;
             border-color: #ffffff !important;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.3) !important;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.5) !important;
             transform: translateZ(45px);
         }
         .aisle-part.active-part::before {
@@ -344,7 +349,7 @@
         }
 
         /* --- SEPARATED GLOW: ONLY IN EXPANDED MAP --- */
-        .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part { background: linear-gradient(to right, #38bdf8 50%, #005cb9 50%) !important; border-right-color: #002e5c !important; }
+        .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part { background: linear-gradient(to right, #38bdf8 50%, var(--primary-dark) 50%) !important; border-right-color: #002e5c !important; }
         .map-expanded-overlay .aisle.active-side-left .aisle-part.active-part::before {
             background: linear-gradient(to right, #0369a1 50%, transparent 50%),
                         repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
@@ -358,7 +363,7 @@
                 linear-gradient(to right, #475569 0%, #1e293b 100%) !important;
         }
 
-        .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part { background: linear-gradient(to right, #005cb9 50%, #38bdf8 50%) !important; border-left-color: #002e5c !important; }
+        .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part { background: linear-gradient(to right, var(--primary-dark) 50%, #38bdf8 50%) !important; border-left-color: #002e5c !important; }
         .map-expanded-overlay .aisle.active-side-right .aisle-part.active-part::before {
             background: linear-gradient(to right, transparent 50%, #0369a1 50%),
                         repeating-linear-gradient(to right, transparent 0px, transparent 30px, rgba(255,255,255,0.2) 30px, rgba(255,255,255,0.2) 32px),
@@ -444,11 +449,16 @@
             border: none !important;
             box-shadow: none !important;
             width: max-content !important;
-            max-width: none !important; /* Allow it to stretch along the long aisle */
+            max-width: 140px !important; /* Limit width to enforce wrapping */
             min-width: 0 !important;
-            font-size: 9px !important; /* Fixed small font size as requested */
+            font-size: 0.85rem !important; /* Adjusted to 0.85rem */
             letter-spacing: 1px !important;
-            white-space: nowrap !important; /* Force single line to avoid spilling sideways into other aisles */
+            white-space: normal !important; /* Wrap text to prevent endless stretching */
+            line-height: 1.2 !important;
+            text-align: center !important; /* Ensure centered text when wrapped */
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8) !important;
             visibility: visible !important;
             pointer-events: none !important;
@@ -511,7 +521,7 @@
         .paint-table::after { content: ''; position: absolute; top: 0; left: 100%; width: 18px; height: 100%; background: linear-gradient(to bottom, #e2e8f0, #cbd5e1); transform-origin: left; transform: rotateY(90deg); border-right: 1.5px solid #475569; box-sizing: border-box; transition: all 0.3s ease; }
         
         .aisle-num { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%) rotateX(-55deg) translateZ(50px) translateY(-15px); font-weight: 900; font-size: 0.65rem; z-index: 30; background: var(--primary); color: white; padding: 2px 5px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.3s ease; border: 1.5px solid #002e5c; }
-        .aisle.active-num .aisle-num { background: var(--aisle-active); color: #000; transform: translateX(-50%) rotateX(-55deg) translateZ(65px) translateY(-15px) scale(1.1); box-shadow: 0 6px 10px rgba(56, 189, 248, 0.4); border-color: #ffffff; }
+        .aisle.active-num .aisle-num { background: var(--aisle-active); color: #ffffff; transform: translateX(-50%) rotateX(-55deg) translateZ(65px) translateY(-15px) scale(1.1); box-shadow: 0 6px 10px rgba(56, 189, 248, 0.4); border-color: #ffffff; }
         
         #p-1L .aisle-num { left: 100%; bottom: 15px; }
 
@@ -521,23 +531,31 @@
 
         .back-wall { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; border-radius: 6px 6px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), -5px 8px 10px rgba(0,0,0,0.15); border: 2px solid #002e5c; }
         .back-wall::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 42px), repeating-linear-gradient(to bottom, #1d4ed8 0px, #3b82f6 1.5px, #1e3a8a 3px, transparent 3px, transparent 13px), #0f172a; transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid #002e5c; box-sizing: border-box; transition: all 0.3s ease; }
-        .back-wall.active { background: var(--aisle-active); transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.3); border-color: #ffffff; }
-        .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.4) 40px, rgba(255,255,255,0.4) 42px), repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, var(--aisle-active) 3px, transparent 3px, transparent 13px), #0369a1; border-bottom-color: #ffffff; height: 45px; }
+        .back-wall.active { background: #38bdf8; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.5); border-color: #ffffff; }
+        .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.4) 40px, rgba(255,255,255,0.4) 42px), repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, #38bdf8 3px, transparent 3px, transparent 13px), #0369a1; border-bottom-color: #ffffff; height: 45px; }
 
-        .entrance-label { position: absolute; transform-origin: bottom right; transform: translateX(-100%) rotateX(-35deg) translateZ(10px) translateY(-10px); font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; white-space: nowrap; border: 1.5px solid #b45309; transition: all 0.2s ease; }
-        .entrance-label:hover { background: #e65c00; transform: translateX(-100%) rotateX(-35deg) translateZ(14px) translateY(-14px) scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+        /* Modern 3D Sliding Door - Softened & Less Intrusive */
+        .modern-door { position: absolute; bottom: -6px; transform-origin: bottom center; transform: translateX(-50%) rotateX(-55deg) translateZ(4px); width: 40px; height: 26px; background: rgba(248, 250, 252, 0.15); border: 1.5px solid var(--primary); border-bottom: none; border-top-width: 2.5px; border-radius: 4px 4px 0 0; display: flex; gap: 1px; padding: 1.5px; box-sizing: border-box; box-shadow: 0 6px 12px rgba(0,0,0,0.2), inset 0 2px 6px rgba(255,255,255,0.4); z-index: 25; cursor: pointer; pointer-events: auto; transition: all 0.3s ease; }
+        .modern-door:hover .door-glass.left { transform: translateX(-8px); opacity: 0.4; }
+        .modern-door:hover .door-glass.right { transform: translateX(8px); opacity: 0.4; }
+        .door-glass { flex: 1; background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(56, 189, 248, 0.15) 100%); border: 1px solid rgba(255,255,255,0.6); border-radius: 2px; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px); }
+        .door-glass::before { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 2px; height: 10px; background: var(--primary); border-radius: 1px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); opacity: 0.8; }
+        .door-glass.left::before { right: 3px; }
+        .door-glass.right::before { left: 3px; }
+
+        .entrance-label { position: absolute; transform-origin: center; transform: translateX(-50%) rotateX(-55deg) translateZ(32px); font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--primary); color: #ffffff; padding: 2px 6px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); pointer-events: none; white-space: nowrap; border: none; transition: all 0.2s ease; letter-spacing: 0.5px; text-transform: uppercase; }
         .entrance-label::before { content: var(--txt-entrance); }
-        .desk-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #0096c7; }
         
-        /* Toggleable 3D Labels */
-        .toggle-label { opacity: 0; pointer-events: none; transition: all 0.3s ease; }
-        .toggle-label.active-label { opacity: 1; }
-        
-        .desk-label, .coffee-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(0); }
-        .desk-label.active-label, .coffee-label.active-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) translateY(-10px); }
+        /* Exit Specific Layout and Styling */
+        .exit-door { left: calc(100% / 18 * 15.0) !important; border-color: rgba(22, 163, 74, 0.8); }
+        .exit-door .door-glass { background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(22, 163, 74, 0.15) 100%); border-color: rgba(22, 163, 74, 0.4); }
+        .exit-door .door-glass::before { background: #16a34a; }
 
-        /* Paint Desk Label - Mimics Aisle Label */
-        #label-paint { 
+        .exit-label { position: absolute; left: calc(100% / 18 * 15.0) !important; transform-origin: center; bottom: -5px; transform: translateX(-50%) rotateX(-55deg) translateZ(32px); font-weight: 900; font-size: 0.45rem; z-index: 30; background: #16a34a; color: #ffffff; padding: 2px 6px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); pointer-events: none; white-space: nowrap; border: none; transition: all 0.2s ease; letter-spacing: 0.5px; text-transform: uppercase; }
+        .exit-label::before { content: var(--txt-exit); }
+
+        /* Shared Pop-up Style for Paint Desk, Cashier Desks, and Coffee Corner */
+        #label-paint, .desk-label, .coffee-label { 
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) translateZ(20px) rotateX(-55deg) scale(0.8); 
@@ -552,77 +570,65 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0; 
+            visibility: hidden;
             pointer-events: none;
             text-align: center;
+            white-space: nowrap;
         }
-        #label-paint::after {
+        
+        /* Specific offset for the coffee corner */
+        .coffee-label {
+            left: calc(50% - 3px) !important;
+        }
+
+        #label-paint::after, .desk-label::after, .coffee-label::after {
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             border-width: 4px; border-style: solid;
             border-color: var(--primary) transparent transparent transparent;
             opacity: 0; transition: opacity 0.3s;
         }
-        #label-paint.active-label { 
+        
+        #label-paint.active-label, .desk-label.active-label, .coffee-label.active-label { 
             opacity: 1 !important;
-            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important; 
-            background: var(--aisle-active) !important; 
-            color: #000 !important; 
-            border-color: #ffffff !important; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; 
             visibility: visible !important;
+            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important; 
+            background: var(--primary) !important; 
+            color: #ffffff !important; 
+            border-color: #ffffff !important; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.5) !important; 
         }
-        #label-paint.active-label::after {
+        
+        #label-paint.active-label::after, .desk-label.active-label::after, .coffee-label.active-label::after {
             opacity: 1 !important; 
-            border-color: var(--aisle-active) transparent transparent transparent !important;
+            border-color: var(--primary) transparent transparent transparent !important;
         }
 
-        /* Paint Desk Label in Expanded Map (Hidden by default, visible only when clicked) */
-        .map-expanded-overlay #label-paint {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            transition: none !important;
-        }
-        .map-expanded-overlay #label-paint::after {
-            display: none !important;
-        }
-        .map-expanded-overlay #label-paint.active-label {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important; 
-            background: var(--aisle-active) !important; 
-            color: #000 !important; 
-            border-color: #ffffff !important; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; 
-            text-shadow: none !important;
-            padding: 4px 8px !important;
-            border-radius: 6px !important;
-            font-size: 0.55rem !important;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-        }
-        .map-expanded-overlay #label-paint.active-label::after {
-            display: block !important;
-            opacity: 1 !important;
-            border-color: var(--aisle-active) transparent transparent transparent !important;
-        }
+        #cashierZone { position: absolute; bottom: -8px; left: calc(100% / 18 * 7.8); width: calc(100% / 18 * 4.8); display: flex; justify-content: space-between; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .cashier-desk { width: 20%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 3px solid var(--primary); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        .cashier-desk::before { content: ''; position: absolute; top: -5px; right: 15%; width: 35%; height: 5px; background: var(--primary); border-radius: 1px; border: 1.5px solid #020617; box-shadow: 0 0 4px rgba(0, 92, 185, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
 
-        #cashierZone { position: absolute; bottom: -5px; left: calc(100% / 18 * 8); width: calc(100% / 18 * 5); display: flex; justify-content: space-between; align-items: flex-end; height: 5px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
-        .cashier-desk { width: 18%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 2px solid var(--accent); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
-        .cashier-desk::before { content: ''; position: absolute; top: -4px; right: 15%; width: 35%; height: 4px; background: #38bdf8; border-radius: 1px; border: 1.5px solid #020617; box-shadow: 0 0 4px rgba(56, 189, 248, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
+        /* Sawmill / Zaagtafel - Moved next to exit door and half nested */
+        #sawmillZone { position: absolute; bottom: -8px; left: calc((100% / 18 * 15.0) - 62px); width: 40px; display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #sawmillZone:hover { transform: translateZ(12px); }
+        .saw-blade-container { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 26px; height: 13px; overflow: hidden; z-index: 2; border-bottom: 2px solid #0f172a; border-radius: 0 0 2px 2px; }
+        .saw-blade { position: absolute; bottom: -11px; left: 1px; width: 24px; height: 24px; background: repeating-conic-gradient(#e2e8f0 0deg 30deg, #94a3b8 30deg 60deg); border-radius: 50%; border: 2px solid #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.6); pointer-events: none; box-sizing: border-box; }
+        #sawmillZone:hover .saw-blade { animation: sawSpin 0.2s linear infinite; }
+        @keyframes sawSpin { 100% { transform: rotateZ(360deg); } }
 
-        #coffeeCorner { position: absolute; bottom: -5px; right: calc(100% / 18 * 0.2); width: calc(100% / 18 * 1.5); display: flex; justify-content: center; align-items: flex-end; height: 6px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1.5px solid #000; border-top: 3px solid #b45309; border-radius: 3px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), -6px 10px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #coffeeCorner { position: absolute; bottom: -8px; right: 0; width: calc(100% / 18 * 1.8); display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1.5px solid #000; border-top: 3.5px solid var(--primary); border-radius: 3px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), -6px 10px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         #coffeeCorner:hover { transform: translateZ(12px); }
-        #coffeeCorner::before { content: ''; position: absolute; top: -6px; left: 8%; width: 32%; height: 6px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1.5px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
-        #coffeeCorner::after { content: ''; position: absolute; top: -2px; left: 5%; width: 90%; height: 2px; background: var(--accent); box-shadow: 0 0 5px var(--accent), 0 0 10px #e65c00; border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
+        #coffeeCorner::before { content: ''; position: absolute; top: -8px; left: 8%; width: 32%; height: 8px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1.5px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        #coffeeCorner::after { content: ''; position: absolute; top: -3px; left: 5%; width: 90%; height: 2px; background: var(--primary); box-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary); border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
 
         .vending-machine { position: absolute; bottom: 100%; right: 8%; width: 24%; height: 20px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 1.5px solid #475569; border-left: 1.5px solid #334155; border-radius: 2px; transform-origin: bottom center; transform: rotateX(-35deg) translateZ(8px) translateY(-1px); box-shadow: -5px 10px 10px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; padding-top: 2px; box-sizing: border-box; z-index: 10; }
-        .vending-screen { width: 85%; height: 10px; background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)), repeating-linear-gradient(to bottom, #0ea5e9 0px, #0ea5e9 3px, #020617 3px, #020617 5px); border: 1px solid #000; border-radius: 1px; box-shadow: inset 0 0 5px #000, 0 0 8px rgba(14, 165, 233, 0.4); position: relative; }
+        .vending-screen { width: 85%; height: 10px; background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.05)), repeating-linear-gradient(to bottom, var(--primary) 0px, var(--primary) 3px, #020617 3px, #020617 5px); border: 1px solid #000; border-radius: 1px; box-shadow: inset 0 0 5px #000, 0 0 8px rgba(0, 92, 185, 0.4); position: relative; }
         .vending-slot { margin-top: 3px; width: 60%; height: 2px; background: #000; border-radius: 1px; border-top: 1px solid #334155; position: relative; }
         .vending-slot::before { content: ''; position: absolute; top: -6px; right: -8px; width: 4px; height: 6px; background: #94a3b8; border-radius: 1px; }
 
-        .coffee-label { position: absolute; bottom: 100%; left: 50%; font-weight: 900; font-size: 0.45rem; z-index: 30; background: var(--accent); color: #000; padding: 2px 4px; border-radius: 3px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1.5px solid #b45309; }
         .coffee-cup { position: absolute; bottom: 100%; left: 45%; transform-origin: bottom center; transform: translateX(-50%) rotateX(-35deg) translateZ(8px) translateY(-1px); font-size: 0.85rem; pointer-events: none; text-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 20; }
 
         #pathLayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; transform: translateZ(var(--path-tz)); overflow: visible; transition: transform 0.4s ease; } 
-        .walking-line { fill: none; stroke: var(--accent); stroke-width: var(--path-stroke); stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(-2px 4px 2px rgba(0,0,0,0.4)); transition: stroke-width 0.4s ease; } 
+        .walking-line { fill: none; stroke: #ffff00; stroke-width: var(--path-stroke); stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(-2px 4px 4px rgba(0,0,0,0.6)) drop-shadow(0 0 6px rgba(255, 255, 0, 0.4)); transition: stroke-width 0.4s ease; } 
         @keyframes drawPath { to { stroke-dashoffset: 0; } }
         
         .btn-close-map { position: absolute; top: 20px; right: 20px; z-index: 10002; background: var(--primary); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.5rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; align-items: center; justify-content: center; transition: all 0.2s; }
@@ -715,7 +721,6 @@
 
         @media (hover: hover) {
             .btn-reset:hover { background: var(--primary); color: white; }
-            .flag-btn:hover { opacity: 0.8; transform: scale(1.1); }
             .clear-btn:hover { background: #cbd5e1; }
             .search-btn:hover { background: var(--primary-dark); }
             .result-item:not(.selected):hover { border-color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
@@ -726,16 +731,21 @@
         /* --- DIM MODE --- */
         body.dark-mode { --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b; }
         body.dark-mode .logo h1 { color: var(--text-main); }
-        body.dark-mode .logo h1 span { background: var(--accent); color: #000; }
-        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .lang-flags, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
-        body.dark-mode .flag-btn.active { background: #334155; } body.dark-mode .input-layer { color: var(--text-main); }
+        body.dark-mode .logo h1 span { background: var(--accent); color: #ffffff; }
+        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
+        body.dark-mode .input-layer { color: var(--text-main); }
         body.dark-mode .tag { background: #334155; color: #cbd5e1; } body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
         body.dark-mode .clear-btn { background: #334155; color: white; } body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
-        body.dark-mode .result-meta-badge { background: var(--accent); color: #000; }
+        body.dark-mode .result-meta-badge { background: var(--accent); color: #ffffff; }
         
+        body.dark-mode .lang-segment { background: #1e293b; border-color: #334155; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        body.dark-mode .lang-btn { color: #94a3b8; }
+        body.dark-mode .lang-btn:hover:not(.active) { background: #0f172a; color: #f8fafc; }
+        body.dark-mode .lang-btn.active { background: var(--accent); color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
         body.dark-mode .map-expanded-overlay { background: rgba(15, 23, 42, 0.75); }
         body.dark-mode .map-expanded-overlay::before { background: rgba(2, 132, 199, 0.4); }
-        body.dark-mode .map-expanded-overlay::after { background: rgba(154, 52, 18, 0.3); }
+        body.dark-mode .map-expanded-overlay::after { background: rgba(0, 150, 199, 0.3); }
 
         body.dark-mode #productDetailCard { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
         body.dark-mode .pd-icon { background: rgba(30, 41, 59, 0.6); border-color: rgba(255, 255, 255, 0.1); color: var(--accent); }
@@ -743,8 +753,8 @@
         body.dark-mode .pd-title { color: #f8fafc; }
         body.dark-mode .pd-art { color: #94a3b8; }
         body.dark-mode .pd-loc-banner { background: rgba(30, 58, 138, 0.4); color: #bfdbfe; border-color: rgba(255, 255, 255, 0.05); }
-        body.dark-mode .pd-print-btn { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(255, 138, 0, 0.2); }
-        body.dark-mode .pd-print-btn:hover { background: #e65c00; color: #fff;}
+        body.dark-mode .pd-print-btn { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(0, 150, 199, 0.2); }
+        body.dark-mode .pd-print-btn:hover { background: #0077b6; color: #fff;}
 
         body.dark-mode .floor { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-color: #334155; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), -8px 15px 15px rgba(0,0,0,0.5); }
         body.dark-mode .floor::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom: 1px solid #000; }
@@ -758,46 +768,44 @@
         body.dark-mode .paint-table::before { background: linear-gradient(to right, #6b21a8, #3730a3, #075985, #065f46); border-bottom-color: #000; }
         body.dark-mode .paint-table::after { background: #065f46; border-right-color: #000; }
 
-        body.dark-mode #label-paint {
+        body.dark-mode #label-paint,
+        body.dark-mode .desk-label,
+        body.dark-mode .coffee-label {
             background: transparent;
             color: rgba(255, 255, 255, 0.8);
             border: none;
             box-shadow: none;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9);
         }
-        body.dark-mode #label-paint.active-label {
-            background: var(--aisle-active) !important;
-            color: #000 !important;
+        body.dark-mode #label-paint.active-label,
+        body.dark-mode .desk-label.active-label,
+        body.dark-mode .coffee-label.active-label {
+            background: var(--primary) !important;
+            color: #ffffff !important;
             border: 1px solid #ffffff !important;
             text-shadow: none !important;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
-        }
-
-        body.dark-mode .map-expanded-overlay #label-paint {
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        
-        body.dark-mode .map-expanded-overlay #label-paint.active-label {
-            opacity: 1 !important;
-            visibility: visible !important;
-            background: var(--aisle-active) !important;
-            color: #000 !important;
-            border: 1px solid #ffffff !important;
-            text-shadow: none !important;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.5) !important;
         }
 
         body.dark-mode .back-wall { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 8px 10px rgba(0,0,0,0.4); }
-        body.dark-mode .back-wall::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,0,0,0.5) 40px, rgba(0,0,0,0.5) 43px), repeating-linear-gradient(to bottom, #3b82f6 0px, #60a5fa 1px, #1e40af 3px, transparent 3px, transparent 13px), #020617; border-bottom: 2px solid #1e3a8a; }
-        body.dark-mode .back-wall.active { background: #0284c7; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(2, 132, 199, 0.3); border-color: #ffffff; }
-        body.dark-mode .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,30,60,0.8) 40px, rgba(0,30,60,0.8) 43px), repeating-linear-gradient(to bottom, #0284c7 0px, #0369a1 1px, #075985 3px, transparent 3px, transparent 13px), #082f49; border-bottom-color: #082f49; height: 45px; }
+        body.dark-mode .back-wall::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,0,0,0.5) 40px, rgba(0,0,0,0.5) 43px), repeating-linear-gradient(to bottom, var(--primary) 0px, #60a5fa 1px, #00458b 3px, transparent 3px, transparent 13px), #002e5c; border-bottom: 2px solid #1e3a8a; }
+        body.dark-mode .back-wall.active { background: #0284c7; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(2, 132, 199, 0.4); border-color: #ffffff; }
+        body.dark-mode .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,30,60,0.8) 40px, rgba(0,30,60,0.8) 43px), repeating-linear-gradient(to bottom, #0284c7 0px, #0369a1 1px, #075985 3px, transparent 3px, transparent 13px), #082f49; border-bottom-color: #ffffff; height: 45px; }
+
+        body.dark-mode .modern-door { border-color: rgba(2, 132, 199, 0.8); background: rgba(15, 23, 42, 0.2); box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 6px rgba(2, 132, 199, 0.2); }
+        body.dark-mode .door-glass { background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(15, 23, 42, 0.4) 100%); border-color: rgba(56, 189, 248, 0.3); }
+        body.dark-mode .door-glass::before { background: #38bdf8; opacity: 0.7; }
+        
+        body.dark-mode .exit-door { border-color: rgba(21, 128, 61, 0.8) !important; box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 6px rgba(22, 163, 74, 0.1) !important; }
+        body.dark-mode .exit-door .door-glass { background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(15, 23, 42, 0.4) 100%) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
+        body.dark-mode .exit-door .door-glass::before { background: #16a34a !important; }
+        body.dark-mode .exit-label { background: #15803d !important; }
 
         /* Intro Page Dark Mode Overrides */
         body.dark-mode #introPage { background: #0f172a; color: #ffffff; }
         body.dark-mode .intro-bg { background: #0f172a; }
         body.dark-mode .intro-bg::before { background-image: linear-gradient(rgba(0, 92, 185, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 92, 185, 0.3) 1px, transparent 1px); }
-        body.dark-mode .orb-1 { background: rgba(0, 92, 185, 0.2); } body.dark-mode .orb-2 { background: rgba(255, 138, 0, 0.1); }
+        body.dark-mode .orb-1 { background: rgba(0, 92, 185, 0.2); } body.dark-mode .orb-2 { background: rgba(0, 92, 185, 0.15); }
         body.dark-mode .intro-content { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
         body.dark-mode .float-tag { background: #0f172a; color: #ffffff; border: 2px solid var(--primary); border-bottom: 4px solid var(--accent); }
         body.dark-mode .intro-h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
@@ -805,17 +813,19 @@
         body.dark-mode .intro-slogan { background: var(--accent); color: #0f172a; }
         body.dark-mode .intro-nav-title { color: #ffffff; }
         body.dark-mode .intro-p { color: #ffffff; }
-        body.dark-mode .intro-lang-toggles { background: #0f172a; border-color: var(--primary); }
-        body.dark-mode .intro-lang-btn { color: #ffffff; }
-        body.dark-mode .intro-lang-btn:hover { background: rgba(0, 92, 185, 0.3); }
+        
+        body.dark-mode .intro-lang-segment { background: rgba(15, 23, 42, 0.85); border-color: rgba(255, 255, 255, 0.1); }
+        body.dark-mode .intro-lang-btn { color: #94a3b8; }
         body.dark-mode .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
+        body.dark-mode .intro-lang-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
+        
         body.dark-mode .commercial-ticker { background: var(--primary); color: var(--accent); }
 
         /* --- FOOTER STYLES --- */
         .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); transition: all 0.3s ease; }
         .app-footer .footer-content { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 0 10px; }
         .app-footer .brand { font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .beta-badge { background: var(--accent); color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 900; font-size: 0.6rem; text-transform: uppercase; white-space: nowrap; }
+        .beta-badge { background: var(--accent); color: #ffffff; padding: 1px 6px; border-radius: 4px; font-weight: 900; font-size: 0.6rem; text-transform: uppercase; white-space: nowrap; }
     </style>
 </head>
 <body onload="initApp()">
@@ -834,13 +844,14 @@
                 <path class="accent-path" d="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" />
                 <path d="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" />
                 <g><g transform="rotate(90)"><rect x="-10" y="-6" width="20" height="12" rx="6" fill="#005cb9" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="16s" repeatCount="indefinite" path="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" rotate="auto" /></g>
-                <g><g transform="rotate(90)"><rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#ff8a00" stroke-width="2" /><line x1="10" y1="-4" x2="26" y2="-4" stroke="#ff8a00" stroke-width="1" /><line x1="10" y1="4" x2="26" y2="4" stroke="#ff8a00" stroke-width="1" /><rect x="-10" y="-7" width="20" height="14" rx="6" fill="#ff8a00" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" /></g>
-                <g><g transform="rotate(90)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="#005cb9" /><circle cx="0" cy="0" r="5" fill="#ff8a00" /></g><animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" /></g>
+                <g><g transform="rotate(90)"><rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#005cb9" stroke-width="2" /><line x1="10" y1="-4" x2="26" y2="-4" stroke="#005cb9" stroke-width="1" /><line x1="10" y1="4" x2="26" y2="4" stroke="#005cb9" stroke-width="1" /><rect x="-10" y="-7" width="20" height="14" rx="6" fill="#005cb9" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" /></g>
+                <g><g transform="rotate(90)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="#005cb9" /><circle cx="0" cy="0" r="5" fill="#ffffff" /></g><animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" /></g>
             </svg>
         </div>
-        <div class="intro-lang-toggles">
+        <div class="intro-lang-segment">
             <button class="intro-lang-btn active" onclick="setLang('nl')" id="intro-btn-nl">🇳🇱 NL</button>
             <button class="intro-lang-btn" onclick="setLang('en')" id="intro-btn-en">🇬🇧 EN</button>
+            <button class="intro-lang-btn" onclick="setLang('uk')" id="intro-btn-uk">🇺🇦 UA</button>
         </div>
         <div class="intro-content">
             <div class="video-container">
@@ -880,9 +891,10 @@
                 </div>
                 <div class="controls">
                     <button id="btnDimToggle" onclick="toggleDimMode()" class="btn-reset" style="padding: 4px 8px; font-size: 1.1rem; border-radius: 50%;" title="Toggle Dim Mode">🌙</button>
-                    <div class="lang-flags">
-                        <button class="flag-btn" onclick="setLang('nl')" id="btn-nl" aria-label="Nederlands">🇳🇱</button>
-                        <button class="flag-btn" onclick="setLang('en')" id="btn-en" aria-label="English">🇬🇧</button>
+                    <div class="lang-segment">
+                        <button class="lang-btn active" onclick="setLang('nl')" id="btn-nl">🇳🇱 NL</button>
+                        <button class="lang-btn" onclick="setLang('en')" id="btn-en">🇬🇧 EN</button>
+                        <button class="lang-btn" onclick="setLang('uk')" id="btn-uk">🇺🇦 UA</button>
                     </div>
                     <button id="btnReset" onclick="resetApp()" class="btn-reset" style="display: none;">RESET</button>
                 </div>
@@ -921,7 +933,16 @@
                         <div class="cashier-desk" id="desk-service" onclick="handleMapClick('KAS', 'service')"><div class="desk-label toggle-label" id="label-service">Service desk</div></div>
                         <div class="cashier-desk" id="desk-sales1" onclick="handleMapClick('KAS', 'sales1')"><div class="desk-label toggle-label" id="label-sales1">Verkoopdesk</div></div>
                         <div class="cashier-desk" id="desk-kassa" onclick="handleMapClick('KAS', 'kassa')"><div class="desk-label toggle-label" id="label-kassa">Kassa</div></div>
+                </div>
+                <div id="sawmillZone" onclick="handleMapClick('SAW', null)">
+                    <div class="saw-blade-container"><div class="saw-blade"></div></div>
+                    <div class="desk-label toggle-label" id="label-sawmill">Zaagafdeling</div>
+                </div>
+                <div class="modern-door exit-door" id="exitDoor" onclick="handleMapClick('UITGANG', null)">
+                    <div class="door-glass left"></div>
+                        <div class="door-glass right"></div>
                     </div>
+                    <div class="exit-label" id="exitText"></div>
                     <div id="coffeeCorner" onclick="handleMapClick('KOFFIE', null)">
                         <div class="vending-machine">
                             <div class="vending-screen"></div>
@@ -977,11 +998,16 @@
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
             entrance: "INGANG", left: "LINKS", right: "RECHTS", sect: "Sectie", pad: "PAD", zijde: "ZIJDE", kassa: "KASSA",
             serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek", paintDesk: "Verfbalie",
+            exit: "UITGANG", sawmill: "Zaagafdeling",
             expandMap: "KAART VERGROTEN",
             backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
+            location: "LOCATIE:",
+            mapLabels: {
+                "HOUT": "HOUT", "TUINHOUT": "TUINHOUT", "VUREN RUW / GESCHAAFD": "VUREN RUW / GESCHAAFD", "VUREN GESCHAAFD / HOUT": "VUREN GESCHAAFD / HOUT", "PLAATMATERIAAL HOUT": "PLAATMATERIAAL HOUT", "BOUW": "BOUW", "GIPSEN / CEMENT / MORTELS": "GIPSEN / CEMENT / MORTELS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTELS / ZAND GRIND", "STENEN / BLOKKEN": "STENEN / BLOKKEN", "TEGELS / LIJMEN": "TEGELS / LIJMEN", "TEGELS / LIJMEN / ISOLATIE": "TEGELS / LIJMEN / ISOLATIE", "DAKBEDEKKING / DAKRAMEN": "DAKBEDEKKING / DAKRAMEN", "SANITAIR": "SANITAIR"
+            },
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
-                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Verf": "Verf", "Kleding & schoenen": "Kleding & schoenen"
+                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Kleding & schoenen": "Kleding & schoenen"
             }
         },
         en: { 
@@ -996,11 +1022,40 @@
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
             entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner", paintDesk: "Paint Desk",
+            exit: "EXIT", sawmill: "Sawmill",
             expandMap: "EXPAND MAP",
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
+            location: "LOCATION:",
+            mapLabels: {
+                "HOUT": "TIMBER", "TUINHOUT": "GARDEN TIMBER", "VUREN RUW / GESCHAAFD": "ROUGH / PLANED PINE", "VUREN GESCHAAFD / HOUT": "PLANED PINE / TIMBER", "PLAATMATERIAAL HOUT": "SHEET MATERIAL TIMBER", "BOUW": "CONSTRUCTION", "GIPSEN / CEMENT / MORTELS": "PLASTER / CEMENT / MORTARS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTARS / SAND GRAVEL", "STENEN / BLOKKEN": "BRICKS / BLOCKS", "TEGELS / LIJMEN": "TILES / ADHESIVES", "TEGELS / LIJMEN / ISOLATIE": "TILES / ADHESIVES / INSULATION", "DAKBEDEKKING / DAKRAMEN": "ROOFING / SKYLIGHTS", "SANITAIR": "PLUMBING"
+            },
             groups: { 
-                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke Protection": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
-                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Verf": "Painting Supplies", "Kleding & schoenen": "Clothing & Shoes"
+                "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
+                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Kleding & schoenen": "Clothing & Shoes"
+            }
+        },
+        uk: { 
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Все для професіоналів",
+            introNav: "Розумний навігатор",
+            introP: "Миттєво знаходьте потрібні товари у магазині.",
+            introBtn: "ПОЧАТИ ПОШУК",
+            placeholder: "Пошук товару або коду...", search: "🔍 ПОШУК", reset: "СКИДАННЯ", 
+            allCats: "Всі категорії",
+            resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
+            noResDesc: "Перевірте правильність написання.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУКУВАТИ ЧЕК", 
+            entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
+            serviceDesk: "Сервісний центр", salesDesk: "Відділ продажу", coffeeCorner: "Кавовий куточок", paintDesk: "Відділ фарб",
+            exit: "ВИХІД", sawmill: "Пилорама",
+            expandMap: "РОЗГОРНУТИ КАРТУ",
+            backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
+            location: "РОЗТАШУВАННЯ:",
+            mapLabels: {
+                "HOUT": "ДЕРЕВИНА", "TUINHOUT": "САДОВА ДЕРЕВИНА", "VUREN RUW / GESCHAAFD": "ГРУБА / СТРУГАНА СОСНА", "VUREN GESCHAAFD / HOUT": "СТРУГАНА СОСНА / ДЕРЕВИНА", "PLAATMATERIAAL HOUT": "ЛИСТОВА ДЕРЕВИНА", "BOUW": "БУДІВНИЦТВО", "GIPSEN / CEMENT / MORTELS": "ГІПС / ЦЕМЕНТ / РОЗЧИНИ", "CEMENT / MORTELS / ZAND GRIND": "ЦЕМЕНТ / РОЗЧИНИ / ПІСОК ГРАВІЙ", "STENEN / BLOKKEN": "ЦЕГЛА / БЛОКИ", "TEGELS / LIJMEN": "ПЛИТКА / КЛЕЇ", "TEGELS / LIJMEN / ISOLATIE": "ПЛИТКА / КЛЕЇ / ІЗОЛЯЦІЯ", "DAKBEDEKKING / DAKRAMEN": "ПОКРІВЛЯ / ДАХОВІ ВІКНА", "SANITAIR": "САНТЕХНІКА"
+            },
+            groups: { 
+                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen gebruik": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибиранння", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Для власного використання",
+                "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Kleding & schoenen": "Одяг та взуття"
             }
         }
     };
@@ -1022,6 +1077,7 @@
         { id: "VMB", short: "VERF BALIE", long: "Verfmengbalie" },
         { id: "LIJ", short: "LIJSTEN", long: "Lijstenkast of kop 2-3" },
         { id: "BAL", short: "BALIE", long: "Balie - ask desk service" },
+        { id: "SAW", short: "ZAAG", long: "Zaagafdeling" },
         { id: "KOFFIE", short: "KOFFIE", long: "Koffiehoek" }
     ];
 
@@ -1032,7 +1088,7 @@
 
     // Condensed fallback data to prevent truncation
     const fallbackData = [
-                   {
+                  {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2191,16 +2247,14 @@
             "Locatie2": "Pad VM Links, Sectie 02"
         }
 
-
-
     ];
 
-    // VEILIGE GETTERS
-    const getArtNr = (item) => item["ArtikelNr."] || item.artikelNr || item.id || '';
-    const getOmsch = (item) => item["Artikel omsch."] || item.omschrijving || item.naam || item.name || '';
-    const getHg = (item) => item["Hoofdgroep"] || item.hoofdgroep || item.category || 'Algemeen';
-    const getSg = (item) => item["Subgroep"] || item.subgroep || item.subcategory || '';
-    const getLoc = (item) => item["Locatie2"] || item["Schaplocatie code"] || item.locatie || item.Locatie || '';
+    // VEILIGE GETTERS - Strictly cast to String to prevent .trim() crashes on numeric data
+    const getArtNr = (item) => String(item["ArtikelNr."] || item.artikelNr || item.id || '');
+    const getOmsch = (item) => String(item["Artikel omsch."] || item.omschrijving || item.naam || item.name || '');
+    const getHg = (item) => String(item["Hoofdgroep"] || item.hoofdgroep || item.category || 'Algemeen');
+    const getSg = (item) => String(item["Subgroep"] || item.subgroep || item.subcategory || '');
+    const getLoc = (item) => String(item["Locatie2"] || item["Schaplocatie code"] || item.locatie || item.Locatie || '');
 
     async function initApp() {
         try {
@@ -2262,11 +2316,11 @@
         curLang = lang;
         localStorage.setItem('bouwmaat_lang', lang);
         
-        document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = document.getElementById(`btn-${lang}`);
         if(activeBtn) activeBtn.classList.add('active');
         
-        document.querySelectorAll('.intro-lang-toggles').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.intro-lang-btn').forEach(btn => btn.classList.remove('active'));
         const activeIntroBtn = document.getElementById(`intro-btn-${lang}`);
         if(activeIntroBtn) activeIntroBtn.classList.add('active');
         
@@ -2291,6 +2345,8 @@
         if(elBtnSearch) elBtnSearch.innerHTML = window.innerWidth < 400 ? "🔍" : t.search;
         
         document.documentElement.style.setProperty('--txt-entrance', `"${t.entrance}"`);
+        document.documentElement.style.setProperty('--txt-exit', `"${t.exit}"`);
+        
         const lblService = document.getElementById('label-service');
         if(lblService) lblService.innerText = t.serviceDesk;
         const lblSales1 = document.getElementById('label-sales1');
@@ -2301,10 +2357,21 @@
         if(lblCoffee) lblCoffee.innerText = t.coffeeCorner;
         const lblPaint = document.getElementById('label-paint');
         if(lblPaint) lblPaint.innerText = t.paintDesk;
+        const lblSawmill = document.getElementById('label-sawmill');
+        if(lblSawmill) lblSawmill.innerText = t.sawmill;
+        
         const lblSpell = document.getElementById('spellCheckPrefix');
         if(lblSpell) lblSpell.innerText = t.didYouMean;
         const lblBackWall = document.getElementById('label-backwall');
         if(lblBackWall) lblBackWall.innerText = t.backWallShort;
+        
+        // Dynamically update the map's physical labels (Aisles and Racks)
+        document.querySelectorAll('[data-map-label]').forEach(el => {
+            if (t.mapLabels) el.innerText = t.mapLabels[el.dataset.mapLabel] || el.dataset.mapLabel;
+        });
+        document.querySelectorAll('[data-map-cat]').forEach(el => {
+            if (t.groups) el.innerText = t.groups[el.dataset.mapCat] || el.dataset.mapCat;
+        });
         
         // Update special locations translations
         const awLoc = specialLocations.find(s => s.id === '0AW');
@@ -2313,10 +2380,17 @@
             awLoc.long = t.backWallLong;
         }
         
+        const sawLoc = specialLocations.find(s => s.id === 'SAW');
+        if (sawLoc) {
+            sawLoc.short = t.sawmill.toUpperCase();
+            sawLoc.long = t.sawmill;
+        }
+        
         // Dynamic Video Switching per Language
         const videoSrcs = {
             nl: "dutch1.mp4",
-            en: "eng.mp4"
+            en: "eng.mp4",
+            uk: "eng.mp4"
         };
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
@@ -2383,6 +2457,8 @@
     }
 
     function boot() {
+        const t = i18n[curLang] || i18n['nl'];
+        
         window.dictSet = new Set();
         data.forEach(item => {
             if(!item._searchStr) {
@@ -2402,11 +2478,22 @@
         const grid = document.getElementById('mapGrid'), svg = document.getElementById('pathLayer'), char = document.getElementById('mainChar');
         const cashiers = document.getElementById('cashierZone'), coffee = document.getElementById('coffeeCorner');
         const backWall = document.getElementById('p-0AW');
+        const sawmill = document.getElementById('sawmillZone');
+        const exitDoor = document.getElementById('exitDoor');
+        const exitText = document.getElementById('exitText');
+        const entDoorEx = document.getElementById('entranceDoor');
+        const entTextEx = document.getElementById('entranceText');
+        
         if(svg) svg.remove(); 
         if(char) char.remove(); 
         if(cashiers) cashiers.remove(); 
         if(coffee) coffee.remove(); 
         if(backWall) backWall.remove();
+        if(sawmill) sawmill.remove();
+        if(exitDoor) exitDoor.remove();
+        if(exitText) exitText.remove();
+        if(entDoorEx) entDoorEx.remove();
+        if(entTextEx) entTextEx.remove();
         
         if (!grid) return; 
 
@@ -2432,12 +2519,9 @@
         lw.id = 'p-1L';
         lw.style.marginBottom = '-75px'; // Extends the wall down into the entrance padding
         lw.innerHTML = `
-            <div class="aisle-part" style="flex: 1; display: flex; align-items: center; justify-content: center;" onclick="event.stopPropagation(); handleMapClick('1L', 'full')">
+            <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full')">
                 <div class="left-face"></div>
-                <!-- Nested container for centering the label regardless of parent height extension -->
-                <div style="position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">
-                    <div class="aisle-category-label label-full">HOUT</div>
-                </div>
+                <div class="aisle-category-label label-full" data-map-label="HOUT">HOUT</div>
                 <div class="sec-container">${allSecs}</div>
             </div>
             <div class="aisle-num" id="badge-1L">1L</div>
@@ -2456,8 +2540,8 @@
             div.className = 'aisle' + (i === 17 ? ' right-wall-aisle' : ''); 
             div.id = `p-${i}`; div.dataset.num = i;
             
-            let catLabelTop = backAisleLabels[i] ? `<div class="aisle-category-label label-top">${backAisleLabels[i]}</div>` : '';
-            let catLabelBottom = aisleCategories[i] ? `<div class="aisle-category-label label-bottom">${aisleCategories[i]}</div>` : '';
+            let catLabelTop = backAisleLabels[i] ? `<div class="aisle-category-label label-top" data-map-label="${backAisleLabels[i]}">${backAisleLabels[i]}</div>` : '';
+            let catLabelBottom = aisleCategories[i] ? `<div class="aisle-category-label label-bottom" data-map-cat="${aisleCategories[i]}">${aisleCategories[i]}</div>` : '';
             
             let topS = getSecs(i, 7, 17, 'top');
             let botS = getSecs(i, 1, 6, 'bottom');
@@ -2465,7 +2549,7 @@
             if (i === 17) {
                 let fullS = getSecs(i, 1, 17, 'full');
                 div.innerHTML = `
-                    <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick(${i}, 'full')">
+                    <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('${i}', 'full')">
                         <div class="left-face"></div>
                         ${catLabelTop || catLabelBottom}
                         <div class="sec-container">${fullS}</div>
@@ -2474,29 +2558,29 @@
                 `;
             } else if (i === 9) {
                 div.innerHTML = `
-                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick(${i}, 'top')">
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top')">
                         <div class="left-face"></div>
                         ${catLabelTop}
                         <div class="sec-container">${topS}</div>
                     </div>
-                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick(${i}, 'bottom')">
+                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom')">
                         <div class="left-face"></div>
                         ${catLabelBottom}
                         <div class="sec-container">${botS}</div>
                     </div>
-                    <div class="paint-table" onclick="event.stopPropagation(); handleMapClick(${i}, 'paint')">
-                        <div class="aisle-category-label" id="label-paint">Verfbalie</div>
+                    <div class="paint-table" onclick="event.stopPropagation(); handleMapClick('${i}', 'paint')">
+                        <div class="desk-label toggle-label" id="label-paint">${t.paintDesk}</div>
                     </div>
                     <div class="aisle-num">${i}</div>
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick(${i}, 'top')">
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top')">
                         <div class="left-face"></div>
                         ${catLabelTop}
                         <div class="sec-container">${topS}</div>
                     </div>
-                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick(${i}, 'bottom')">
+                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom')">
                         <div class="left-face"></div>
                         ${catLabelBottom}
                         <div class="sec-container">${botS}</div>
@@ -2507,8 +2591,29 @@
             grid.appendChild(div);
         }
 
+        const entDoor = document.createElement('div');
+        entDoor.className = 'modern-door';
+        entDoor.id = 'entranceDoor';
+        entDoor.innerHTML = '<div class="door-glass left"></div><div class="door-glass right"></div>';
+
         const entLabel = document.createElement('div');
         entLabel.className = 'entrance-label'; entLabel.id = 'entranceText';
+
+        const extDoor = document.createElement('div');
+        extDoor.className = 'modern-door exit-door';
+        extDoor.id = 'exitDoor';
+        extDoor.innerHTML = '<div class="door-glass left"></div><div class="door-glass right"></div>';
+
+        const extLabel = document.createElement('div');
+        extLabel.className = 'exit-label'; extLabel.id = 'exitText';
+
+        const sawZone = document.createElement('div');
+        sawZone.id = 'sawmillZone';
+        sawZone.innerHTML = `
+            <div class="saw-blade-container"><div class="saw-blade"></div></div>
+            <div class="desk-label toggle-label" id="label-sawmill">${t.sawmill}</div>
+        `;
+        sawZone.onclick = () => handleMapClick('SAW', 'sawmill');
 
         if (backWall) {
             let bwSecs = '';
@@ -2516,16 +2621,20 @@
                 bwSecs += `<span data-sec="${s}" style="transform: rotateX(-55deg) translateZ(10px) translateY(20px); font-size: 0.55rem; padding: 3px 6px; pointer-events: auto; cursor: pointer;" onclick="event.stopPropagation(); handleMapClick('0AW', 'full', '${s}')">${s}</span>`;
             }
             backWall.innerHTML = `
-                <div class="backwall-label" id="label-backwall">ACHTERWAND</div>
+                <div class="backwall-label" id="label-backwall">${t.backWallShort}</div>
                 <div class="sec-container" style="flex-direction: row; width: 100%; height: 100%; justify-content: space-evenly; align-items: center; padding: 0 10px;">${bwSecs}</div>
             `;
             grid.appendChild(backWall);
         }
         
         if (cashiers) grid.appendChild(cashiers);
+        if (sawmill) grid.appendChild(sawmill); else grid.appendChild(sawZone);
         if (coffee) grid.appendChild(coffee);
         if (svg) grid.appendChild(svg);
+        grid.appendChild(entDoor);
         grid.appendChild(entLabel);
+        if (exitDoor) grid.appendChild(exitDoor); else grid.appendChild(extDoor);
+        if (exitText) grid.appendChild(exitText); else grid.appendChild(extLabel);
         if (char) grid.appendChild(char);
         
         const dimBtn = document.getElementById('btnDimToggle');
@@ -2544,9 +2653,15 @@
                 entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
             }
             window.entrancePosX = entranceX + 20; 
-            entLabel.style.left = `calc(${entranceX}px)`; 
-            entLabel.style.bottom = `0%`;
-            entLabel.onclick = closeSelection;
+            entLabel.style.left = `calc(${window.entrancePosX}px)`; 
+            entLabel.style.bottom = `-5px`;
+            
+            const door = document.getElementById('entranceDoor');
+            if (door) {
+                door.style.left = `calc(${window.entrancePosX}px)`;
+                door.onclick = closeSelection;
+            }
+
             moveChar('entrance', false, false, null, null, null);
         }, 50); 
         
@@ -2569,7 +2684,10 @@
             }
             window.entrancePosX = entranceX + 20;
             const entLabel = document.getElementById('entranceText');
-            if (entLabel) entLabel.style.left = `calc(${entranceX}px)`; 
+            if (entLabel) entLabel.style.left = `calc(${window.entrancePosX}px)`; 
+            
+            const door = document.getElementById('entranceDoor');
+            if (door) door.style.left = `calc(${window.entrancePosX}px)`;
         });
     }
 
@@ -2658,8 +2776,8 @@
                     }
                 });
             }
-        } else if (id === '0AW' || id === 'KAS' || id === 'KOFFIE') {
-            const specialEl = document.getElementById(id === '0AW' ? 'p-0AW' : (id === 'KAS' ? 'cashierZone' : 'coffeeCorner'));
+        } else if (id === '0AW' || id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || id === 'UITGANG') {
+            const specialEl = document.getElementById(id === '0AW' ? 'p-0AW' : (id === 'KAS' ? 'cashierZone' : (id === 'KOFFIE' ? 'coffeeCorner' : (id === 'SAW' ? 'sawmillZone' : 'exitDoor'))));
             if(specialEl) specialEl.classList.add('active');
 
             if (id === '0AW' && targetSec) {
@@ -2675,15 +2793,39 @@
 
             if (id === 'KAS') {
                 const lbl = document.getElementById('label-' + (part || 'kassa'));
-                if (lbl) lbl.classList.add('active-label');
+                if (lbl) {
+                    lbl.classList.add('active-label');
+                    if (!isExpanded) {
+                        setTimeout(() => {
+                            if (lbl) lbl.classList.remove('active-label');
+                        }, 3000);
+                    }
+                }
             } else if (id === 'KOFFIE') {
                 const lbl = document.getElementById('label-coffee');
-                if (lbl) lbl.classList.add('active-label');
+                if (lbl) {
+                    lbl.classList.add('active-label');
+                    if (!isExpanded) {
+                        setTimeout(() => {
+                            if (lbl) lbl.classList.remove('active-label');
+                        }, 3000);
+                    }
+                }
+            } else if (id === 'SAW') {
+                const lbl = document.getElementById('label-sawmill');
+                if (lbl) {
+                    lbl.classList.add('active-label');
+                    if (!isExpanded) {
+                        setTimeout(() => {
+                            if (lbl) lbl.classList.remove('active-label');
+                        }, 3000);
+                    }
+                }
             }
         }
         
-        window.activeMapTarget = { pad: id, sec: targetSec, side: id === '1L' ? 'Links' : 'Rechts', subTarget: (id === 'KAS' || id === 'KOFFIE' || part === 'paint') ? part : null };
-        moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE', targetSec, id === '1L' ? 'Links' : 'Rechts', window.activeMapTarget.subTarget);
+        window.activeMapTarget = { pad: id, sec: targetSec, side: id === '1L' ? 'Links' : 'Rechts', subTarget: (id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || part === 'paint') ? part : null };
+        moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE' && id !== 'SAW' && id !== 'UITGANG', targetSec, id === '1L' ? 'Links' : 'Rechts', window.activeMapTarget.subTarget);
     }
 
     function toggleMapExpand(expand) {
@@ -2846,6 +2988,7 @@
             else if (loc2Up.includes('PAD BA') || loc2Up.includes('BAL')) { pad = 'KAS'; padDisplay = 'BAL'; subTarget = 'service'; }
             else if (loc2Up.includes('PAD PB') || loc2Up.includes('PBM')) { pad = '13'; padDisplay = 'PBM'; }
             else if (loc2Up.includes('KOFFIE')) { pad = 'KOFFIE'; padDisplay = 'KOF'; subTarget = 'coffee'; }
+            else if (loc2Up.includes('ZAAG')) { pad = 'SAW'; padDisplay = 'ZAAG'; subTarget = 'sawmill'; }
             else if (loc2Up.includes('0A') || loc2Up.includes('AW')) { pad = '0AW'; padDisplay = '0AW'; }
             else {
                 const padMatch = loc2.match(/Pad\s*0*(\d+)/i);
@@ -2885,7 +3028,7 @@
                 sideRaw = 'Links';
             }
             
-            let isSpecial = isNaN(parseInt(pad, 10)) || pad === '0AW' || padDisplay === 'VMB' || padDisplay === 'LIJ' || padDisplay === 'BAL' || padDisplay === 'PBM';
+            let isSpecial = isNaN(parseInt(pad, 10)) || pad === '0AW' || padDisplay === 'VMB' || padDisplay === 'LIJ' || padDisplay === 'BAL' || padDisplay === 'PBM' || padDisplay === 'ZAAG';
 
             let badgeHtml = '';
             if (isSpecial) {
@@ -2915,10 +3058,14 @@
             const hgHighlight = highlightText(hgStr);
             const sgHighlight = highlightText(sgStr);
             
-            // Raw properties voor code-executie in onclick
+            // Raw properties voor code-executie in onclick - Extensively escaped to prevent SyntaxErrors
             const safeArtNr = String(artNrClean).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            const safePad = String(pad).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            const safeSec = String(sec).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            const safeSideRaw = String(sideRaw).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            const safeSubTarget = String(subTarget).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
             
-            return `<div class="result-item" onclick="selectItem('${pad}', '${sec}', '${sideRaw}', this, '${subTarget}', '${safeArtNr}')">
+            return `<div class="result-item" onclick="selectItem('${safePad}', '${safeSec}', '${safeSideRaw}', this, '${safeSubTarget}', '${safeArtNr}')">
                 <div class="icon-wrap">${imgHtml}</div>
                 <div class="info">
                     <h3>${safeOmschHighlight}</h3>
@@ -3011,7 +3158,9 @@
                         
                         const locStr = getLoc(item);
                         const jsSafeLoc = locStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        const displayLoc = locStr || 'Onbekende locatie';
+                        const displayLoc = locStr || (curLang === 'nl' ? 'Onbekende locatie' : 'Unknown location');
+                        
+                        const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
                         
                         card.innerHTML = `
                             <div class="pd-header">
@@ -3025,18 +3174,15 @@
                                 <div class="pd-loc-banner">
                                     📍 ${displayLoc}
                                 </div>
-                                <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${item["ArtikelNr."]}', '${jsSafeLoc}')">
+                                <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${jsSafeArt}', '${jsSafeLoc}')">
                                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                                 </button>
                             </div>
                         `;
-                        card.onclick = () => {
-                            const wrapper = document.getElementById('mapWrapper');
-                            if (!wrapper.classList.contains('map-expanded-overlay')) {
-                                toggleMapExpand(true);
-                            } else {
-                                moveChar(pad, true, true, sec, side, subTarget);
-                            }
+                        card.onclick = (e) => {
+                            e.stopPropagation();
+                            // By calling selectItem again, we seamlessly re-apply all highlights to the correct aisle/section!
+                            selectItem(pad, sec, side, el, subTarget, artNr);
                         };
                         card.classList.add('show');
                     }
@@ -3098,26 +3244,50 @@
                         });
                     }
                 }
-            } else if (pad === 'KAS') {
-                const cashierEl = document.getElementById('cashierZone');
-                if(cashierEl) cashierEl.classList.add('active');
-                if (subTarget) {
-                    const lbl = document.getElementById('label-' + subTarget);
-                    if (lbl) lbl.classList.add('active-label');
-                } else {
-                    const lbl = document.getElementById('label-kassa');
-                    if (lbl) lbl.classList.add('active-label');
+            } else if (pad === 'KAS' || pad === 'KOFFIE' || pad === 'SAW' || pad === 'UITGANG') {
+                let sId = pad === 'KAS' ? 'cashierZone' : (pad === 'KOFFIE' ? 'coffeeCorner' : (pad === 'SAW' ? 'sawmillZone' : 'exitDoor'));
+                const specialEl = document.getElementById(sId);
+                if(specialEl) specialEl.classList.add('active');
+
+                if (pad === 'KAS') {
+                    const lbl = document.getElementById('label-' + (subTarget || 'kassa'));
+                    if (lbl) {
+                        lbl.classList.add('active-label');
+                        const wrapper = document.getElementById('mapWrapper');
+                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
+                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
+                        }
+                    }
+                } else if (pad === 'KOFFIE') {
+                    const lbl = document.getElementById('label-coffee');
+                    if (lbl) {
+                        lbl.classList.add('active-label');
+                        const wrapper = document.getElementById('mapWrapper');
+                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
+                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
+                        }
+                    }
+                } else if (pad === 'SAW') {
+                    const lbl = document.getElementById('label-sawmill');
+                    if (lbl) {
+                        lbl.classList.add('active-label');
+                        const wrapper = document.getElementById('mapWrapper');
+                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
+                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
+                        }
+                    }
                 }
-            } else if (pad === 'KOFFIE') {
-                const cofEl = document.getElementById('coffeeCorner');
-                if(cofEl) cofEl.classList.add('active');
-                const lbl = document.getElementById('label-coffee');
-                if (lbl) lbl.classList.add('active-label');
             }
 
-            if (pad === '9' && subTarget === 'paint') {
+            if (String(pad) === '9' && subTarget === 'paint') {
                 const lbl = document.getElementById('label-paint');
-                if (lbl) lbl.classList.add('active-label');
+                if (lbl) {
+                    lbl.classList.add('active-label');
+                    const wrapper = document.getElementById('mapWrapper');
+                    if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
+                        setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
+                    }
+                }
             }
 
             window.activeMapTarget = { pad: pad, sec, side, subTarget };
@@ -3184,10 +3354,12 @@
         if (String(pad) === '9' && subTarget === 'paint') {
             const p9 = document.getElementById('p-9');
             if (p9) {
-                // Dynamically calculate the physical bottom edge of the desk based on grid padding
-                const distFromBottom = grid.offsetHeight - (p9.offsetTop + p9.offsetHeight) - 35; 
                 cPos = p9.offsetLeft + (p9.offsetWidth * 0.05); // Stand perfectly centered in front of the desk
-                targetBottom = `${(distFromBottom / grid.offsetHeight) * 100}%`; // Walk right up to the desk edge
+                
+                // Dynamically calculate the physical distance from the bottom of the grid to the front edge of the paint desk.
+                // The grid has 85px bottom padding, and the paint desk extends 22px below aisle 9.
+                const distFromBottom = grid.offsetHeight - (p9.offsetTop + p9.offsetHeight) - 22; 
+                targetBottom = `${(distFromBottom / grid.offsetHeight) * 100}%`; 
             }
         }
         else if (pad === 'KAS') { 
@@ -3196,16 +3368,36 @@
             if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
             
             if (kasEl && targetDesk) {
-                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 3;
+                // Stand visibly 25px to the left of the desk so the character doesn't hide behind the label
+                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 25; 
             } else {
-                cPos = kasEl ? kasEl.offsetLeft - 3 : 400; 
+                cPos = kasEl ? kasEl.offsetLeft - 25 : 400; 
             }
-            targetBottom = '2%'; 
+            const wrapper = document.getElementById('mapWrapper');
+            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
+            targetBottom = isExpanded ? '-2%' : '-1%'; // Stay close to the desk edge, don't drop to the bottom
+        }
+        else if (pad === 'SAW') {
+            const sawEl = document.getElementById('sawmillZone');
+            cPos = sawEl ? sawEl.offsetLeft + 20 : 600; // +20 centers character precisely on the 40px blade
+            const wrapper = document.getElementById('mapWrapper');
+            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
+            targetBottom = isExpanded ? '-2%' : '-1%';
+        }
+        else if (pad === 'UITGANG') {
+            const extEl = document.getElementById('exitDoor');
+            cPos = extEl ? extEl.offsetLeft : 700;
+            const wrapper = document.getElementById('mapWrapper');
+            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
+            targetBottom = isExpanded ? '-2%' : '-1%';
         }
         else if (pad === 'KOFFIE') {
             const cofEl = document.getElementById('coffeeCorner');
-            cPos = cofEl ? cofEl.offsetLeft - 3 : 800;
-            targetBottom = '2%';
+            // Stand visibly 25px to the left of the coffee corner
+            cPos = cofEl ? cofEl.offsetLeft - 25 : 800;
+            const wrapper = document.getElementById('mapWrapper');
+            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
+            targetBottom = isExpanded ? '-2%' : '-1%'; // Stay close to the desk edge, don't drop to the bottom
         }
         else if (pad === '0AW') { 
             cPos = sPos; 
@@ -3282,7 +3474,7 @@
         }, t1));
 
         window.charMoveTimeouts.push(setTimeout(() => {
-            // Wandel naar boven in het gangpad (of naar de balie)
+            // Wandel naar boven in het gangpad
             char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
             char.style.bottom = targetBottom;
         }, t1 + t2));
@@ -3291,7 +3483,7 @@
             char.classList.remove('running');
             
             // Draai pas op het allerlaatste moment naar de juiste schappen!
-            if (active && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== '0AW' && pad !== 'entrance') {
+            if (active && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== 'SAW' && pad !== 'UITGANG' && pad !== '0AW' && pad !== 'entrance') {
                 if (String(pad) === '9' && subTarget === 'paint') {
                     document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly forward toward the paint desk
                 } else {
@@ -3300,6 +3492,8 @@
                     // If standing to the left of the rack, the target face is on our right -> face right (1)
                     document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
                 }
+            } else if (pad === 'SAW') {
+                document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly forward toward the saw blade
             } else {
                 document.documentElement.style.setProperty('--char-dir', '1');
             }
@@ -3329,13 +3523,14 @@
 
     function printTicket(name, art, loc) {
         const printArea = document.getElementById('printArea');
+        const t = i18n[curLang] || i18n['nl'];
         if(printArea) {
             printArea.innerHTML = `
                 <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: #005cb9;">BOUWMAAT AMSTEL XL</div>
                 <hr style="border: 2px solid #005cb9; margin-bottom: 20px;">
                 <div style="font-size: 1.2rem; font-weight: 900; margin-bottom: 10px;">${name}</div>
                 <div style="font-size: 1rem; color: #475569; font-weight: 800; margin-bottom: 20px;">Art: ${art}</div>
-                <div style="font-size: 1rem; font-weight: 800; text-transform: uppercase;">LOCATIE:</div>
+                <div style="font-size: 1rem; font-weight: 800; text-transform: uppercase;">${t.location}</div>
                 <h1 style="font-size: 3.5rem; color: #005cb9; margin: 10px 0;">${loc}</h1>
             `;
         }
