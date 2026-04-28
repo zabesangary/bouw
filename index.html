@@ -151,7 +151,7 @@
 
         /* --- MAIN APP INTERFACE --- */
         #mainAppWrapper { position: relative; width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; padding: max(8px, env(safe-area-inset-top)) 8px 0; }
-        .app-container { width: 100%; max-width: 950px; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
+        .app-container { width: 100%; max-width: 75rem; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; position: relative; z-index: 1; gap: 8px; }
         .logo { display: flex; align-items: flex-end; gap: 6px; }
         .logo h1 { display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; color: var(--primary); margin: 0; text-transform: uppercase; white-space: nowrap; line-height: 0.85; padding-bottom: 2px; letter-spacing: -0.5px; }
@@ -210,7 +210,7 @@
         
         .badge { width: 80px; background: var(--primary); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4px; flex-shrink: 0; }
         .badge b { font-size: 1.4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2px; text-align: center; width: 100%; word-break: break-word; padding: 0 2px; box-sizing: border-box; }
-        .badge span { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
+        .badge span { font-size: 0.75rem; font-weight: 800; color: #bae6fd; text-transform: uppercase; letter-spacing: 0.5px; }
         .sectie-label-badge { font-size: 0.65rem; font-weight: 800; color: white; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 3px; padding-top: 3px; width: 90%; text-align: center; }
 
         /* --- AISLE POPUP TOAST --- */
@@ -257,9 +257,9 @@
             100% { transform: translate(80px, 80px) scale(1.2); }
         }
 
-        .map-section { width: 100%; max-width: 950px; height: 120px; perspective: 1800px; margin: -60px auto 110px auto; position: relative; z-index: 1; transition: all 0.4s ease; }
+        .map-section { width: 100%; max-width: 75rem; height: 120px; perspective: 1800px; margin: -60px auto 110px auto; position: relative; z-index: 1; transition: all 0.4s ease; }
         
-        .map-expanded-overlay .map-section { height: 65vh; max-width: 1100px; width: 95vw; margin: 0 auto 10vh auto; perspective: 2000px; }
+        .map-expanded-overlay .map-section { height: 65vh; max-width: 100rem; width: 96vw; margin: 0 auto 10vh auto; perspective: 2000px; }
 
         .floor { 
             height: 100%; 
@@ -275,7 +275,7 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), gap 0.4s ease;
         }
         
-        .map-expanded-overlay .floor { transform: rotateX(42deg) scale(0.95); gap: 24px; transform-origin: center 80%; }
+        .map-expanded-overlay .floor { transform: rotateX(42deg) scale(0.95); gap: 28px; transform-origin: center 80%; }
 
         .floor::before { content: ''; position: absolute; top: 100%; left: -1px; width: calc(100% + 2px); height: 15px; background: linear-gradient(to bottom, #94a3b8, #64748b); transform-origin: top; transform: rotateX(-90deg); border-radius: 0 0 8px 8px; border-bottom: 2px solid #475569; box-sizing: border-box; }
         .floor::after { content: ''; position: absolute; top: -1px; left: 100%; width: 15px; height: calc(100% + 2px); background: linear-gradient(to right, #64748b, #475569); transform-origin: left; transform: rotateY(90deg); border-radius: 0 8px 8px 0; border-right: 1px solid #334155; box-sizing: border-box; }
@@ -448,10 +448,11 @@
             border-radius: 0 !important;
             border: none !important;
             box-shadow: none !important;
-            width: max-content !important;
-            max-width: 140px !important; /* Limit width to enforce wrapping */
+            width: 260px !important; /* Force a wide bounding box for perfect flex centering */
+            height: 100% !important; /* Snap perfectly to the roof width */
+            max-width: none !important;
             min-width: 0 !important;
-            font-size: 0.70rem !important; /* Adjusted to 0.85rem */
+            font-size: 0.85rem !important; /* Adjusted to 0.85rem */
             letter-spacing: 1px !important;
             white-space: normal !important; /* Wrap text to prevent endless stretching */
             line-height: 1.2 !important;
@@ -1001,13 +1002,13 @@
             exit: "UITGANG", sawmill: "Zaagafdeling",
             expandMap: "KAART VERGROTEN",
             backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
-            location: "LOCATIE:",
+            location: "LOCATIE:", art: "Art.", loc: "LOC", unknownLoc: "Onbekende locatie",
             mapLabels: {
                 "HOUT": "HOUT", "TUINHOUT": "TUINHOUT", "VUREN RUW / GESCHAAFD": "VUREN RUW / GESCHAAFD", "VUREN GESCHAAFD / HOUT": "VUREN GESCHAAFD / HOUT", "PLAATMATERIAAL HOUT": "PLAATMATERIAAL HOUT", "BOUW": "BOUW", "GIPSEN / CEMENT / MORTELS": "GIPSEN / CEMENT / MORTELS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTELS / ZAND GRIND", "STENEN / BLOKKEN": "STENEN / BLOKKEN", "TEGELS / LIJMEN": "TEGELS / LIJMEN", "TEGELS / LIJMEN / ISOLATIE": "TEGELS / LIJMEN / ISOLATIE", "DAKBEDEKKING / DAKRAMEN": "DAKBEDEKKING / DAKRAMEN", "SANITAIR": "SANITAIR"
             },
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
-                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Kleding & schoenen": "Kleding & schoenen"
+                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Kleding & schoenen": "Kleding & schoenen", "Meetgereedschap": "Meetgereedschap", "Constructie buiten": "Constructie buiten", "Schakelmateriaal": "Schakelmateriaal", "Accessoires en verbruiksartikelen": "Accessoires en verbruiksartikelen", "Deuren": "Deuren", "Werkkleding": "Werkkleding", "Timmerhout": "Timmerhout", "Gevelbekleding": "Gevelbekleding", "Isolatie": "Isolatie", "Tegelverwerking": "Tegelverwerking"
             }
         },
         en: { 
@@ -1020,18 +1021,18 @@
             allCats: "All categories",
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
-            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "AISLE", zijde: "SIDE", kassa: "CASHIER",
+            entrance: "ENTRANCE", left: "LEFT", right: "RIGHT", sect: "Section", pad: "PAD", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner", paintDesk: "Paint Desk",
             exit: "EXIT", sawmill: "Sawmill",
             expandMap: "EXPAND MAP",
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
-            location: "LOCATION:",
+            location: "LOCATION:", art: "Art.", loc: "LOC", unknownLoc: "Unknown location",
             mapLabels: {
                 "HOUT": "TIMBER", "TUINHOUT": "GARDEN TIMBER", "VUREN RUW / GESCHAAFD": "ROUGH / PLANED PINE", "VUREN GESCHAAFD / HOUT": "PLANED PINE / TIMBER", "PLAATMATERIAAL HOUT": "SHEET MATERIAL TIMBER", "BOUW": "CONSTRUCTION", "GIPSEN / CEMENT / MORTELS": "PLASTER / CEMENT / MORTARS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTARS / SAND GRAVEL", "STENEN / BLOKKEN": "BRICKS / BLOCKS", "TEGELS / LIJMEN": "TILES / ADHESIVES", "TEGELS / LIJMEN / ISOLATIE": "TILES / ADHESIVES / INSULATION", "DAKBEDEKKING / DAKRAMEN": "ROOFING / SKYLIGHTS", "SANITAIR": "PLUMBING"
             },
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
-                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Kleding & schoenen": "Clothing & Shoes"
+                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Kleding & schoenen": "Clothing & Shoes", "Meetgereedschap": "Measuring Tools", "Constructie buiten": "Outdoor Construction", "Schakelmateriaal": "Switchgear", "Accessoires en verbruiksartikelen": "Accessories & Consumables", "Deuren": "Doors", "Werkkleding": "Workwear", "Timmerhout": "Carpentry Wood", "Gevelbekleding": "Cladding", "Isolatie": "Insulation", "Tegelverwerking": "Tiling Tools"
             }
         },
         uk: { 
@@ -1044,18 +1045,18 @@
             allCats: "Всі категорії",
             resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
             noResDesc: "Перевірте правильність написання.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУКУВАТИ ЧЕК", 
-            entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "РЯД", zijde: "СТОРОНА", kassa: "КАСА",
+            entrance: "ВХІД", left: "ЛІВОРУЧ", right: "ПРАВОРУЧ", sect: "Секція", pad: "PAD", zijde: "СТОРОНА", kassa: "КАСА",
             serviceDesk: "Сервісний центр", salesDesk: "Відділ продажу", coffeeCorner: "Кавовий куточок", paintDesk: "Відділ фарб",
             exit: "ВИХІД", sawmill: "Пилорама",
             expandMap: "РОЗГОРНУТИ КАРТУ",
             backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
-            location: "РОЗТАШУВАННЯ:",
+            location: "РОЗТАШУВАННЯ:", art: "Арт.", loc: "МІСЦЕ", unknownLoc: "Невідоме розташування",
             mapLabels: {
                 "HOUT": "ДЕРЕВИНА", "TUINHOUT": "САДОВА ДЕРЕВИНА", "VUREN RUW / GESCHAAFD": "ГРУБА / СТРУГАНА СОСНА", "VUREN GESCHAAFD / HOUT": "СТРУГАНА СОСНА / ДЕРЕВИНА", "PLAATMATERIAAL HOUT": "ЛИСТОВА ДЕРЕВИНА", "BOUW": "БУДІВНИЦТВО", "GIPSEN / CEMENT / MORTELS": "ГІПС / ЦЕМЕНТ / РОЗЧИНИ", "CEMENT / MORTELS / ZAND GRIND": "ЦЕМЕНТ / РОЗЧИНИ / ПІСОК ГРАВІЙ", "STENEN / BLOKKEN": "ЦЕГЛА / БЛОКИ", "TEGELS / LIJMEN": "ПЛИТКА / КЛЕЇ", "TEGELS / LIJMEN / ISOLATIE": "ПЛИТКА / КЛЕЇ / ІЗОЛЯЦІЯ", "DAKBEDEKKING / DAKRAMEN": "ПОКРІВЛЯ / ДАХОВІ ВІКНА", "SANITAIR": "САНТЕХНІКА"
             },
             groups: { 
                 "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen gebruik": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибиранння", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Для власного використання",
-                "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Kleding & schoenen": "Одяг та взуття"
+                "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Kleding & schoenen": "Одяг та взуття", "Meetgereedschap": "Вимірювальний інструмент", "Constructie buiten": "Зовнішні конструкції", "Schakelmateriaal": "Електрофурнітура", "Accessoires en verbruiksartikelen": "Аксесуари та витратні матеріали", "Deuren": "Двері", "Werkkleding": "Робочий одяг", "Timmerhout": "Столярна деревина", "Gevelbekleding": "Облицювання фасадів", "Isolatie": "Ізоляція", "Tegelverwerking": "Укладання плитки"
             }
         }
     };
@@ -1088,7 +1089,7 @@
 
     // Condensed fallback data to prevent truncation
     const fallbackData = [
-                  {
+                      {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2247,6 +2248,7 @@
             "Locatie2": "Pad VM Links, Sectie 02"
         }
 
+
     ];
 
     // VEILIGE GETTERS - Strictly cast to String to prevent .trim() crashes on numeric data
@@ -2462,7 +2464,14 @@
         window.dictSet = new Set();
         data.forEach(item => {
             if(!item._searchStr) {
-                const fullText = `${getArtNr(item)} ${getLoc(item)} ${getOmsch(item)} ${getHg(item)} ${getSg(item)}`;
+                const hg = getHg(item);
+                const sg = getSg(item);
+                const hgEn = i18n.en.groups[hg] || '';
+                const sgEn = i18n.en.groups[sg] || '';
+                const hgUk = i18n.uk.groups[hg] || '';
+                const sgUk = i18n.uk.groups[sg] || '';
+
+                const fullText = `${getArtNr(item)} ${getLoc(item)} ${getOmsch(item)} ${hg} ${sg} ${hgEn} ${sgEn} ${hgUk} ${sgUk}`;
                 item._searchStr = normalizeStr(fullText);
                 item._cleanArt = getArtNr(item).toString().replace(/[-\s]/g, '').toLowerCase();
                 item._nameNorm = normalizeStr(getOmsch(item));
@@ -2983,13 +2992,13 @@
                 else if (loc2Up.includes('VERKOOP') || omsch.includes('KEUKEN')) subTarget = 'sales1';
                 else subTarget = 'kassa';
             }
-            else if (loc2Up.includes('PAD VM') || loc2Up.includes('VMB')) { pad = '9'; padDisplay = 'VMB'; subTarget = 'paint'; }
-            else if (loc2Up.includes('PAD LI') || loc2Up.includes('LIJ')) { pad = '2'; padDisplay = 'LIJ'; }
-            else if (loc2Up.includes('PAD BA') || loc2Up.includes('BAL')) { pad = 'KAS'; padDisplay = 'BAL'; subTarget = 'service'; }
-            else if (loc2Up.includes('PAD PB') || loc2Up.includes('PBM')) { pad = '13'; padDisplay = 'PBM'; }
+            else if (loc2Up.includes('PAD VM') || loc2Up.includes('VMB')) { pad = '9'; padDisplay = 'VM'; subTarget = 'paint'; }
+            else if (loc2Up.includes('PAD LI') || loc2Up.includes('LIJ')) { pad = '2'; padDisplay = 'LI'; }
+            else if (loc2Up.includes('PAD BA') || loc2Up.includes('BAL')) { pad = 'KAS'; padDisplay = 'BA'; subTarget = 'service'; }
+            else if (loc2Up.includes('PAD PB') || loc2Up.includes('PBM')) { pad = '13'; padDisplay = 'PB'; }
             else if (loc2Up.includes('KOFFIE')) { pad = 'KOFFIE'; padDisplay = 'KOF'; subTarget = 'coffee'; }
             else if (loc2Up.includes('ZAAG')) { pad = 'SAW'; padDisplay = 'ZAAG'; subTarget = 'sawmill'; }
-            else if (loc2Up.includes('0A') || loc2Up.includes('AW')) { pad = '0AW'; padDisplay = '0AW'; }
+            else if (loc2Up.includes('0A') || loc2Up.includes('AW')) { pad = '0AW'; padDisplay = '0A'; }
             else {
                 const padMatch = loc2.match(/Pad\s*0*(\d+)/i);
                 if (padMatch) {
@@ -3015,35 +3024,27 @@
             if (secMatch) {
                 sec = parseInt(secMatch[1], 10).toString();
             } else {
-                const codeMatchSec = loc2.match(/^\d+[LR]-0*(\d+)-/i);
+                const codeMatchSec = loc2.match(/^[A-Z0-9]+[LR]?-0*(\d+)-/i);
                 if (codeMatchSec) {
                     sec = parseInt(codeMatchSec[1], 10).toString();
                 }
             }
 
             let sideRaw = 'Links';
-            if (loc2.includes('Rechts') || loc2.match(/^\d+R-/i)) {
+            if (loc2.includes('Rechts') || loc2.match(/^[A-Z0-9]+R-/i)) {
                 sideRaw = 'Rechts';
-            } else if (loc2.includes('Links') || loc2.match(/^\d+L-/i)) {
+            } else if (loc2.includes('Links') || loc2.match(/^[A-Z0-9]+L-/i)) {
                 sideRaw = 'Links';
             }
             
-            let isSpecial = isNaN(parseInt(pad, 10)) || pad === '0AW' || padDisplay === 'VMB' || padDisplay === 'LIJ' || padDisplay === 'BAL' || padDisplay === 'PBM' || padDisplay === 'ZAAG';
+            // Standard badge layout if it specifically has "Pad" & "Sectie", is a number, or is a known translated code like 0A, BA, PB, VM, LI
+            let useStandardBadge = /pad.*sectie/i.test(loc2) || /^[0-9]+$/.test(padDisplay) || ['0A', 'BA', 'PB', 'VM', 'LI'].includes(padDisplay);
 
-            let badgeHtml = '';
-            if (isSpecial) {
-                badgeHtml = `
-                <div class="badge" style="background: var(--primary-dark);">
-                    <span>LOC</span>
-                    <b style="font-size: 1.1rem;">${padDisplay}</b>
-                </div>`;
-            } else {
-                badgeHtml = `
-                <div class="badge">
-                    <span>${t.pad}</span>
-                    <b>${padDisplay}</b>
-                    <div class="sectie-label-badge">${sideRaw === 'Rechts' ? t.right : t.left}<br>${t.sect} ${sec}</div>
-                </div>`;
+            let displayLocString = loc2;
+            if (!/pad/i.test(displayLocString) && useStandardBadge) {
+                displayLocString = "Pad " + displayLocString;
+            } else if (!/locatie/i.test(displayLocString) && !/pad/i.test(displayLocString) && !useStandardBadge) {
+                displayLocString = t.location + " " + displayLocString;
             }
 
             const hgStr = getHg(item);
@@ -3055,8 +3056,29 @@
             // Toepassen van Highlighting op de weergave
             const safeArtNrHighlight = highlightText(getArtNr(item));
             const safeOmschHighlight = highlightText(getOmsch(item));
-            const hgHighlight = highlightText(hgStr);
-            const sgHighlight = highlightText(sgStr);
+            
+            let badgeHtml = '';
+            if (!useStandardBadge) {
+                badgeHtml = `
+                <div class="badge" style="background: var(--primary-dark);">
+                    <span>${t.loc}</span>
+                    <b style="font-size: 1.1rem; word-break: break-all;">${padDisplay}</b>
+                </div>`;
+            } else {
+                badgeHtml = `
+                <div class="badge">
+                    <span>PAD</span>
+                    <b>${padDisplay}</b>
+                    <div class="sectie-label-badge">${(sideRaw === 'Rechts' ? t.right : t.left).toUpperCase()}<br>${t.sect} ${sec}</div>
+                </div>`;
+            }
+            
+            // Translate tags before highlighting
+            const transHg = (t.groups && t.groups[hgStr]) ? t.groups[hgStr] : hgStr;
+            const transSg = (t.groups && t.groups[sgStr]) ? t.groups[sgStr] : sgStr;
+            
+            const hgHighlight = highlightText(transHg);
+            const sgHighlight = transSg ? highlightText(transSg) : '';
             
             // Raw properties voor code-executie in onclick - Extensively escaped to prevent SyntaxErrors
             const safeArtNr = String(artNrClean).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -3069,10 +3091,10 @@
                 <div class="icon-wrap">${imgHtml}</div>
                 <div class="info">
                     <h3>${safeOmschHighlight}</h3>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; margin-bottom: 4px;">Art. ${safeArtNrHighlight}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; margin-bottom: 4px;">${t.art} ${safeArtNrHighlight}</div>
                     <div class="tags">
                         <span class="tag">${hgHighlight}</span>
-                        <span class="tag sub">${sgHighlight}</span>
+                        ${sgHighlight ? `<span class="tag sub">${sgHighlight}</span>` : ''}
                     </div>
                 </div>
                 ${badgeHtml}
@@ -3158,7 +3180,7 @@
                         
                         const locStr = getLoc(item);
                         const jsSafeLoc = locStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        const displayLoc = locStr || (curLang === 'nl' ? 'Onbekende locatie' : 'Unknown location');
+                        const displayLoc = locStr || t.unknownLoc;
                         
                         const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
                         
@@ -3167,7 +3189,7 @@
                                 <div class="pd-icon">${imgHtml}</div>
                                 <div class="pd-info">
                                     <h3 class="pd-title" title="${htmlSafeName}">${htmlSafeName}</h3>
-                                    <div class="pd-art">Art. ${artNrClean}</div>
+                                    <div class="pd-art">${t.art} ${artNrClean}</div>
                                 </div>
                             </div>
                             <div class="pd-bottom">
@@ -3354,12 +3376,9 @@
         if (String(pad) === '9' && subTarget === 'paint') {
             const p9 = document.getElementById('p-9');
             if (p9) {
-                cPos = p9.offsetLeft + (p9.offsetWidth * 0.05); // Stand perfectly centered in front of the desk
-                
-                // Dynamically calculate the physical distance from the bottom of the grid to the front edge of the paint desk.
-                // The grid has 85px bottom padding, and the paint desk extends 22px below aisle 9.
-                const distFromBottom = grid.offsetHeight - (p9.offsetTop + p9.offsetHeight) - 22; 
-                targetBottom = `${(distFromBottom / grid.offsetHeight) * 100}%`; 
+                // Paint desk extends 15% to the left. Center of char is 9px. Using 8px offset for perfectly flush (1px visual overlap).
+                cPos = p9.offsetLeft - (p9.offsetWidth * 0.15) - 8; 
+                targetBottom = '1%'; // Stay on the baseline
             }
         }
         else if (pad === 'KAS') { 
@@ -3368,36 +3387,28 @@
             if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
             
             if (kasEl && targetDesk) {
-                // Stand visibly 25px to the left of the desk so the character doesn't hide behind the label
-                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 25; 
+                // Flush against the left edge of the desk
+                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 8; 
             } else {
-                cPos = kasEl ? kasEl.offsetLeft - 25 : 400; 
+                cPos = kasEl ? kasEl.offsetLeft - 8 : 400; 
             }
-            const wrapper = document.getElementById('mapWrapper');
-            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-            targetBottom = isExpanded ? '-2%' : '-1%'; // Stay close to the desk edge, don't drop to the bottom
+            targetBottom = '1%'; // Stay on the baseline
         }
         else if (pad === 'SAW') {
             const sawEl = document.getElementById('sawmillZone');
-            cPos = sawEl ? sawEl.offsetLeft + 20 : 600; // +20 centers character precisely on the 40px blade
-            const wrapper = document.getElementById('mapWrapper');
-            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-            targetBottom = isExpanded ? '-2%' : '-1%';
+            cPos = sawEl ? sawEl.offsetLeft - 8 : 600; // Flush against the saw
+            targetBottom = '1%'; // Stay on the baseline
         }
         else if (pad === 'UITGANG') {
             const extEl = document.getElementById('exitDoor');
             cPos = extEl ? extEl.offsetLeft : 700;
-            const wrapper = document.getElementById('mapWrapper');
-            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-            targetBottom = isExpanded ? '-2%' : '-1%';
+            targetBottom = '0%'; // Stay on the baseline
         }
         else if (pad === 'KOFFIE') {
             const cofEl = document.getElementById('coffeeCorner');
-            // Stand visibly 25px to the left of the coffee corner
-            cPos = cofEl ? cofEl.offsetLeft - 25 : 800;
-            const wrapper = document.getElementById('mapWrapper');
-            const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-            targetBottom = isExpanded ? '-2%' : '-1%'; // Stay close to the desk edge, don't drop to the bottom
+            // Flush against the coffee corner
+            cPos = cofEl ? cofEl.offsetLeft - 8 : 800;
+            targetBottom = '1%'; // Stay on the baseline
         }
         else if (pad === '0AW') { 
             cPos = sPos; 
@@ -3485,15 +3496,15 @@
             // Draai pas op het allerlaatste moment naar de juiste schappen!
             if (active && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== 'SAW' && pad !== 'UITGANG' && pad !== '0AW' && pad !== 'entrance') {
                 if (String(pad) === '9' && subTarget === 'paint') {
-                    document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly forward toward the paint desk
+                    document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly right toward the paint desk
                 } else {
                     const { isRightOfRack } = getMapTarget(pad, side);
                     // If standing to the right of the rack, the target face is on our left -> face left (-1)
                     // If standing to the left of the rack, the target face is on our right -> face right (1)
                     document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
                 }
-            } else if (pad === 'SAW') {
-                document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly forward toward the saw blade
+            } else if (pad === 'SAW' || pad === 'KAS' || pad === 'KOFFIE' || (String(pad) === '9' && subTarget === 'paint')) {
+                document.documentElement.style.setProperty('--char-dir', '1'); // Face right toward the desk, since we stood to the left of it
             } else {
                 document.documentElement.style.setProperty('--char-dir', '1');
             }
@@ -3529,7 +3540,7 @@
                 <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: #005cb9;">BOUWMAAT AMSTEL XL</div>
                 <hr style="border: 2px solid #005cb9; margin-bottom: 20px;">
                 <div style="font-size: 1.2rem; font-weight: 900; margin-bottom: 10px;">${name}</div>
-                <div style="font-size: 1rem; color: #475569; font-weight: 800; margin-bottom: 20px;">Art: ${art}</div>
+                <div style="font-size: 1rem; color: #475569; font-weight: 800; margin-bottom: 20px;">${t.art} ${art}</div>
                 <div style="font-size: 1rem; font-weight: 800; text-transform: uppercase;">${t.location}</div>
                 <h1 style="font-size: 3.5rem; color: #005cb9; margin: 10px 0;">${loc}</h1>
             `;
