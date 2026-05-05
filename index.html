@@ -237,7 +237,7 @@
             --char-rx: -42deg;
             --char-tz: 30px;
             --char-scale: 1.6;
-            --path-stroke: 12px;
+            --path-stroke: 5px;
             --path-tz: 12px;
         }
         
@@ -257,7 +257,7 @@
             100% { transform: translate(80px, 80px) scale(1.2); }
         }
 
-        .map-section { width: 100%; max-width: 1200px; height: 120px; perspective: 1800px; margin: -60px auto 110px auto; position: relative; z-index: 1; transition: all 0.4s ease; }
+        .map-section { width: 100%; max-width: 900px; height: 120px; perspective: 1800px; margin: -60px auto 110px auto; position: relative; z-index: 1; transition: all 0.4s ease; }
         
         .map-expanded-overlay .map-section { height: 65vh; max-width: 1600px; width: 96vw; margin: 0 auto 10vh auto; perspective: 2000px; }
 
@@ -269,7 +269,7 @@
                 linear-gradient(90deg, rgba(0, 92, 185, 0.08) 1px, transparent 1px);
             background-size: 20px 20px; 
             transform: rotateX(55deg) scale(0.98); transform-origin: bottom center; 
-            display: grid; grid-template-columns: 0.6fr repeat(16, 1fr) 0.6fr; gap: 18px; padding: 10px 0 85px; 
+            display: grid; grid-template-columns: 0.6fr repeat(16, 1fr) 0.6fr; gap: 24px; padding: 10px 0 85px; 
             border-radius: 8px; border: 1.5px solid #64748b;
             position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7), -15px 25px 20px rgba(0,0,0,0.2);
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), gap 0.4s ease;
@@ -280,7 +280,7 @@
         .floor::before { content: ''; position: absolute; top: 100%; left: -1px; width: calc(100% + 2px); height: 15px; background: linear-gradient(to bottom, #94a3b8, #64748b); transform-origin: top; transform: rotateX(-90deg); border-radius: 0 0 8px 8px; border-bottom: 2px solid #475569; box-sizing: border-box; }
         .floor::after { content: ''; position: absolute; top: -1px; left: 100%; width: 15px; height: calc(100% + 2px); background: linear-gradient(to right, #64748b, #475569); transform-origin: left; transform: rotateY(90deg); border-radius: 0 8px 8px 0; border-right: 1px solid #334155; box-sizing: border-box; }
 
-        .aisle { position: relative; cursor: pointer; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; display: flex; flex-direction: column; justify-content: space-between; gap: 36px; transition: gap 0.4s ease; }
+        .aisle { position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; display: flex; flex-direction: column; justify-content: space-between; gap: 36px; transition: gap 0.4s ease; }
         .map-expanded-overlay .aisle { gap: 15px; }
 
         /* Default Active Aisle Parts Highlights (FULL GLOW FOR NORMAL MAP) */
@@ -392,11 +392,15 @@
             background: rgba(0,0,0,0.5); padding: 2px 4px; border-radius: 2px;
             text-shadow: 0 1px 2px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            pointer-events: auto; cursor: pointer;
         }
         .map-expanded-overlay .sec-container span { font-size: 0.65rem; padding: 3px 5px; transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease; }
-        .sec-container span.highlighted-sec { background: var(--primary) !important; color: #fff !important; transform: scale(1.8) translateZ(15px) !important; border-color: #fff !important; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 0 15px var(--primary) !important; position: relative; white-space: nowrap; }
+        
+        .sec-container span.highlighted-sec { background: var(--primary) !important; color: #ffffff !important; border-color: #38bdf8 !important; transform: translateZ(4px) !important; z-index: 100; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7) !important; position: relative; white-space: nowrap; }
+        .map-expanded-overlay .sec-container span.highlighted-sec { transform: scale(1.2) translateZ(8px) !important; }
         body.dark-mode .sec-container span { color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.6); }
+
+        .side-text { display: none; }
+        .map-expanded-overlay .sec-container span.highlighted-sec .side-text { display: inline-block; font-weight: 800; opacity: 0.95; }
 
         /* Aisle Category Labels */
         .aisle-category-label {
@@ -495,12 +499,19 @@
         }
 
         .map-expanded-overlay .aisle.active .aisle-category-label {
-            opacity: 0 !important; 
-            visibility: hidden !important; 
+            display: none !important; 
         }
 
         .map-expanded-overlay .aisle .aisle-category-label::after {
             display: none !important; /* Hide popup triangle in expanded view */
+        }
+
+        /* Prevent clicking and change cursor for aisles in expanded view */
+        .map-expanded-overlay .aisle,
+        .map-expanded-overlay .aisle-part,
+        .map-expanded-overlay .sec-container span,
+        .map-expanded-overlay .back-wall {
+            cursor: default !important;
         }
 
         /* Popup state for normal (non-expanded) map */
@@ -509,60 +520,53 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
             transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important;
             z-index: 100;
-            max-width: 100px !important;
-            padding: 4px 8px !important;
-            font-size: 0.5rem !important;
+            max-width: 140px !important; /* Increased slightly to allow wrapping */
+            padding: 6px 12px !important;
+            font-size: 0.6rem !important;
+            white-space: normal !important; /* Changed from nowrap to normal to allow wrapping */
         }
         
         #p-1L.show-label-popup .aisle-category-label {
-            transform: translate(-50%, -50%) translateZ(45px) rotateX(-55deg) scale(1.05) !important;
-        }
-        
-        .aisle.show-label-popup .aisle-category-label::after {
-            opacity: 1;
-        }
-
-        /* Hide label completely when selected but timer has ended (normal map only) */
-        .aisle.active:not(.show-label-popup) .aisle-category-label {
-            opacity: 0;
-        }
-        .map-expanded-overlay .aisle.active:not(.show-label-popup) .aisle-category-label {
-            opacity: 0 !important; 
-            visibility: hidden !important;
-        }
-
-        body.dark-mode .aisle-category-label { 
-            color: #fff; 
-        }
-        
-        body.dark-mode .map-expanded-overlay .aisle .aisle-category-label {
-            background: transparent !important;
-            color: rgba(255, 255, 255, 0.8) !important;
-            border: none !important;
             box-shadow: none !important;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9) !important;
+            opacity: 0.85 !important;
+            visibility: visible !important;
         }
         
         body.dark-mode .map-expanded-overlay .aisle.active .aisle-category-label {
-            opacity: 0 !important;
-            visibility: hidden !important;
+            display: none !important;
         }
 
         /* --- PAINT TABLE (Aisle 9 Front) --- */
-        .paint-table { position: absolute; bottom: -22px; left: -15%; width: 45%; height: 18px; background: linear-gradient(145deg, #e2e8f0, #cbd5e1); border-radius: 2px; transform-style: preserve-3d; transform: translateZ(18px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), -5px 10px 10px rgba(0,0,0,0.3); border: 1px solid #94a3b8; cursor: pointer; z-index: 40; }
+        .paint-table { position: absolute; bottom: -22px; left: -15%; width: 45%; height: 18px; background: linear-gradient(145deg, #e2e8f0, #cbd5e1); border-radius: 2px; transform-style: preserve-3d; transform: translateZ(18px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), -5px 10px 10px rgba(0,0,0,0.3); border: 1px solid #94a3b8; z-index: 40; }
         .paint-table::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 18px; background: #94a3b8; transform-origin: top; transform: rotateX(-90deg); border-bottom: 1.5px solid #475569; box-sizing: border-box; transition: all 0.3s ease; }
         .paint-table::after { content: ''; position: absolute; top: 0; left: 100%; width: 18px; height: 100%; background: linear-gradient(to bottom, #e2e8f0, #cbd5e1); transform-origin: left; transform: rotateY(90deg); border-right: 1.5px solid #475569; box-sizing: border-box; transition: all 0.3s ease; }
         
-        .aisle-num { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%) rotateX(-55deg) translateZ(50px) translateY(-15px); font-weight: 900; font-size: 0.65rem; z-index: 30; background: var(--primary); color: white; padding: 2px 5px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.3s ease; border: 1.5px solid #002e5c; }
-        .aisle.active-num .aisle-num { background: var(--aisle-active); color: #ffffff; transform: translateX(-50%) rotateX(-55deg) translateZ(65px) translateY(-15px) scale(1.1); box-shadow: 0 6px 10px rgba(56, 189, 248, 0.4); border-color: #ffffff; }
+        /* --- PAD NUMBERS MOVED TO THE WALKWAY --- */
+        .aisle-num { 
+            position: absolute; 
+            bottom: -25px; /* Dichter bij de ingang van het pad gezet */
+            left: -12px; /* Center of the 24px grid gap = the walkway! */
+            transform: translateX(-50%) rotateX(var(--char-rx, -55deg)) translateZ(25px); /* Increased Z to float safely over the paint table */
+            font-weight: 900; font-size: 0.85rem; z-index: 50; 
+            background: var(--primary); color: white; 
+            padding: 4px 8px; border-radius: 6px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 2px solid #ffffff; 
+            display: flex; flex-direction: column; align-items: center; line-height: 1;
+        }
+        .pad-prefix { font-size: 0.45rem; opacity: 0.9; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .map-expanded-overlay .aisle-num { left: -14px; bottom: -30px; }
+        .aisle.active-num .aisle-num { background: #38bdf8; color: #0f172a; transform: translateX(-50%) rotateX(var(--char-rx, -55deg)) translateZ(40px) scale(1.3); box-shadow: 0 8px 16px rgba(56, 189, 248, 0.6); border-color: #ffffff; }
 
-        #p-1L .aisle-num { left: 100%; bottom: 15px; }
+        #p-1L .aisle-num { display: none !important; }
 
         .backwall-label { position: absolute; top: -20px; left: 50%; transform: translateX(-50%) rotateX(-55deg) translateZ(20px); font-weight: 900; font-size: 0.65rem; z-index: 60; background: var(--primary); color: #ffffff; padding: 4px 10px; border-radius: 6px; border: 1px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.4s ease; white-space: nowrap; text-transform: uppercase; opacity: 0; visibility: hidden; }
         .map-expanded-overlay .backwall-label { transform: translateX(-50%) rotateX(-55deg) translateZ(10px) scale(0.8); opacity: 0; visibility: hidden; }
         .back-wall.active .backwall-label { background: var(--primary); color: #ffffff; transform: translateX(-50%) rotateX(-55deg) translateZ(40px) scale(1.1); box-shadow: 0 8px 16px rgba(0,0,0,0.4); opacity: 1 !important; visibility: visible !important; }
 
-        .back-wall { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; border-radius: 6px 6px 0 0; z-index: 5; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), -5px 8px 10px rgba(0,0,0,0.15); border: 2px solid #002e5c; }
+        .back-wall { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: linear-gradient(135deg, #005cb9 0%, #00458b 100%); transform: translateZ(40px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; border-radius: 6px 6px 0 0; z-index: 5; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), -5px 8px 10px rgba(0,0,0,0.15); border: 2px solid #002e5c; }
         .back-wall::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 40px; background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 42px), repeating-linear-gradient(to bottom, #1d4ed8 0px, #3b82f6 1.5px, #1e3a8a 3px, transparent 3px, transparent 13px), #0f172a; transform-origin: top; transform: rotateX(-90deg); border-bottom: 2px solid #002e5c; box-sizing: border-box; transition: all 0.3s ease; }
         .back-wall.active { background: #38bdf8; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(56, 189, 248, 0.5); border-color: #ffffff; }
         .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(255,255,255,0.4) 40px, rgba(255,255,255,0.4) 42px), repeating-linear-gradient(to bottom, #bae6fd 0px, #e0f2fe 1.5px, #38bdf8 3px, transparent 3px, transparent 13px), #0369a1; border-bottom-color: #ffffff; height: 45px; }
@@ -636,19 +640,19 @@
             border-color: var(--primary) transparent transparent transparent !important;
         }
 
-        #cashierZone { position: absolute; bottom: -8px; left: calc(100% / 18 * 7.8); width: calc(100% / 18 * 4.8); display: flex; justify-content: space-between; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
-        .cashier-desk { width: 20%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 3px solid var(--primary); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; }
+        #cashierZone { position: absolute; bottom: -8px; left: calc(100% / 18 * 7.8); width: calc(100% / 18 * 4.8); display: flex; justify-content: space-between; align-items: flex-end; height: 8px; z-index: 150; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer;}
+        .cashier-desk { width: 20%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 3px solid var(--primary); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer;}
         .cashier-desk::before { content: ''; position: absolute; top: -5px; right: 15%; width: 35%; height: 5px; background: var(--primary); border-radius: 1px; border: 1.5px solid #020617; box-shadow: 0 0 4px rgba(0, 92, 185, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
 
         /* Sawmill / Zaagtafel - Moved next to exit door and half nested */
-        #sawmillZone { position: absolute; bottom: -8px; left: calc((100% / 18 * 15.0) - 62px); width: 40px; display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #sawmillZone { position: absolute; bottom: -8px; left: calc((100% / 18 * 15.0) - 62px); width: 40px; display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;}
         #sawmillZone:hover { transform: translateZ(12px); }
         .saw-blade-container { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 26px; height: 13px; overflow: hidden; z-index: 2; border-bottom: 2px solid #0f172a; border-radius: 0 0 2px 2px; }
         .saw-blade { position: absolute; bottom: -11px; left: 1px; width: 24px; height: 24px; background: repeating-conic-gradient(#e2e8f0 0deg 30deg, #94a3b8 30deg 60deg); border-radius: 50%; border: 2px solid #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.6); pointer-events: none; box-sizing: border-box; }
         #sawmillZone:hover .saw-blade { animation: sawSpin 0.2s linear infinite; }
         @keyframes sawSpin { 100% { transform: rotateZ(360deg); } }
 
-        #coffeeCorner { position: absolute; bottom: -8px; right: 0; width: calc(100% / 18 * 1.8); display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; cursor: pointer; background: linear-gradient(145deg, #27272a, #111827); border: 1.5px solid #000; border-top: 3.5px solid var(--primary); border-radius: 3px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), -6px 10px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #coffeeCorner { position: absolute; bottom: -8px; right: 0; width: calc(100% / 18 * 1.8); display: flex; justify-content: center; align-items: flex-end; height: 8px; z-index: 150; background: linear-gradient(145deg, #27272a, #111827); border: 1.5px solid #000; border-top: 3.5px solid var(--primary); border-radius: 3px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), -6px 10px 10px rgba(0,0,0,0.5); transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;}
         #coffeeCorner:hover { transform: translateZ(12px); }
         #coffeeCorner::before { content: ''; position: absolute; top: -8px; left: 8%; width: 32%; height: 8px; background: linear-gradient(to right, #9ca3af, #cbd5e1); border: 1.5px solid #475569; border-radius: 2px; transform: translateZ(2px); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
         #coffeeCorner::after { content: ''; position: absolute; top: -3px; left: 5%; width: 90%; height: 2px; background: var(--primary); box-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary); border-radius: 2px; opacity: 0.8; transform: translateZ(1px); }
@@ -793,10 +797,11 @@
         body.dark-mode .floor::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom: 1px solid #000; }
         body.dark-mode .floor::after { background: linear-gradient(to right, #0f172a, #020617); border-right: 1px solid #000; }
         
-        body.dark-mode .aisle-part { 
-            background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); 
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -6px 8px 12px rgba(0,0,0,0.4); 
-        }
+        body.dark-mode .aisle.active-side-left .aisle-part.active-part { background: linear-gradient(to right, #38bdf8 50%, #172554 50%) !important; border-left-color: #ffffff !important; box-shadow: -15px 10px 25px rgba(56, 189, 248, 0.4) !important;}
+        body.dark-mode .aisle.active-side-right .aisle-part.active-part { background: linear-gradient(to right, #172554 50%, #38bdf8 50%) !important; border-right-color: #ffffff !important; box-shadow: 15px 10px 25px rgba(56, 189, 248, 0.4) !important; }
+
+        body.dark-mode .aisle.active-num .aisle-num { background: #0284c7; color: #ffffff; box-shadow: 0 8px 16px rgba(2, 132, 199, 0.6); border-color: #ffffff; }
+
         body.dark-mode .paint-table { background: linear-gradient(135deg, #9333ea, #4f46e5, #0284c7, #059669); border-color: #312e81; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), -5px 10px 10px rgba(0,0,0,0.6); }
         body.dark-mode .paint-table::before { background: linear-gradient(to right, #6b21a8, #3730a3, #075985, #065f46); border-bottom-color: #000; }
         body.dark-mode .paint-table::after { background: #065f46; border-right-color: #000; }
@@ -849,7 +854,7 @@
         
         body.dark-mode .intro-lang-segment { background: rgba(15, 23, 42, 0.85); border-color: rgba(255, 255, 255, 0.1); }
         body.dark-mode .intro-lang-btn { color: #94a3b8; }
-        body.dark-mode .intro-lang-btn.active { background: var(--primary); color: #ffffff; }
+        body.dark-mode .lang-btn.active { background: var(--primary); color: #ffffff; }
         body.dark-mode .intro-lang-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
         
         body.dark-mode .commercial-ticker { background: var(--primary); color: var(--accent); }
@@ -961,22 +966,22 @@
             
             <div class="map-section" aria-hidden="true" ondblclick="toggleMapExpand(true)">
                 <div class="floor" id="mapGrid">
-                    <div class="back-wall" id="p-0AW" onclick="handleMapClick('0AW', null)"></div>
+                    <div class="back-wall" id="p-0AW" onclick="event.stopPropagation(); handleMapClick('0AW', null, null, event)"></div>
                     <div id="cashierZone">
-                        <div class="cashier-desk" id="desk-service" onclick="handleMapClick('KAS', 'service')"><div class="desk-label toggle-label" id="label-service">Service desk</div></div>
-                        <div class="cashier-desk" id="desk-sales1" onclick="handleMapClick('KAS', 'sales1')"><div class="desk-label toggle-label" id="label-sales1">Verkoopdesk</div></div>
-                        <div class="cashier-desk" id="desk-kassa" onclick="handleMapClick('KAS', 'kassa')"><div class="desk-label toggle-label" id="label-kassa">Kassa</div></div>
+                        <div class="cashier-desk" id="desk-service" onclick="event.stopPropagation(); handleMapClick('KAS', 'service', null, event)"><div class="desk-label toggle-label" id="label-service">Service desk</div></div>
+                        <div class="cashier-desk" id="desk-sales1" onclick="event.stopPropagation(); handleMapClick('KAS', 'sales1', null, event)"><div class="desk-label toggle-label" id="label-sales1">Verkoopdesk</div></div>
+                        <div class="cashier-desk" id="desk-kassa" onclick="event.stopPropagation(); handleMapClick('KAS', 'kassa', null, event)"><div class="desk-label toggle-label" id="label-kassa">Kassa</div></div>
                 </div>
-                <div id="sawmillZone" onclick="handleMapClick('SAW', null)">
+                <div id="sawmillZone" onclick="event.stopPropagation(); handleMapClick('SAW', 'sawmill', null, event)">
                     <div class="saw-blade-container"><div class="saw-blade"></div></div>
                     <div class="desk-label toggle-label" id="label-sawmill">Zaagafdeling</div>
                 </div>
-                <div class="modern-door exit-door" id="exitDoor" onclick="handleMapClick('UITGANG', null)">
+                <div class="modern-door exit-door" id="exitDoor" onclick="event.stopPropagation(); handleMapClick('UITGANG', null, null, event)">
                     <div class="door-glass left"></div>
                         <div class="door-glass right"></div>
                     </div>
                     <div class="exit-label" id="exitText"></div>
-                    <div id="coffeeCorner" onclick="handleMapClick('KOFFIE', null)">
+                    <div id="coffeeCorner" onclick="event.stopPropagation(); handleMapClick('KOFFIE', 'coffee', null, event)">
                         <div class="vending-machine">
                             <div class="vending-screen"></div>
                             <div class="vending-slot"></div>
@@ -1015,7 +1020,8 @@
         "Eigen gebruik": "🏢", "Lokaal": "📍", "Verlichting": "💡", "Hang- en sluitwerk": "🔐",
         "Verwarming en klimaat": "🌡️", "Emballage": "📦", "Persoonlijke beschermings": "🦺",
         "Schoonmaak bedrijfswagen": "🧽", "Schoonmaak, bedrijfswagen": "🧽", "Keukens": "🍳", "Lijm, kit en pur": "🧴",
-        "Bevestigingsmateriaal": "🔩", "Bouwmaterialen": "🧱", "Deuren & Kozijnen": "🚪", "Kleding & schoenen": "🥾"
+        "Bevestigingsmateriaal": "🔩", "Bouwmaterialen": "🧱", "Deuren / Kozijnen": "🚪", "Kleding / schoenen": "🥾",
+        "Hout / gipsplaten": "🪵", "Plinten": "🪵", "Verf benodigdheden / attributen": "🖌️", "Kleding": "🥾", "Elektra / PVC": "🔌"
     };
 
     const i18n = {
@@ -1036,11 +1042,24 @@
             backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
             location: "LOCATIE:", art: "Art.", loc: "LOC", unknownLoc: "Onbekende locatie",
             mapLabels: {
-                "HOUT": "HOUT", "TUINHOUT": "TUINHOUT", "VUREN RUW / GESCHAAFD": "VUREN RUW / GESCHAAFD", "VUREN GESCHAAFD / HOUT": "VUREN GESCHAAFD / HOUT", "PLAATMATERIAAL HOUT": "PLAATMATERIAAL HOUT", "BOUW": "BOUW", "GIPSEN / CEMENT / MORTELS": "GIPSEN / CEMENT / MORTELS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTELS / ZAND GRIND", "STENEN / BLOKKEN": "STENEN / BLOKKEN", "TEGELS / LIJMEN": "TEGELS / LIJMEN", "TEGELS / LIJMEN / ISOLATIE": "TEGELS / LIJMEN / ISOLATIE", "DAKBEDEKKING / DAKRAMEN": "DAKBEDEKKING / DAKRAMEN", "SANITAIR": "SANITAIR"
+                "TUINHOUT": "TUINHOUT", 
+                "VUREN RUW / GESCHAAFD": "VUREN RUW / GESCHAAFD", 
+                "HOUT": "HOUT", 
+                "PLAATMATERIAAL HOUT": "PLAATMATERIAAL HOUT", 
+                "VENTILATIE": "VENTILATIE", 
+                "STEIGERS / BEKISTING": "STEIGERS / BEKISTING", 
+                "PLEISTERS / STUC": "PLEISTERS / STUC", 
+                "CEMENT / MORTELS": "CEMENT / MORTELS", 
+                "STENEN / BLOKKEN": "STENEN / BLOKKEN", 
+                "TEGELS / VOEGMIDDELEN": "TEGELS / VOEGMIDDELEN", 
+                "DAKBEDEKKING": "DAKBEDEKKING", 
+                "VERWARMING / ISOLATIE": "VERWARMING / ISOLATIE", 
+                "KEUKENATTRIBUTEN / ISOLATIE": "KEUKENATTRIBUTEN / ISOLATIE"
             },
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
-                "Deuren & Kozijnen": "Deuren & Kozijnen", "Kit, pur & lijm": "Kit, pur & lijm", "Kleding & schoenen": "Kleding & schoenen", "Meetgereedschap": "Meetgereedschap", "Constructie buiten": "Constructie buiten", "Schakelmateriaal": "Schakelmateriaal", "Accessoires en verbruiksartikelen": "Accessoires en verbruiksartikelen", "Deuren": "Deuren", "Werkkleding": "Werkkleding", "Timmerhout": "Timmerhout", "Gevelbekleding": "Gevelbekleding", "Isolatie": "Isolatie", "Tegelverwerking": "Tegelverwerking"
+                "Deuren / Kozijnen": "Deuren / Kozijnen", "Kit, pur / lijm": "Kit, pur / lijm", "Kleding / schoenen": "Kleding / schoenen", "Meetgereedschap": "Meetgereedschap", "Constructie buiten": "Constructie buiten", "Schakelmateriaal": "Schakelmateriaal", "Accessoires en verbruiksartikelen": "Accessoires en verbruiksartikelen", "Deuren": "Deuren", "Werkkleding": "Werkkleding", "Timmerhout": "Timmerhout", "Gevelbekleding": "Gevelbekleding", "Isolatie": "Isolatie", "Tegelverwerking": "Tegelverwerking",
+                "Hout / gipsplaten": "Hout / gipsplaten", "Plinten": "Plinten", "Verf benodigdheden / attributen": "Verf benodigdheden / attributen", "Kleding": "Kleding", "Elektra / PVC": "Elektra / PVC"
             }
         },
         en: { 
@@ -1060,11 +1079,24 @@
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
             location: "LOCATION:", art: "Art.", loc: "LOC", unknownLoc: "Unknown location",
             mapLabels: {
-                "HOUT": "TIMBER", "TUINHOUT": "GARDEN TIMBER", "VUREN RUW / GESCHAAFD": "ROUGH / PLANED PINE", "VUREN GESCHAAFD / HOUT": "PLANED PINE / TIMBER", "PLAATMATERIAAL HOUT": "SHEET MATERIAL TIMBER", "BOUW": "CONSTRUCTION", "GIPSEN / CEMENT / MORTELS": "PLASTER / CEMENT / MORTARS", "CEMENT / MORTELS / ZAND GRIND": "CEMENT / MORTARS / SAND GRAVEL", "STENEN / BLOKKEN": "BRICKS / BLOCKS", "TEGELS / LIJMEN": "TILES / ADHESIVES", "TEGELS / LIJMEN / ISOLATIE": "TILES / ADHESIVES / INSULATION", "DAKBEDEKKING / DAKRAMEN": "ROOFING / SKYLIGHTS", "SANITAIR": "PLUMBING"
+                "TUINHOUT": "GARDEN TIMBER", 
+                "VUREN RUW / GESCHAAFD": "ROUGH / PLANED PINE", 
+                "HOUT": "TIMBER", 
+                "PLAATMATERIAAL HOUT": "SHEET MATERIAL TIMBER", 
+                "VENTILATIE": "VENTILATION", 
+                "STEIGERS / BEKISTING": "SCAFFOLDING / FORMWORK", 
+                "PLEISTERS / STUC": "PLASTERS / STUCCO", 
+                "CEMENT / MORTELS": "CEMENT / MORTARS", 
+                "STENEN / BLOKKEN": "BRICKS / BLOCKS", 
+                "TEGELS / VOEGMIDDELEN": "TILES / GROUT", 
+                "DAKBEDEKKING": "ROOFING", 
+                "VERWARMING / ISOLATIE": "HEATING / INSULATION", 
+                "KEUKENATTRIBUTEN / ISOLATIE": "KITCHEN ACCESSORIES / INSULATION"
             },
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
-                "Deuren & Kozijnen": "Doors & Frames", "Kit, pur & lijm": "Sealant, PU Foam & Glue", "Kleding & schoenen": "Clothing & Shoes", "Meetgereedschap": "Measuring Tools", "Constructie buiten": "Outdoor Construction", "Schakelmateriaal": "Switchgear", "Accessoires en verbruiksartikelen": "Accessories & Consumables", "Deuren": "Doors", "Werkkleding": "Workwear", "Timmerhout": "Carpentry Wood", "Gevelbekleding": "Cladding", "Isolatie": "Insulation", "Tegelverwerking": "Tiling Tools"
+                "Deuren / Kozijnen": "Doors / Frames", "Kit, pur / lijm": "Sealant, PU Foam / Glue", "Kleding / schoenen": "Clothing / Shoes", "Meetgereedschap": "Measuring Tools", "Constructie buiten": "Outdoor Construction", "Schakelmateriaal": "Switchgear", "Accessoires en verbruiksartikelen": "Accessories & Consumables", "Deuren": "Doors", "Werkkleding": "Workwear", "Timmerhout": "Carpentry Wood", "Gevelbekleding": "Cladding", "Isolatie": "Insulation", "Tegelverwerking": "Tiling Tools",
+                "Hout / gipsplaten": "Timber / Drywall", "Plinten": "Baseboards", "Verf benodigdheden / attributen": "Paint Supplies / Accessories", "Kleding": "Clothing", "Elektra / PVC": "Electrical / PVC"
             }
         },
         uk: { 
@@ -1084,21 +1116,34 @@
             backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
             location: "РОЗТАШУВАННЯ:", art: "Арт.", loc: "МІСЦЕ", unknownLoc: "Невідоме розташування",
             mapLabels: {
-                "HOUT": "ДЕРЕВИНА", "TUINHOUT": "САДОВА ДЕРЕВИНА", "VUREN RUW / GESCHAAFD": "ГРУБА / СТРУГАНА СОСНА", "VUREN GESCHAAFD / HOUT": "СТРУГАНА СОСНА / ДЕРЕВИНА", "PLAATMATERIAAL HOUT": "ЛИСТОВА ДЕРЕВИНА", "BOUW": "БУДІВНИЦТВО", "GIPSEN / CEMENT / MORTELS": "ГІПС / ЦЕМЕНТ / РОЗЧИНИ", "CEMENT / MORTELS / ZAND GRIND": "ЦЕМЕНТ / РОЗЧИНИ / ПІСОК ГРАВІЙ", "STENEN / BLOKKEN": "ЦЕГЛА / БЛОКИ", "TEGELS / LIJMEN": "ПЛИТКА / КЛЕЇ", "TEGELS / LIJMEN / ISOLATIE": "ПЛИТКА / КЛЕЇ / ІЗОЛЯЦІЯ", "DAKBEDEKKING / DAKRAMEN": "ПОКРІВЛЯ / ДАХОВІ ВІКНА", "SANITAIR": "САНТЕХНІКА"
+                "TUINHOUT": "САДОВА ДЕРЕВИНА", 
+                "VUREN RUW / GESCHAAFD": "ГРУБА / СТРУГАНА СОСНА", 
+                "HOUT": "ДЕРЕВИНА", 
+                "PLAATMATERIAAL HOUT": "ЛИСТОВА ДЕРЕВИНА", 
+                "VENTILATIE": "ВЕНТИЛЯЦІЯ", 
+                "STEIGERS / BEKISTING": "РИШТУВАННЯ / ОПАЛУБКА", 
+                "PLEISTERS / STUC": "ШТУКАТУРКА", 
+                "CEMENT / MORTELS": "ЦЕМЕНТ / РОЗЧИНИ", 
+                "STENEN / BLOKKEN": "ЦЕГЛА / БЛОКИ", 
+                "TEGELS / VOEGMIDDELEN": "ПЛИТКА / ЗАТИРКА", 
+                "DAKBEDEKKING": "ПОКРІВЛЯ", 
+                "VERWARMING / ISOLATIE": "ОПАЛЕННЯ / ІЗОЛЯЦІЯ", 
+                "KEUKENATTRIBUTEN / ISOLATIE": "КУХОННІ АКСЕСУАРИ / ІЗОЛЯЦІЯ"
             },
             groups: { 
-                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen gebruik": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибиранння", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen gebruik diversen": "Для власного використання",
-                "Deuren & Kozijnen": "Двері та рами", "Kit, pur & lijm": "Герметик, піна та клей", "Kleding & schoenen": "Одяг та взуття", "Meetgereedschap": "Вимірювальний інструмент", "Constructie buiten": "Зовнішні конструкції", "Schakelmateriaal": "Електрофурнітура", "Accessoires en verbruiksartikelen": "Аксесуари та витратні матеріали", "Deuren": "Двері", "Werkkleding": "Робочий одяг", "Timmerhout": "Столярна деревина", "Gevelbekleding": "Облицювання фасадів", "Isolatie": "Ізоляція", "Tegelverwerking": "Укладання плитки"
+                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибиранння", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Для власного використання",
+                "Deuren / Kozijnen": "Двері / рами", "Kit, pur / lijm": "Герметик, піна / клей", "Kleding / schoenen": "Одяг / взуття", "Meetgereedschap": "Вимірювальний інструмент", "Constructie buiten": "Зовнішні конструкції", "Schakelmateriaal": "Електрофурнітура", "Accessoires en verbruiksartikelen": "Аксесуари та витратні матеріали", "Deuren": "Двері", "Werkkleding": "Робочий одяг", "Timmerhout": "Столярна деревина", "Gevelbekleding": "Облицювання фасадів", "Isolatie": "Ізоляція", "Tegelverwerking": "Укладання плитки",
+                "Hout / gipsplaten": "Деревина / гіпсокартон", "Plinten": "Плінтуси", "Verf benodigdheden / attributen": "Приладдя для фарбування", "Kleding": "Одяг", "Elektra / PVC": "Електрика / ПВХ"
             }
         }
     };
 
     const aisleCategories = {
-        1: "Hout", 2: "Hout", 3: "Hout", 4: "Deuren & Kozijnen", 5: "IJzerwaren", 
-        6: "Schroeven", 7: "Kit, pur & lijm", 8: "Verf", 
+        1: "gipsplaten", 2: "tuinhout", 3: "vuren ruw/geschaafd", 4: "Deuren / Kozijnen", 5: "IJzerwaren", 
+        6: "Schroeven", 7: "Kit, pur / lijm", 8: "Verf benodigdheden / attributen", 
         9: "Verf", 10: "Verf", 11: "Gereedschap", 12: "Gereedschap", 
-        13: "Kleding & schoenen", 14: "Sanitair", 15: "Sanitair", 
-        16: "Elektra", 17: "Verwarming"
+        13: "Kleding", 14: "Sanitair", 15: "Sanitair", 
+        16: "Elektra", 17: "Elektra / PVC"
     };
 
     const specialLocations = [
@@ -1118,10 +1163,10 @@
     let data = [];
     let currentCategory = 'all';
     window.activeMapTarget = null; 
+    window.currentSelectedProduct = null;
 
-    // Condensed fallback data to prevent truncation
     const fallbackData = [
-                     {
+            {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2278,12 +2323,10 @@
             "Hoofdgroep": "Eigen gebruik",
             "Subgroep": "Eigen gebruik diversen",
             "Locatie2": "Pad VM Links, Sectie 02"
-        }
-
+        },
 
     ];
 
-    // VEILIGE GETTERS - Strictly cast to String to prevent .trim() crashes on numeric data
     const getArtNr = (item) => String(item["ArtikelNr."] || item.artikelNr || item.id || '');
     const getOmsch = (item) => String(item["Artikel omsch."] || item.omschrijving || item.naam || item.name || '');
     const getHg = (item) => String(item["Hoofdgroep"] || item.hoofdgroep || item.category || 'Algemeen');
@@ -2302,7 +2345,6 @@
             data = fallbackData; 
         }
         
-        // Zeker weten dat data array niet corrupt is
         if (!Array.isArray(data) || data.length === 0) {
             data = fallbackData;
         }
@@ -2346,7 +2388,7 @@
     }
 
     function setLang(lang) {
-        if (!i18n[lang]) lang = 'nl'; // Safety fallback
+        if (!i18n[lang]) lang = 'nl';
         curLang = lang;
         localStorage.setItem('bouwmaat_lang', lang);
         
@@ -2399,7 +2441,6 @@
         const lblBackWall = document.getElementById('label-backwall');
         if(lblBackWall) lblBackWall.innerText = t.backWallShort;
         
-        // Dynamically update the map's physical labels (Aisles and Racks)
         document.querySelectorAll('[data-map-label]').forEach(el => {
             if (t.mapLabels) el.innerText = t.mapLabels[el.dataset.mapLabel] || el.dataset.mapLabel;
         });
@@ -2407,7 +2448,6 @@
             if (t.groups) el.innerText = t.groups[el.dataset.mapCat] || el.dataset.mapCat;
         });
         
-        // Update special locations translations
         const awLoc = specialLocations.find(s => s.id === '0AW');
         if (awLoc) {
             awLoc.short = t.backWallShort;
@@ -2420,12 +2460,7 @@
             sawLoc.long = t.sawmill;
         }
         
-        // Dynamic Video Switching per Language
-        const videoSrcs = {
-            nl: "dutch1.mp4",
-            en: "eng.mp4",
-            uk: "eng.mp4"
-        };
+        const videoSrcs = { nl: "dutch1.mp4", en: "eng.mp4", uk: "eng.mp4" };
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
             if (vidPlayer.getAttribute('src') !== videoSrcs[lang]) {
@@ -2492,6 +2527,7 @@
 
     function boot() {
         const t = i18n[curLang] || i18n['nl'];
+        const padWord = t.padWord ? t.padWord.toUpperCase() : "PAD";
         
         window.dictSet = new Set();
         data.forEach(item => {
@@ -2511,7 +2547,7 @@
             }
             item._nameWords.forEach(w => {
                 let cw = w.replace(/[^a-z0-9]/g, '');
-                if (cw.length >= 2) window.dictSet.add(cw); // Verzamelt nu ook kortere woorden/getallen voor suggesties
+                if (cw.length >= 2) window.dictSet.add(cw);
             });
         });
         window.dictArray = Array.from(window.dictSet);
@@ -2538,42 +2574,35 @@
         
         if (!grid) return; 
 
-        // Generate Section Numbers
-        let bottomSecs = ''; for(let s=1; s<=6; s++) bottomSecs += `<span onclick="event.stopPropagation(); handleMapClick(this.parentNode.parentNode.parentNode.dataset.num, 'bottom', '${s}')">${s}</span>`;
-        let topSecs = ''; for(let s=7; s<=17; s++) topSecs += `<span onclick="event.stopPropagation(); handleMapClick(this.parentNode.parentNode.parentNode.dataset.num, 'top', '${s}')">${s}</span>`;
-        
-        // Helper to generate section spans with click handlers
         const getSecs = (pad, start, end, part) => {
             let html = '';
             for(let s=start; s<=end; s++) {
-                html += `<span onclick="event.stopPropagation(); handleMapClick('${pad}', '${part}', '${s}')">${s}</span>`;
+                html += `<span onclick="event.stopPropagation(); handleMapClick('${pad}', '${part}', '${s}', event)">${s}</span>`;
             }
             return html;
         };
 
-        // Solid wall stretches (1 through 17)
         let allSecs = getSecs('1L', 1, 17, 'full');
 
-        // Left Boundary Wall (Aisle 1 Left - Stretches all the way to entrance wall)
         const lw = document.createElement('div');
         lw.className = 'aisle left-wall-aisle';
         lw.id = 'p-1L';
-        lw.style.marginBottom = '-75px'; // Extends the wall down into the entrance padding
+        lw.style.marginBottom = '-75px';
         lw.innerHTML = `
-            <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full')">
+            <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full', null, event)">
                 <div class="left-face"></div>
                 <div class="aisle-category-label label-full" data-map-label="HOUT">HOUT</div>
                 <div class="sec-container">${allSecs}</div>
             </div>
-            <div class="aisle-num" id="badge-1L">1L</div>
+            <div class="aisle-num" id="badge-1L" style="display: none !important;"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>1L</b></div>
         `;
         grid.appendChild(lw);
         
         const backAisleLabels = {
-            1: "HOUT", 2: "TUINHOUT", 3: "VUREN RUW / GESCHAAFD", 4: "VUREN GESCHAAFD / HOUT", 5: "HOUT",
-            6: "PLAATMATERIAAL HOUT", 7: "HOUT", 8: "PLAATMATERIAAL HOUT", 9: "BOUW", 10: "BOUW",
-            11: "GIPSEN / CEMENT / MORTELS", 12: "CEMENT / MORTELS / ZAND GRIND", 13: "STENEN / BLOKKEN",
-            14: "TEGELS / LIJMEN", 15: "TEGELS / LIJMEN / ISOLATIE", 16: "DAKBEDEKKING / DAKRAMEN", 17: "SANITAIR"
+            1: "Hout  gipsplaten", 2: "Plinten tuinhout", 3: "Hout vuren ruw/geschaafd", 4: "Deuren/Kozijnen VUREN RUW/GESCHAAFD", 5: "IJzerwaren/Hout",
+            6: "Schroeven PLAATMATERIAAL HOUT", 7: "Hout Kit, pur & lijm", 8: "HOUT", 9: "VENTILATIE", 10: "STEIGERS / BEKISTING",
+            11: "PLEISTERS / STUC", 12: "CEMENT / MORTELS", 13: "STENEN / BLOKKEN", 14: "TEGELS / VOEGMIDDELEN", 
+            15: "DAKBEDEKKING", 16: "VERWARMING / ISOLATIE", 17: "KEUKENATTRIBUTEN / ISOLATIE"
         };
 
         for (let i = 1; i <= 17; i++) {
@@ -2590,43 +2619,43 @@
             if (i === 17) {
                 let fullS = getSecs(i, 1, 17, 'full');
                 div.innerHTML = `
-                    <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('${i}', 'full')">
+                    <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('${i}', 'full', null, event)">
                         <div class="left-face"></div>
                         ${catLabelTop || catLabelBottom}
                         <div class="sec-container">${fullS}</div>
                     </div>
-                    <div class="aisle-num">${i}</div>
+                    <div class="aisle-num"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>${i}</b></div>
                 `;
             } else if (i === 9) {
                 div.innerHTML = `
-                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top')">
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top', null, event)">
                         <div class="left-face"></div>
                         ${catLabelTop}
                         <div class="sec-container">${topS}</div>
                     </div>
-                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom')">
+                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom', null, event)">
                         <div class="left-face"></div>
                         ${catLabelBottom}
                         <div class="sec-container">${botS}</div>
                     </div>
-                    <div class="paint-table" onclick="event.stopPropagation(); handleMapClick('${i}', 'paint')">
+                    <div class="paint-table" onclick="event.stopPropagation(); handleMapClick('${i}', 'paint', null, event)">
                         <div class="desk-label toggle-label" id="label-paint">${t.paintDesk}</div>
                     </div>
-                    <div class="aisle-num">${i}</div>
+                    <div class="aisle-num"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>${i}</b></div>
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top')">
+                    <div class="aisle-part top" onclick="event.stopPropagation(); handleMapClick('${i}', 'top', null, event)">
                         <div class="left-face"></div>
                         ${catLabelTop}
                         <div class="sec-container">${topS}</div>
                     </div>
-                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom')">
+                    <div class="aisle-part bottom" onclick="event.stopPropagation(); handleMapClick('${i}', 'bottom', null, event)">
                         <div class="left-face"></div>
                         ${catLabelBottom}
                         <div class="sec-container">${botS}</div>
                     </div>
-                    <div class="aisle-num">${i}</div>
+                    <div class="aisle-num"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>${i}</b></div>
                 `;
             }
             grid.appendChild(div);
@@ -2654,12 +2683,12 @@
             <div class="saw-blade-container"><div class="saw-blade"></div></div>
             <div class="desk-label toggle-label" id="label-sawmill">${t.sawmill}</div>
         `;
-        sawZone.onclick = () => handleMapClick('SAW', 'sawmill');
+        sawZone.onclick = (e) => { e.stopPropagation(); handleMapClick('SAW', 'sawmill', null, e); };
 
         if (backWall) {
             let bwSecs = '';
             for(let s=1; s<=17; s++) {
-                bwSecs += `<span data-sec="${s}" style="transform: rotateX(-55deg) translateZ(10px) translateY(20px); font-size: 0.55rem; padding: 3px 6px; pointer-events: auto; cursor: pointer;" onclick="event.stopPropagation(); handleMapClick('0AW', 'full', '${s}')">${s}</span>`;
+                bwSecs += `<span data-sec="${s}" style="transform: rotateX(-55deg) translateZ(10px) translateY(20px); font-size: 0.55rem; padding: 3px 6px;" onclick="event.stopPropagation(); handleMapClick('0AW', 'full', '${s}', event)">${s}</span>`;
             }
             backWall.innerHTML = `
                 <div class="backwall-label" id="label-backwall">${t.backWallShort}</div>
@@ -2703,13 +2732,13 @@
                 door.onclick = closeSelection;
             }
 
-            moveChar('entrance', false, false, null, null, null);
+            moveChar('entrance', false, null, null, null);
         }, 50); 
         
         const elSearchBox = document.getElementById('searchBox');
         if(elSearchBox) {
             elSearchBox.addEventListener('input', handleSearch);
-            elSearchBox.addEventListener('focus', handleSearch); // Toont resultaten weer zodra je in de balk klikt
+            elSearchBox.addEventListener('focus', handleSearch); 
             elSearchBox.addEventListener('keydown', handleKeys);
         }
         
@@ -2756,7 +2785,6 @@
         return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[-]/g, ' ');
     }
 
-    // Slimme image fallback handler (zoekt in volgorde: .webp -> .jpg -> .png -> icoon)
     window.handleImgFallback = function(img, artNr, catIcon) {
         if (!img.dataset.triedJpg) {
             img.dataset.triedJpg = 'true';
@@ -2769,16 +2797,65 @@
         }
     };
 
-    function handleMapClick(id, part, clickedSec) {
+    function restoreLabels() {
+        const t = i18n[curLang] || i18n['nl'];
+        document.querySelectorAll('[data-map-label]').forEach(el => {
+            el.innerText = t.mapLabels ? (t.mapLabels[el.dataset.mapLabel] || el.dataset.mapLabel) : el.dataset.mapLabel;
+        });
+        document.querySelectorAll('[data-map-cat]').forEach(el => {
+            el.innerText = t.groups ? (t.groups[el.dataset.mapCat] || el.dataset.mapCat) : el.dataset.mapCat;
+        });
+        const bwLabel = document.getElementById('label-backwall');
+        if (bwLabel) bwLabel.innerText = t.backWallShort;
+    }
+
+    function handleMapClick(id, part, clickedSec, e = null) {
+        const mapContainerEl = document.getElementById('mapWrapper');
+        const isCurrentlyExpanded = mapContainerEl && mapContainerEl.classList.contains('map-expanded-overlay');
+        
+        // ONLY ignore clicks on main aisle racks if expanded. 
+        // Desks, Sawmill, Coffee, and Paint remain clickable!
+        const isAisle = !isNaN(parseInt(id, 10)) || id === '1L' || id === '0AW';
+        if (isCurrentlyExpanded && isAisle && part !== 'paint') {
+            return; 
+        }
+
+        let manualSideClass = 'active-side-both';
+        
+        if (e) {
+            let clientX = undefined;
+            if (e.clientX !== undefined) {
+                clientX = e.clientX;
+            } else if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+            } else if (e.changedTouches && e.changedTouches.length > 0) {
+                clientX = e.changedTouches[0].clientX;
+            }
+
+            if (clientX !== undefined) {
+                const aisleDiv = document.getElementById(`p-${id}`);
+                if (aisleDiv) {
+                    const rect = aisleDiv.getBoundingClientRect();
+                    if (clientX < rect.left + rect.width / 2) {
+                        manualSideClass = 'active-side-left';
+                    } else {
+                        manualSideClass = 'active-side-right';
+                    }
+                }
+            }
+        }
+
         document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
-            x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
+            x.classList.remove('active', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
         });
         document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
         document.querySelectorAll('.highlighted-sec').forEach(span => {
             span.classList.remove('highlighted-sec');
             if (span.dataset.origText) span.innerText = span.dataset.origText;
+            span.removeAttribute('aria-label');
         });
         document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+        if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
         
         let targetSec = clickedSec;
         if (!targetSec) {
@@ -2787,33 +2864,38 @@
             else if (part === 'bottom') targetSec = '3';
         }
 
-        const wrapper = document.getElementById('mapWrapper');
-        const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-
         const el = document.getElementById(`p-${id}`);
         if(el) {
-            el.classList.add('active-num', 'active', 'active-side-both');
-            if (!isExpanded) {
+            el.classList.add('active-num', 'active', manualSideClass);
+            if (!isCurrentlyExpanded) {
                 el.classList.add('show-label-popup');
                 window.labelPopupTimer = setTimeout(() => {
                     if(el) el.classList.remove('show-label-popup');
                 }, 3000);
             }
+            
             el.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
 
             if (id == 9 && part === 'paint') {
                 const lbl = document.getElementById('label-paint');
-                if (lbl) lbl.classList.add('active-label');
+                if (lbl) {
+                    lbl.classList.add('active-label');
+                    window.labelPopupTimer = setTimeout(() => {
+                        if (lbl) lbl.classList.remove('active-label');
+                    }, 3000);
+                }
             }
 
             if (targetSec) {
                 el.querySelectorAll('.sec-container span').forEach(span => {
                     if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                    span.innerText = span.dataset.origText;
                     if (span.dataset.origText === targetSec.toString()) {
                         span.classList.add('highlighted-sec');
-                        span.innerText = span.dataset.origText;
-                    } else {
-                        span.innerText = span.dataset.origText;
+                        const t = i18n[curLang] || i18n['nl'];
+                        const sideStr = manualSideClass === 'active-side-right' ? t.rightWord : t.leftWord;
+                        span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                        span.setAttribute('aria-label', `${t.padWord} ${id}, ${t.sect} ${targetSec}, ${sideStr}`);
                     }
                 });
             }
@@ -2824,8 +2906,12 @@
             if (id === '0AW' && targetSec) {
                 specialEl.querySelectorAll('.sec-container span').forEach(span => {
                     if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                    span.innerHTML = span.dataset.origText;
                     if (span.dataset.sec === targetSec.toString() || span.dataset.origText === targetSec.toString()) {
                         span.classList.add('highlighted-sec');
+                        const t = i18n[curLang] || i18n['nl'];
+                        span.innerText = `${t.backWallLong} • ${t.sect} ${span.dataset.origText}`;
+                        span.setAttribute('aria-label', `${t.backWallLong}, ${t.sect} ${targetSec}`);
                     } else {
                         span.innerText = span.dataset.origText;
                     }
@@ -2836,37 +2922,245 @@
                 const lbl = document.getElementById('label-' + (part || 'kassa'));
                 if (lbl) {
                     lbl.classList.add('active-label');
-                    if (!isExpanded) {
-                        setTimeout(() => {
-                            if (lbl) lbl.classList.remove('active-label');
-                        }, 3000);
-                    }
+                    window.labelPopupTimer = setTimeout(() => {
+                        if (lbl) lbl.classList.remove('active-label');
+                    }, 3000);
                 }
             } else if (id === 'KOFFIE') {
                 const lbl = document.getElementById('label-coffee');
                 if (lbl) {
                     lbl.classList.add('active-label');
-                    if (!isExpanded) {
-                        setTimeout(() => {
-                            if (lbl) lbl.classList.remove('active-label');
-                        }, 3000);
-                    }
+                    window.labelPopupTimer = setTimeout(() => {
+                        if (lbl) lbl.classList.remove('active-label');
+                    }, 3000);
                 }
             } else if (id === 'SAW') {
                 const lbl = document.getElementById('label-sawmill');
                 if (lbl) {
                     lbl.classList.add('active-label');
-                    if (!isExpanded) {
+                    window.labelPopupTimer = setTimeout(() => {
+                        if (lbl) lbl.classList.remove('active-label');
+                    }, 3000);
+                }
+            }
+        }
+        
+        window.activeMapTarget = { pad: id, sec: targetSec, side: id === '1L' ? 'Links' : 'Rechts', subTarget: (id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || part === 'paint') ? part : null };
+        
+        moveChar(id, true, targetSec, id === '1L' ? 'Links' : 'Rechts', window.activeMapTarget.subTarget);
+    }
+
+    function getMapTarget(pad, side) {
+        let rackPad = pad;
+        let rackSideClass = 'active-side-both';
+        let isRightOfRack = false; 
+        
+        if (isNaN(parseInt(pad, 10)) && pad !== '1L') {
+            return { rackPad, isRightOfRack, rackSideClass };
+        }
+
+        const padNum = parseInt(pad, 10);
+        const isLeft = side && side.toLowerCase().includes('link');
+        const isRight = side && side.toLowerCase().includes('recht');
+
+        if (isLeft) {
+            rackPad = padNum === 1 ? '1L' : (padNum - 1).toString();
+            rackSideClass = 'active-side-right'; 
+            isRightOfRack = true; 
+        } else if (isRight) {
+            rackPad = padNum.toString();
+            rackSideClass = 'active-side-left'; 
+            isRightOfRack = false; 
+        } else {
+            rackPad = padNum.toString();
+            rackSideClass = 'active-side-both';
+            isRightOfRack = false; 
+        }
+        
+        return { rackPad, isRightOfRack, rackSideClass };
+    }
+
+    function selectItem(pad, sec, side, el, subTarget = '', artNr = null) {
+        const searchBox = document.getElementById('searchBox');
+        if (searchBox) {
+            searchBox.blur(); 
+            searchBox.value = '';
+        }
+        
+        const app = document.getElementById('mainApp');
+        if (app) app.classList.remove('searching'); 
+
+        setTimeout(() => {
+            const mapWrapNode = document.getElementById('mapWrapper');
+            const isMapAlreadyExpanded = mapWrapNode && mapWrapNode.classList.contains('map-expanded-overlay');
+
+            document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
+                x.classList.remove('active', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
+            });
+            document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
+            document.querySelectorAll('.highlighted-sec').forEach(span => {
+                span.classList.remove('highlighted-sec');
+                if (span.dataset.origText) span.innerText = span.dataset.origText;
+                span.removeAttribute('aria-label');
+            });
+            document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+            if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
+            
+            if (el) el.classList.add('selected');
+            
+            const card = document.getElementById('productDetailCard');
+            const mapGrid = document.getElementById('mapGrid');
+            if (mapGrid) mapGrid.classList.add('has-selection');
+
+            const t = i18n[curLang] || i18n['nl'];
+            if (card) {
+                if (artNr) {
+                    window.currentSelectedProduct = { pad, sec, side, el, subTarget, artNr };
+                    const item = data.find(d => String(getArtNr(d)) === String(artNr));
+                    if (item) {
+                        const catIcon = icons[getHg(item)] || '📦';
+                        const artNrClean = getArtNr(item).trim();
+                        const imgHtml = `<img src="img/${artNrClean}.webp" onerror="handleImgFallback(this, '${artNrClean}', '${catIcon}')" alt="Product">`;
+                        
+                        const nameStr = getOmsch(item);
+                        const htmlSafeName = nameStr.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        const jsSafeName = nameStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        
+                        const locStr = getLoc(item);
+                        let displayLoc = locStr || t.unknownLoc;
+                        displayLoc = displayLoc.replace(/Pad/ig, t.padWord)
+                                               .replace(/Sectie/ig, t.sect)
+                                               .replace(/Links/ig, t.leftWord)
+                                               .replace(/Rechts/ig, t.rightWord);
+
+                        const jsSafeLoc = displayLoc.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        
+                        card.innerHTML = `
+                            <div class="pd-header">
+                                <div class="pd-icon">${imgHtml}</div>
+                                <div class="pd-info">
+                                    <h3 class="pd-title" title="${htmlSafeName}">${htmlSafeName}</h3>
+                                    <div class="pd-art">${t.art} ${artNrClean}</div>
+                                </div>
+                            </div>
+                            <div class="pd-bottom">
+                                <div class="pd-loc-banner">
+                                    📍 ${displayLoc}
+                                </div>
+                                <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${jsSafeArt}', '${jsSafeLoc}')">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                </button>
+                            </div>
+                        `;
+                        card.onclick = (e) => {
+                            e.stopPropagation();
+                            selectItem(pad, sec, side, el, subTarget, artNr);
+                        };
+                        card.classList.add('show');
+                    }
+                } else if (!window.currentSelectedProduct) {
+                    card.classList.remove('show');
+                }
+            }
+
+            const { rackPad, rackSideClass } = getMapTarget(pad, side);
+            
+            const badgeEl = document.getElementById(`p-${pad}`);
+            if (badgeEl) {
+                badgeEl.classList.add('active-num');
+            }
+
+            const rackEl = document.getElementById(`p-${rackPad}`);
+            
+            if (rackEl) {
+                rackEl.classList.add('active', rackSideClass);
+                
+                if (!isMapAlreadyExpanded) {
+                    rackEl.classList.add('show-label-popup');
+                    window.labelPopupTimer = setTimeout(() => {
+                        if(rackEl) rackEl.classList.remove('show-label-popup');
+                    }, 3000);
+                }
+                
+                rackEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
+
+                if (sec) {
+                    rackEl.querySelectorAll('.sec-container span').forEach(span => {
+                        if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                        span.innerText = span.dataset.origText;
+                        if (span.dataset.origText === sec.toString()) {
+                            span.classList.add('highlighted-sec');
+                            const t = i18n[curLang] || i18n['nl'];
+                            const sideStr = side && side.toLowerCase().includes('recht') ? t.rightWord : t.leftWord;
+                            span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                        }
+                    });
+                }
+            } else if (pad === '0AW') {
+                const backWall = document.getElementById('p-0AW');
+                if (backWall) {
+                    backWall.classList.add('active');
+                    if (sec) {
+                        backWall.querySelectorAll('.sec-container span').forEach(span => {
+                            if (!span.dataset.origText) span.dataset.origText = span.innerText;
+                            span.innerHTML = span.dataset.origText;
+                            if (span.dataset.sec === sec.toString() || span.dataset.origText === sec.toString()) {
+                                span.classList.add('highlighted-sec');
+                            }
+                        });
+                    }
+                }
+            } else if (pad === 'KAS' || pad === 'KOFFIE' || pad === 'SAW' || pad === 'UITGANG') {
+                let sId = pad === 'KAS' ? 'cashierZone' : (pad === 'KOFFIE' ? 'coffeeCorner' : (pad === 'SAW' ? 'sawmillZone' : 'exitDoor'));
+                const specialEl = document.getElementById(sId);
+                if(specialEl) specialEl.classList.add('active');
+
+                if (pad === 'KAS') {
+                    const lbl = document.getElementById('label-' + (subTarget || 'kassa'));
+                    if (lbl && !isMapAlreadyExpanded) {
+                        lbl.classList.add('active-label');
+                        setTimeout(() => {
+                            if (lbl) lbl.classList.remove('active-label');
+                        }, 3000);
+                    }
+                } else if (pad === 'KOFFIE') {
+                    const lbl = document.getElementById('label-coffee');
+                    if (lbl && !isMapAlreadyExpanded) {
+                        lbl.classList.add('active-label');
+                        setTimeout(() => {
+                            if (lbl) lbl.classList.remove('active-label');
+                        }, 3000);
+                    }
+                } else if (pad === 'SAW') {
+                    const lbl = document.getElementById('label-sawmill');
+                    if (lbl && !isMapAlreadyExpanded) {
+                        lbl.classList.add('active-label');
                         setTimeout(() => {
                             if (lbl) lbl.classList.remove('active-label');
                         }, 3000);
                     }
                 }
             }
-        }
-        
-        window.activeMapTarget = { pad: id, sec: targetSec, side: id === '1L' ? 'Links' : 'Rechts', subTarget: (id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || part === 'paint') ? part : null };
-        moveChar(id, true, id !== 'KAS' && id !== 'KOFFIE' && id !== 'SAW' && id !== 'UITGANG', targetSec, id === '1L' ? 'Links' : 'Rechts', window.activeMapTarget.subTarget);
+
+            if (String(pad) === '9' && subTarget === 'paint') {
+                const lbl = document.getElementById('label-paint');
+                if (lbl && !isMapAlreadyExpanded) {
+                    lbl.classList.add('active-label');
+                    setTimeout(() => {
+                        if (lbl) lbl.classList.remove('active-label');
+                    }, 3000);
+                }
+            }
+
+            window.activeMapTarget = { pad: pad, sec: sec, side: side, subTarget };
+            
+            if (mapWrapNode && !mapWrapNode.classList.contains('map-expanded-overlay')) {
+                toggleMapExpand(true);
+            } else {
+                moveChar(pad, true, sec, side, subTarget);
+            }
+        }, 150); 
     }
 
     function toggleMapExpand(expand) {
@@ -2875,22 +3169,37 @@
         const char = document.getElementById('mainChar');
         if (!wrapper) return;
         
-        if (path) path.setAttribute('d', ''); // Clear path before animating
-        if (char) char.style.transition = 'transform 0.4s ease'; // Make resize/tilt animation smooth
+        if (path) path.setAttribute('d', '');
+        if (char) char.style.transition = 'transform 0.4s ease'; 
         
         if (expand) {
             wrapper.classList.add('map-expanded-overlay');
+            
+            if (!window.currentSelectedProduct) {
+                document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table, #cashierZone, #coffeeCorner, #sawmillZone, #exitDoor').forEach(x => {
+                    x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
+                });
+                document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
+                document.querySelectorAll('.highlighted-sec').forEach(span => {
+                    span.classList.remove('highlighted-sec');
+                    if (span.dataset.origText) span.innerText = span.dataset.origText;
+                    span.removeAttribute('aria-label');
+                });
+                document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+                if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
+                window.activeMapTarget = null;
+            }
         } else {
             wrapper.classList.remove('map-expanded-overlay');
-            closeSelection(); // Reset the map and character to the entrance
+            closeSelection(); 
         }
         
         setTimeout(() => {
             if (expand) {
                 if (window.activeMapTarget) {
-                    moveChar(window.activeMapTarget.pad, true, true, window.activeMapTarget.sec, window.activeMapTarget.side, window.activeMapTarget.subTarget);
+                    moveChar(window.activeMapTarget.pad, true, window.activeMapTarget.sec, window.activeMapTarget.side, window.activeMapTarget.subTarget);
                 } else {
-                    moveChar('entrance', false, false, null, null, null);
+                    moveChar('entrance', false, null, null, null);
                 }
             }
         }, 450); 
@@ -2923,26 +3232,23 @@
         const clearBtn = document.getElementById('clearBtn');
         if(clearBtn) clearBtn.style.display = (trimVal || currentCategory !== 'all') ? 'flex' : 'none';
         
-        // --- 1. Autocomplete / Suggestion Logic ---
+        let foundSuggestion = false;
         if (val && val === val.trimStart()) {
             const tokens = val.toLowerCase().split(/\s+/);
             const lastToken = tokens[tokens.length - 1];
             const normLast = lastToken.replace(/[^a-z0-9]/g, '');
-            
-            if (normLast.length >= 1) { 
+            if (normLast.length >= 1) {
                 const match = window.dictArray.find(w => w.startsWith(normLast));
                 if (match) {
                     const suggestionSuffix = match.substring(normLast.length);
                     const safeVal = val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     ghost.innerHTML = `<span style="visibility:hidden;">${safeVal}</span>${suggestionSuffix}`;
                     ghost.dataset.suggestion = val + suggestionSuffix;
-                } else {
-                    ghost.innerHTML = ""; ghost.dataset.suggestion = "";
+                    foundSuggestion = true;
                 }
-            } else {
-                ghost.innerHTML = ""; ghost.dataset.suggestion = "";
             }
-        } else {
+        }
+        if (!foundSuggestion) {
             ghost.innerHTML = ""; ghost.dataset.suggestion = "";
         }
 
@@ -2965,7 +3271,6 @@
             return tokens.every(tok => item._searchStr.includes(tok));
         });
         
-        // --- 2. Typo Tolerance / Fuzzy Search Fallback ---
         if (results.length === 0 && tokens.length > 0) {
             results = data.filter(item => {
                 if (catFilter !== 'all' && getHg(item) !== catFilter) return false;
@@ -2989,7 +3294,6 @@
             return;
         }
 
-        // --- 3. Advanced Highlighting Logic ---
         const rawTokens = originalVal.split(/\s+/).filter(w => w.length > 0);
         const highlightText = (text) => {
             if (!text) return '';
@@ -3012,7 +3316,6 @@
             const loc2 = getLoc(item);
             const loc2Up = loc2.toUpperCase();
             
-            // Robust parsing for special pads or normal pads
             let pad = '0AW';
             let padDisplay = '0AW';
             let subTarget = '';
@@ -3069,7 +3372,6 @@
                 sideRaw = 'Links';
             }
             
-            // Standard badge layout if it specifically has "Pad" & "Sectie", is a number, or is a known translated code like 0A, BA, PB, VM, LI
             let useStandardBadge = /pad.*sectie/i.test(loc2) || /^[0-9]+$/.test(padDisplay) || ['0A', 'BA', 'PB', 'VM', 'LI'].includes(padDisplay);
 
             let displayLocString = loc2;
@@ -3085,7 +3387,6 @@
             const catIcon = icons[hgStr] || '📦';
             const imgHtml = `<img src="img/${artNrClean}.webp" onerror="handleImgFallback(this, '${artNrClean}', '${catIcon}')" alt="Product">`;
             
-            // Toepassen van Highlighting op de weergave
             const safeArtNrHighlight = highlightText(getArtNr(item));
             const safeOmschHighlight = highlightText(getOmsch(item));
             
@@ -3105,14 +3406,12 @@
                 </div>`;
             }
             
-            // Translate tags before highlighting
             const transHg = (t.groups && t.groups[hgStr]) ? t.groups[hgStr] : hgStr;
             const transSg = (t.groups && t.groups[sgStr]) ? t.groups[sgStr] : sgStr;
             
             const hgHighlight = highlightText(transHg);
             const sgHighlight = transSg ? highlightText(transSg) : '';
             
-            // Raw properties voor code-executie in onclick - Extensively escaped to prevent SyntaxErrors
             const safeArtNr = String(artNrClean).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
             const safePad = String(pad).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
             const safeSec = String(sec).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -3134,232 +3433,6 @@
         }).join('');
     }
 
-    let currentSelectedProduct = null;
-
-    function getMapTarget(pad, side) {
-        let rackPad = pad;
-        let badgePad = pad;
-        let rackSideClass = 'active-side-both';
-        let isRightOfRack = false; 
-        
-        if (isNaN(parseInt(pad, 10)) && pad !== '1L') {
-            return { rackPad, badgePad, isRightOfRack, rackSideClass };
-        }
-
-        const padNum = parseInt(pad, 10);
-        const isLeft = side && side.toLowerCase().includes('link');
-        const isRight = side && side.toLowerCase().includes('recht');
-
-        if (isLeft) {
-            // Aisle N Left: Walk in Path N, item is on the right face of Rack N-1
-            rackPad = padNum === 1 ? '1L' : (padNum - 1).toString();
-            rackSideClass = 'active-side-right'; 
-            isRightOfRack = true; 
-        } else if (isRight) {
-            // Aisle N Right: Walk in Path N, item is on the left face of Rack N
-            rackPad = padNum.toString();
-            rackSideClass = 'active-side-left'; 
-            isRightOfRack = false; 
-        } else {
-            rackPad = padNum.toString();
-            rackSideClass = 'active-side-both';
-            isRightOfRack = false; 
-        }
-        
-        return { rackPad, badgePad, isRightOfRack, rackSideClass };
-    }
-
-    function selectItem(pad, sec, side, el, subTarget = '', artNr = null) {
-        // 1. Zorg dat het zoekveld de focus verliest, zodat het toetsenbord weggaat
-        const searchBox = document.getElementById('searchBox');
-        if (searchBox) {
-            searchBox.blur(); 
-            searchBox.value = ''; // Leeg het veld zodat "resize" hem niet weer opent!
-        }
-        
-        // 2. Verberg de lijst onmiddellijk
-        const app = document.getElementById('mainApp');
-        if (app) app.classList.remove('searching'); 
-
-        // 3. Wacht 150ms zodat de telefoon het toetsenbord kan sluiten, dán pas animeren
-        setTimeout(() => {
-            document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
-                x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
-            });
-            document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
-            document.querySelectorAll('.highlighted-sec').forEach(span => {
-                span.classList.remove('highlighted-sec');
-                if (span.dataset.origText) span.innerText = span.dataset.origText;
-            });
-            document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
-            
-            if (el) el.classList.add('selected');
-            
-            const card = document.getElementById('productDetailCard');
-            const t = i18n[curLang] || i18n['nl'];
-            if (card) {
-                if (artNr) {
-                    currentSelectedProduct = { pad, sec, side, el, subTarget, artNr };
-                    const item = data.find(d => String(getArtNr(d)) === String(artNr));
-                    if (item) {
-                        const catIcon = icons[getHg(item)] || '📦';
-                        const artNrClean = getArtNr(item).trim();
-                        const imgHtml = `<img src="img/${artNrClean}.webp" onerror="handleImgFallback(this, '${artNrClean}', '${catIcon}')" alt="Product">`;
-                        
-                        const nameStr = getOmsch(item);
-                        const htmlSafeName = nameStr.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                        const jsSafeName = nameStr.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        
-                        const locStr = getLoc(item);
-                        let displayLoc = locStr || t.unknownLoc;
-                        displayLoc = displayLoc.replace(/Pad/ig, t.padWord)
-                                               .replace(/Sectie/ig, t.sect)
-                                               .replace(/Links/ig, t.leftWord)
-                                               .replace(/Rechts/ig, t.rightWord);
-
-                        const jsSafeLoc = displayLoc.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        
-                        card.innerHTML = `
-                            <div class="pd-header">
-                                <div class="pd-icon">${imgHtml}</div>
-                                <div class="pd-info">
-                                    <h3 class="pd-title" title="${htmlSafeName}">${htmlSafeName}</h3>
-                                    <div class="pd-art">${t.art} ${artNrClean}</div>
-                                </div>
-                            </div>
-                            <div class="pd-bottom">
-                                <div class="pd-loc-banner">
-                                    📍 ${displayLoc}
-                                </div>
-                                <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${jsSafeArt}', '${jsSafeLoc}')">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                                </button>
-                            </div>
-                        `;
-                        card.onclick = (e) => {
-                            e.stopPropagation();
-                            // By calling selectItem again, we seamlessly re-apply all highlights to the correct aisle/section!
-                            selectItem(pad, sec, side, el, subTarget, artNr);
-                        };
-                        card.classList.add('show');
-                    }
-                } else if (!currentSelectedProduct) {
-                    card.classList.remove('show');
-                }
-            }
-
-            const { rackPad, badgePad, isRightOfRack, rackSideClass } = getMapTarget(pad, side);
-            
-            // 1. Highlight the aisle number badge strictly for the searched path
-            const badgeEl = document.getElementById(`p-${badgePad}`);
-            if (badgeEl) {
-                badgeEl.classList.add('active-num');
-            }
-
-            // 2. Highlight the specific physical rack face
-            const rackEl = document.getElementById(`p-${rackPad}`);
-            
-            if (rackEl) {
-                rackEl.classList.add('active', rackSideClass);
-                
-                const wrapper = document.getElementById('mapWrapper');
-                const isExpanded = wrapper && wrapper.classList.contains('map-expanded-overlay');
-                
-                if (!isExpanded) {
-                    rackEl.classList.add('show-label-popup');
-                    window.labelPopupTimer = setTimeout(() => {
-                        if(rackEl) rackEl.classList.remove('show-label-popup');
-                    }, 3000);
-                }
-                
-                rackEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
-
-                if (sec) {
-                    rackEl.querySelectorAll('.sec-container span').forEach(span => {
-                        if (!span.dataset.origText) span.dataset.origText = span.innerText;
-                        if (span.dataset.origText === sec.toString()) {
-                            span.classList.add('highlighted-sec');
-                            const sideChar = side && side.toLowerCase().includes('recht') ? ' R' : ' L';
-                            span.innerText = span.dataset.origText + sideChar;
-                        } else {
-                            span.innerText = span.dataset.origText;
-                        }
-                    });
-                }
-            } else if (pad === '0AW') {
-                const backWall = document.getElementById('p-0AW');
-                if (backWall) {
-                    backWall.classList.add('active');
-                    if (sec) {
-                        backWall.querySelectorAll('.sec-container span').forEach(span => {
-                            if (!span.dataset.origText) span.dataset.origText = span.innerText;
-                            if (span.dataset.sec === sec.toString() || span.dataset.origText === sec.toString()) {
-                                span.classList.add('highlighted-sec');
-                            } else {
-                                span.innerText = span.dataset.origText;
-                            }
-                        });
-                    }
-                }
-            } else if (pad === 'KAS' || pad === 'KOFFIE' || pad === 'SAW' || pad === 'UITGANG') {
-                let sId = pad === 'KAS' ? 'cashierZone' : (pad === 'KOFFIE' ? 'coffeeCorner' : (pad === 'SAW' ? 'sawmillZone' : 'exitDoor'));
-                const specialEl = document.getElementById(sId);
-                if(specialEl) specialEl.classList.add('active');
-
-                if (pad === 'KAS') {
-                    const lbl = document.getElementById('label-' + (subTarget || 'kassa'));
-                    if (lbl) {
-                        lbl.classList.add('active-label');
-                        const wrapper = document.getElementById('mapWrapper');
-                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
-                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
-                        }
-                    }
-                } else if (pad === 'KOFFIE') {
-                    const lbl = document.getElementById('label-coffee');
-                    if (lbl) {
-                        lbl.classList.add('active-label');
-                        const wrapper = document.getElementById('mapWrapper');
-                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
-                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
-                        }
-                    }
-                } else if (pad === 'SAW') {
-                    const lbl = document.getElementById('label-sawmill');
-                    if (lbl) {
-                        lbl.classList.add('active-label');
-                        const wrapper = document.getElementById('mapWrapper');
-                        if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
-                            setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
-                        }
-                    }
-                }
-            }
-
-            if (String(pad) === '9' && subTarget === 'paint') {
-                const lbl = document.getElementById('label-paint');
-                if (lbl) {
-                    lbl.classList.add('active-label');
-                    const wrapper = document.getElementById('mapWrapper');
-                    if (!(wrapper && wrapper.classList.contains('map-expanded-overlay'))) {
-                        setTimeout(() => { if (lbl) lbl.classList.remove('active-label'); }, 3000);
-                    }
-                }
-            }
-
-            window.activeMapTarget = { pad: pad, sec, side, subTarget };
-            
-            // 4. Forceer de map om áltijd direct te vergroten als overlay!
-            const wrapper = document.getElementById('mapWrapper');
-            if (wrapper && !wrapper.classList.contains('map-expanded-overlay')) {
-                toggleMapExpand(true);
-            } else {
-                moveChar(pad, true, true, sec, side, subTarget);
-            }
-        }, 150); // Pauze van 150ms is perfect voor mobiele schermen
-    }
-
     function closeSelection() {
         document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
             x.classList.remove('active', 'active-top', 'active-bottom', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
@@ -3367,9 +3440,11 @@
         document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
         document.querySelectorAll('.highlighted-sec').forEach(span => {
             span.classList.remove('highlighted-sec');
-            if (span.dataset.origText) span.innerText = span.dataset.origText;
+            if (span.dataset.origText) span.innerHTML = span.dataset.origText;
+            span.removeAttribute('aria-label');
         });
         document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+        restoreLabels();
         if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
         
         const card = document.getElementById('productDetailCard');
@@ -3378,15 +3453,18 @@
         }
 
         const floor = document.getElementById('mapGrid');
-        if (floor) floor.classList.remove('zoomed');
+        if (floor) {
+            floor.classList.remove('zoomed');
+            floor.classList.remove('has-selection'); 
+        }
         window.isZoomed = false;
         
-        currentSelectedProduct = null;
+        window.currentSelectedProduct = null;
         window.activeMapTarget = null;
-        moveChar('entrance', false, false, null, null, null);
+        moveChar('entrance', false, null, null, null);
     }
 
-    function moveChar(pad, active, line, sec, side, subTarget) {
+    function moveChar(pad, active, sec, side, subTarget) {
         const char = document.getElementById('mainChar'), path = document.getElementById('guideLine');
         const grid = document.getElementById('mapGrid');
         if (!char || !path || !grid) return; 
@@ -3412,9 +3490,8 @@
         if (String(pad) === '9' && subTarget === 'paint') {
             const p9 = document.getElementById('p-9');
             if (p9) {
-                // Paint desk extends 15% to the left. Center of char is 9px. Using 8px offset for perfectly flush (1px visual overlap).
                 cPos = p9.offsetLeft - (p9.offsetWidth * 0.15) - 8; 
-                targetBottom = '1%'; // Stay on the baseline
+                targetBottom = '1%';
             }
         }
         else if (pad === 'KAS') { 
@@ -3423,28 +3500,26 @@
             if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
             
             if (kasEl && targetDesk) {
-                // Flush against the left edge of the desk
                 cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 8; 
             } else {
                 cPos = kasEl ? kasEl.offsetLeft - 8 : 400; 
             }
-            targetBottom = '1%'; // Stay on the baseline
+            targetBottom = '1%';
         }
         else if (pad === 'SAW') {
             const sawEl = document.getElementById('sawmillZone');
-            cPos = sawEl ? sawEl.offsetLeft - 8 : 600; // Flush against the saw
-            targetBottom = '1%'; // Stay on the baseline
+            cPos = sawEl ? sawEl.offsetLeft - 8 : 600;
+            targetBottom = '1%';
         }
         else if (pad === 'UITGANG') {
             const extEl = document.getElementById('exitDoor');
             cPos = extEl ? extEl.offsetLeft : 700;
-            targetBottom = '0%'; // Stay on the baseline
+            targetBottom = '0%';
         }
         else if (pad === 'KOFFIE') {
             const cofEl = document.getElementById('coffeeCorner');
-            // Flush against the coffee corner
             cPos = cofEl ? cofEl.offsetLeft - 8 : 800;
-            targetBottom = '1%'; // Stay on the baseline
+            targetBottom = '1%';
         }
         else if (pad === '0AW') { 
             cPos = sPos; 
@@ -3459,7 +3534,7 @@
             const t = document.getElementById(`p-${rackPad}`);
             if(t) {
                 const isExpanded = document.getElementById('mapWrapper').classList.contains('map-expanded-overlay');
-                const gapOffset = isExpanded ? 12 : 9; // Perfectly center based on the 24px or 18px grid gap
+                const gapOffset = isExpanded ? 12 : 9; 
                 cPos = isRightOfRack ? t.offsetLeft + t.offsetWidth + gapOffset : t.offsetLeft - gapOffset;
                 targetBottom = active ? `${aisleTarget}%` : `0%`;
             }
@@ -3514,14 +3589,12 @@
         char.style.bottom = '8%';
 
         window.charMoveTimeouts.push(setTimeout(() => {
-            // Draai naar links of rechts tijdens het wandelen op het hoofdpad
             document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
             char.style.transition = `left ${t2}ms linear, transform 0.4s ease`;
             char.style.left = `${cPos}px`;
         }, t1));
 
         window.charMoveTimeouts.push(setTimeout(() => {
-            // Wandel naar boven in het gangpad
             char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
             char.style.bottom = targetBottom;
         }, t1 + t2));
@@ -3529,18 +3602,15 @@
         window.charMoveTimeouts.push(setTimeout(() => {
             char.classList.remove('running');
             
-            // Draai pas op het allerlaatste moment naar de juiste schappen!
             if (active && pad !== 'KAS' && pad !== 'KOFFIE' && pad !== 'SAW' && pad !== 'UITGANG' && pad !== '0AW' && pad !== 'entrance') {
                 if (String(pad) === '9' && subTarget === 'paint') {
-                    document.documentElement.style.setProperty('--char-dir', '1'); // Face strictly right toward the paint desk
+                    document.documentElement.style.setProperty('--char-dir', '1'); 
                 } else {
                     const { isRightOfRack } = getMapTarget(pad, side);
-                    // If standing to the right of the rack, the target face is on our left -> face left (-1)
-                    // If standing to the left of the rack, the target face is on our right -> face right (1)
                     document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
                 }
             } else if (pad === 'SAW' || pad === 'KAS' || pad === 'KOFFIE' || (String(pad) === '9' && subTarget === 'paint')) {
-                document.documentElement.style.setProperty('--char-dir', '1'); // Face right toward the desk, since we stood to the left of it
+                document.documentElement.style.setProperty('--char-dir', '1'); 
             } else {
                 document.documentElement.style.setProperty('--char-dir', '1');
             }
@@ -3566,8 +3636,6 @@
         }
     }
     
-    function closeImageModal() {}
-
     function printTicket(name, art, loc) {
         const printArea = document.getElementById('printArea');
         const t = i18n[curLang] || i18n['nl'];
