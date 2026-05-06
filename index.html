@@ -26,145 +26,170 @@
 
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; background: var(--bg); font-family: system-ui, -apple-system, sans-serif;}
 
-        /* --- HYPER-MODERN 3-COLOR INTRO PAGE --- */
+        /* --- MODERN PREMIUM INTRO PAGE --- */
         #introPage {
             position: fixed; inset: 0; width: 100%; height: 100vh; height: 100dvh;
             z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; box-sizing: border-box; color: var(--primary); text-align: center;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             overflow: hidden;
-            background: #ffffff;
+            background: #f8fafc;
         }
 
-        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.08); filter: blur(10px); }
+        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.04); filter: blur(12px); }
 
-        .glow-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; z-index: 0; pointer-events: none; }
-        .orb-1 { width: 300px; height: 300px; top: -100px; left: -100px; background: rgba(0, 92, 185, 0.3); animation: drift 10s ease-in-out infinite alternate; }
-        .orb-2 { width: 400px; height: 400px; bottom: -150px; right: -100px; background: rgba(0, 92, 185, 0.2); animation: drift 15s ease-in-out infinite alternate-reverse; }
-        @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        /* Soft Ambient Orbs */
+        .glow-orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.6; z-index: 0; pointer-events: none; transition: all 1s ease; }
+        .orb-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: rgba(56, 189, 248, 0.4); animation: orbDrift 18s ease-in-out infinite alternate; }
+        .orb-2 { width: 60vw; height: 60vw; bottom: -20%; right: -10%; background: rgba(0, 92, 185, 0.3); animation: orbDrift 22s ease-in-out infinite alternate-reverse; }
+        @keyframes orbDrift { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10vw, 10vh) scale(1.1); } }
 
-        /* Deep 3D Grid Background */
-        .intro-bg {
-            position: absolute; inset: 0;
-            background: transparent;
-            z-index: 0; overflow: hidden;
-        }
-
+        /* Sleek Dot Matrix Background */
+        .intro-bg { position: absolute; inset: 0; background: transparent; z-index: 0; overflow: hidden; }
         .intro-bg::before {
-            content: ''; position: absolute;
-            width: 200%; height: 200%; top: -50%; left: -50%;
-            background-image: 
-                linear-gradient(rgba(0, 92, 185, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 92, 185, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(800px) rotateX(60deg);
-            animation: mapScroll 15s linear infinite;
+            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background-image: radial-gradient(rgba(0, 92, 185, 0.15) 1px, transparent 1px);
+            background-size: 32px 32px;
+            animation: bgPan 90s linear infinite;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
         }
+        @keyframes bgPan { 0% { transform: translateY(0) translateX(0); } 100% { transform: translateY(-32px) translateX(-32px); } }
 
-        @keyframes mapScroll {
-            0% { transform: perspective(800px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(800px) rotateX(60deg) translateY(50px); }
-        }
-
-        /* Floating 3D Digital Billboards */
-        .floating-tags-container {
-            position: absolute; inset: -50% -50%; width: 200%; height: 200%;
-            transform: perspective(800px) rotateX(60deg);
-            transform-style: preserve-3d; pointer-events: none; z-index: 2;
-        }
-
+        /* Modern Frosted Glass Pills (Floating Tags) */
+        .floating-tags-container { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
         .float-tag {
             position: absolute; bottom: -10%; left: 50%;
-            transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg);
-            background: var(--primary); 
-            color: #ffffff;
-            padding: 8px 24px;
-            border-radius: 8px;
-            border-bottom: 4px solid var(--primary-dark);
-            font-size: 0.85rem; font-weight: 900; white-space: nowrap;
-            box-shadow: 0 20px 40px rgba(0, 92, 185, 0.2);
-            animation: tagFloat 22s linear infinite; animation-delay: var(--td);
-            opacity: 0; text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            color: var(--primary-dark);
+            padding: 8px 20px; border-radius: 40px;
+            font-size: 0.85rem; font-weight: 800; white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 30px rgba(0, 46, 92, 0.08), inset 0 2px 4px rgba(255,255,255,0.8);
+            animation: modernFloat 24s linear infinite; animation-delay: var(--td);
+            opacity: 0; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;
+        }
+        .float-tag span { color: var(--border-neutral); margin: 0 2px; }
+        .float-tag i { font-style: normal; font-size: 1.1rem; }
+
+        @keyframes modernFloat {
+            0% { bottom: -10%; opacity: 0; transform: translateX(calc(var(--tx) * 1vw)) scale(0.9); }
+            10% { opacity: 1; transform: translateX(calc(var(--tx) * 1vw)) scale(1); }
+            90% { opacity: 1; transform: translateX(calc(var(--tx) * 1vw)) scale(1); }
+            100% { bottom: 110%; opacity: 0; transform: translateX(calc(var(--tx) * 1vw)) scale(1.05); }
         }
 
-        .float-tag span { color: #ffffff; font-size: 1.2rem; line-height: 0; }
-        .float-tag i { color: #ffffff; font-style: normal; }
+        /* Animated Navigation Lines (Subtle) */
+        .intro-routes { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.4; }
+        .intro-routes path { fill: none; stroke: var(--primary); opacity: 0.2; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 4 12; animation: dashMove 20s linear infinite; }
+        .intro-routes .accent-path { stroke: #38bdf8; opacity: 0.4; stroke-width: 3; stroke-dasharray: 6 18; }
+        @keyframes dashMove { to { stroke-dashoffset: -1000; } }
 
-        @keyframes tagFloat {
-            0% { bottom: -10%; opacity: 0; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(0.8); }
-            10% { opacity: 1; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1); }
-            90% { opacity: 1; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1); }
-            100% { bottom: 120%; opacity: 0; transform: translateX(var(--tx)) translateZ(40px) rotateX(-60deg) scale(1.2); }
-        }
-
-        /* Animated Navigation Lines & GPS Shoppers */
-        .intro-routes { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.8; }
-        .intro-routes path { fill: none; stroke: var(--primary); opacity: 0.3; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-        .intro-routes .accent-path { stroke: var(--accent); opacity: 0.5; }
-
-        /* Premium Card - Glassy Design */
+        /* Refined Premium Glass Card */
         .intro-content {
-            display: flex; flex-direction: column; align-items: center; max-width: 360px; width: 100%;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.6); 
-            border-radius: 28px;
-            padding: 32px 24px;
-            box-shadow: 0 20px 50px rgba(0, 92, 185, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-            animation: scaleUpIntro 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; align-items: center; max-width: 380px; width: 100%;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            border-radius: 36px;
+            padding: 40px 32px;
+            box-shadow: 0 30px 60px rgba(0, 46, 92, 0.08), 0 4px 12px rgba(0,0,0,0.02), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            animation: cardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative; z-index: 10;
         }
+        @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        @keyframes scaleUpIntro { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        /* Language Dropdown Shared Styles */
+        .lang-dropdown { position: relative; z-index: 200; }
+        .lang-toggle { 
+            background: #ffffff; border: 1px solid var(--border-neutral); color: var(--text-main); 
+            padding: 5px 10px; border-radius: 10px; font-weight: 800; font-size: 0.75rem; cursor: pointer; 
+            display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .lang-toggle:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
+        .lang-menu {
+            position: absolute; top: calc(100% + 6px); right: 0; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 4px; gap: 2px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12); display: flex; flex-direction: column;
+            overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.95); transform-origin: top right; transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-width: 85px; z-index: 201;
+        }
+        .lang-menu.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .lang-item {
+            background: transparent; border: none; padding: 8px 12px; text-align: left; font-weight: 800;
+            font-size: 0.75rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; border-radius: 8px;
+        }
+        .lang-item:hover { background: #f1f5f9; color: var(--primary); transform: translateX(2px); }
+        .lang-item.active { background: #e0f2fe; color: var(--primary); }
 
-        /* Intro Language Toggles - Floating Pill Style */
-        .intro-lang-segment { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; display: flex; background: #ffffff; border-radius: 50px; padding: 6px; z-index: 20; border: 2px solid rgba(0, 92, 185, 0.1); box-shadow: 0 10px 30px rgba(0, 92, 185, 0.15); gap: 4px; }
-        .intro-lang-btn { background: transparent; border: none; font-size: 0.85rem; font-weight: 900; color: var(--text-muted); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px; }
-        .intro-lang-btn:hover:not(.active) { background: var(--bg); color: var(--primary); }
-        .intro-lang-btn.active { background: var(--primary); color: #ffffff; box-shadow: 0 4px 12px rgba(0, 92, 185, 0.3); transform: translateY(-1px); }
+        /* Intro specific adjustments */
+        .intro-lang-dropdown { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; z-index: 20; }
+        .intro-lang-dropdown .lang-toggle { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); font-size: 0.8rem; padding: 8px 16px; border-radius: 12px; }
+        .intro-lang-dropdown .lang-toggle:hover { background: #ffffff; transform: translateY(-1px); }
 
-        /* Video */
-        .video-container { width: 100%; max-width: 300px; aspect-ratio: 16/9; margin-bottom: 20px; background: var(--primary); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 30px rgba(0, 92, 185, 0.2); border: 2px solid var(--primary); position: relative; transform: translateZ(0); }
-        .video-container video { width: 100%; height: 100%; object-fit: cover; }
+        /* Modernized Video Container */
+        .video-container { 
+            width: 100%; max-width: 320px; aspect-ratio: 16/9; margin-bottom: 28px; 
+            background: #0f172a; border-radius: 20px; overflow: hidden; 
+            box-shadow: 0 16px 32px rgba(0, 46, 92, 0.15), inset 0 0 0 1px rgba(255,255,255,0.2); 
+            border: 4px solid #ffffff; position: relative; transform: translateZ(0); 
+        }
+        .video-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
         
-        /* Typography */
-        .intro-h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; line-height: 1; letter-spacing: -1px; color: var(--primary); text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
-        .intro-h1 span { color: #ffffff; background: var(--primary); display: inline-block; padding: 2px 8px; border-radius: 8px; margin-left: 2px; line-height: 1; text-shadow: none; border: 1px solid rgba(255,255,255,0.3); }
-        .intro-slogan { font-size: 0.75rem; font-weight: 900; color: #ffffff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; background: var(--primary); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); }
-        .intro-nav-title { font-size: 1.1rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .intro-p { font-size: 0.9rem; font-weight: 600; margin: 0 0 24px 0; color: var(--primary); line-height: 1.4; text-align: center; opacity: 0.8; }
+        /* Premium Typography */
+        .intro-h1 { 
+            font-size: 2.6rem; font-weight: 900; margin: 0 0 4px 0; line-height: 1.1; letter-spacing: -1.5px; 
+            background: linear-gradient(135deg, var(--primary-dark), #0ea5e9);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+        .intro-h1 span { 
+            background: linear-gradient(135deg, var(--primary), #38bdf8); color: white; -webkit-text-fill-color: white;
+            display: inline-block; padding: 2px 10px; border-radius: 10px; margin-left: 4px; font-size: 0.8em; line-height: 1.2; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2);
+        }
+        
+        .intro-nav-title { 
+            font-size: 0.85rem; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-bottom: 8px; background: rgba(56, 189, 248, 0.15); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+        .intro-slogan { font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 24px; }
+        .intro-p { font-size: 0.95rem; font-weight: 500; margin: 0 0 32px 0; color: var(--text-muted); line-height: 1.5; text-align: center; }
 
-        /* CTA Button */
-        .intro-btn { background: var(--primary); color: #ffffff; border: none; padding: 14px 24px; border-radius: 14px; font-weight: 900; font-size: 1.05rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(0, 92, 185, 0.3); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .intro-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
-        .intro-btn:hover svg { transform: translateX(5px); }
-        .intro-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 92, 185, 0.4); background: var(--primary-dark); color: #ffffff; }
-        .intro-btn:active { transform: translateY(1px); box-shadow: 0 5px 10px rgba(0, 92, 185, 0.3); }
+        /* Sleek Button */
+        .intro-btn { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: #ffffff; border: none; padding: 18px 32px; border-radius: 50px; 
+            font-weight: 800; font-size: 1.05rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; 
+            box-shadow: 0 12px 24px rgba(0, 92, 185, 0.3), inset 0 2px 4px rgba(255,255,255,0.2); 
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; 
+        }
+        .intro-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
+        .intro-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 32px rgba(0, 92, 185, 0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        .intro-btn:hover svg { transform: translateX(4px); }
+        .intro-btn:active { transform: translateY(1px); box-shadow: 0 4px 12px rgba(0, 92, 185, 0.2); }
 
-        /* Commercial Ticker */
-        .commercial-ticker { position: absolute; bottom: 0; left: 0; width: 100%; height: 32px; background: var(--primary-dark); color: #ffffff; display: flex; align-items: center; overflow: hidden; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; z-index: 20; border-top: 1px solid rgba(255,255,255,0.2); }
-        .ticker-track { display: flex; gap: 50px; white-space: nowrap; animation: tickerScroll 30s linear infinite; text-transform: uppercase; }
-        .ticker-track span i { color: #ffffff; margin-right: 8px; font-style: normal; }
+        /* Glassy Commercial Ticker */
+        .commercial-ticker { 
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 36px; 
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            color: var(--primary-dark); display: flex; align-items: center; overflow: hidden; 
+            font-weight: 800; font-size: 0.75rem; letter-spacing: 2px; z-index: 20; border-top: 1px solid rgba(255,255,255,0.8); 
+        }
+        .ticker-track { display: flex; gap: 60px; white-space: nowrap; animation: tickerScroll 40s linear infinite; text-transform: uppercase; }
+        .ticker-track span i { color: #38bdf8; margin-right: 12px; font-style: normal; font-size: 1.2em; vertical-align: middle; }
         @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* --- MAIN APP INTERFACE --- */
         #mainAppWrapper { position: relative; width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; padding: max(8px, env(safe-area-inset-top)) 8px 0; }
         .app-container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; flex: 1 1 auto; height: 100%; min-height: 0; overflow: hidden; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; position: relative; z-index: 1; gap: 8px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; position: relative; z-index: 100; gap: 8px; }
         .logo { display: flex; align-items: flex-end; gap: 6px; }
         .logo h1 { display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; color: var(--primary); margin: 0; text-transform: uppercase; white-space: nowrap; line-height: 0.85; padding-bottom: 2px; letter-spacing: -0.5px; }
         .logo h1 span { background: var(--primary); color: #ffffff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 0.7rem; margin-left: 4px; letter-spacing: 0; }
         .logo svg { width: 26px; height: 26px; }
 
         .controls { display: flex; gap: 6px; align-items: center; }
-        
-        /* Main App Language Toggles - Floating Pill Style */
-        .lang-segment { display: flex; background: #ffffff; border-radius: 50px; padding: 4px; gap: 4px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 2px solid var(--border-neutral); }
-        .lang-btn { background: transparent; border: none; font-size: 0.75rem; font-weight: 900; color: var(--text-muted); padding: 6px 12px; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; letter-spacing: 0.5px; }
-        .lang-btn:hover:not(.active) { background: var(--bg); color: var(--primary); }
-        .lang-btn.active { background: var(--primary); color: #ffffff; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2); transform: translateY(-1px); }
         
         .btn-reset { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 6px 10px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
 
@@ -775,10 +800,14 @@
         body.dark-mode .clear-btn { background: #334155; color: white; } body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
         body.dark-mode .result-meta-badge { background: var(--accent); color: #ffffff; }
         
-        body.dark-mode .lang-segment { background: #1e293b; border-color: #334155; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-        body.dark-mode .lang-btn { color: #94a3b8; }
-        body.dark-mode .lang-btn:hover:not(.active) { background: #0f172a; color: #f8fafc; }
-        body.dark-mode .lang-btn.active { background: var(--accent); color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        /* Dark Mode Dropdown */
+        body.dark-mode .lang-toggle { background: rgba(30, 41, 59, 0.8); border-color: rgba(255,255,255,0.1); color: #f8fafc; }
+        body.dark-mode .lang-menu { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+        body.dark-mode .lang-item { color: #94a3b8; }
+        body.dark-mode .lang-item:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
+        body.dark-mode .lang-item.active { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        body.dark-mode .intro-lang-dropdown .lang-toggle { background: rgba(15, 23, 42, 0.6); border-color: rgba(255,255,255,0.1); color: #f8fafc; }
+        body.dark-mode .intro-lang-dropdown .lang-toggle:hover { background: rgba(30, 41, 59, 0.8); }
 
         body.dark-mode .map-expanded-overlay { background: rgba(15, 23, 42, 0.75); }
         body.dark-mode .map-expanded-overlay::before { background: rgba(2, 132, 199, 0.4); }
@@ -840,24 +869,25 @@
         body.dark-mode .exit-label { background: #15803d !important; }
 
         /* Intro Page Dark Mode Overrides */
-        body.dark-mode #introPage { background: #0f172a; color: #ffffff; }
-        body.dark-mode .intro-bg { background: #0f172a; }
-        body.dark-mode .intro-bg::before { background-image: linear-gradient(rgba(0, 92, 185, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 92, 185, 0.3) 1px, transparent 1px); }
-        body.dark-mode .orb-1 { background: rgba(0, 92, 185, 0.2); } body.dark-mode .orb-2 { background: rgba(0, 92, 185, 0.15); }
-        body.dark-mode .intro-content { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
-        body.dark-mode .float-tag { background: #0f172a; color: #ffffff; border: 2px solid var(--primary); border-bottom: 4px solid var(--accent); }
-        body.dark-mode .intro-h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        body.dark-mode .intro-h1 span { background: var(--accent); color: #0f172a; }
-        body.dark-mode .intro-slogan { background: var(--accent); color: #0f172a; }
-        body.dark-mode .intro-nav-title { color: #ffffff; }
-        body.dark-mode .intro-p { color: #ffffff; }
+        body.dark-mode #introPage { background: #020617; color: #ffffff; }
+        body.dark-mode .intro-bg::before { background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px); }
+        body.dark-mode .orb-1 { background: rgba(2, 132, 199, 0.3); } body.dark-mode .orb-2 { background: rgba(56, 189, 248, 0.15); }
         
-        body.dark-mode .intro-lang-segment { background: rgba(15, 23, 42, 0.85); border-color: rgba(255, 255, 255, 0.1); }
-        body.dark-mode .intro-lang-btn { color: #94a3b8; }
-        body.dark-mode .lang-btn.active { background: var(--primary); color: #ffffff; }
-        body.dark-mode .intro-lang-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
+        body.dark-mode .intro-content { 
+            background: rgba(15, 23, 42, 0.5); border-color: rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255, 255, 255, 0.05); 
+        }
+        body.dark-mode .video-container { border-color: #1e293b; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
-        body.dark-mode .commercial-ticker { background: var(--primary); color: var(--accent); }
+        body.dark-mode .float-tag { background: rgba(30, 41, 59, 0.6); color: #e2e8f0; border-color: rgba(255,255,255,0.05); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+        body.dark-mode .float-tag span { color: #475569; }
+        
+        body.dark-mode .intro-h1 { background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; }
+        body.dark-mode .intro-slogan { color: #f8fafc; }
+        body.dark-mode .intro-nav-title { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
+        body.dark-mode .intro-p { color: #94a3b8; }
+        
+        body.dark-mode .commercial-ticker { background: rgba(15, 23, 42, 0.5); color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.05); }
 
         /* --- FOOTER STYLES --- */
         .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); transition: all 0.3s ease; }
@@ -873,31 +903,33 @@
         <div class="glow-orb orb-2"></div>
         <div class="intro-bg">
             <div class="floating-tags-container">
-                <div class="float-tag" style="--tx: -35%; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint</div>
-                <div class="float-tag" style="--tx: 25%; --td: -7s;"><i>🛠️</i> Gereedschap <span>•</span> Tools</div>
-                <div class="float-tag" style="--tx: -15%; --td: -14s;"><i>🪵</i> Hout <span>•</span> Timber</div>
+                <div class="float-tag" style="--tx: -30; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint</div>
+                <div class="float-tag" style="--tx: 20; --td: -8s;"><i>🛠️</i> Gereedschap <span>•</span> Tools</div>
+                <div class="float-tag" style="--tx: -10; --td: -16s;"><i>🪵</i> Hout <span>•</span> Timber</div>
             </div>
             <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-                <path d="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" />
-                <path class="accent-path" d="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" />
-                <path d="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" />
-                <g><g transform="rotate(90)"><rect x="-10" y="-6" width="20" height="12" rx="6" fill="#005cb9" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="16s" repeatCount="indefinite" path="M -100,100 L 200,100 L 200,400 L 500,400 L 500,200 L 1100,200" rotate="auto" /></g>
-                <g><g transform="rotate(90)"><rect x="10" y="-8" width="16" height="16" rx="2" fill="none" stroke="#005cb9" stroke-width="2" /><line x1="10" y1="-4" x2="26" y2="-4" stroke="#005cb9" stroke-width="1" /><line x1="10" y1="4" x2="26" y2="4" stroke="#005cb9" stroke-width="1" /><rect x="-10" y="-7" width="20" height="14" rx="6" fill="#005cb9" /><circle cx="0" cy="0" r="6" fill="#ffffff" /></g><animateMotion dur="22s" repeatCount="indefinite" path="M 1100,700 L 800,700 L 800,500 L 300,500 L 300,800" rotate="auto" /></g>
-                <g><g transform="rotate(90)"><rect x="-9" y="-5" width="18" height="10" rx="5" fill="#005cb9" /><circle cx="0" cy="0" r="5" fill="#ffffff" /></g><animateMotion dur="14s" repeatCount="indefinite" path="M 100,900 L 100,600 L 400,600 L 400,100 L 800,100" rotate="auto" /></g>
+                <path d="M -100,200 L 200,200 L 200,500 L 600,500 L 600,300 L 1100,300" />
+                <path class="accent-path" d="M 1100,800 L 700,800 L 700,600 L 300,600 L 300,900" />
             </svg>
         </div>
-        <div class="intro-lang-segment">
-            <button class="intro-lang-btn active" onclick="setLang('nl')" id="intro-btn-nl">🇳🇱 NL</button>
-            <button class="intro-lang-btn" onclick="setLang('en')" id="intro-btn-en">🇬🇧 EN</button>
-            <button class="intro-lang-btn" onclick="setLang('uk')" id="intro-btn-uk">🇺🇦 UA</button>
+        
+        <div class="lang-dropdown intro-lang-dropdown" id="introLangDropdown">
+            <button class="lang-toggle" onclick="toggleIntroLangMenu(event)" id="introLangToggle">🇳🇱 NL ▼</button>
+            <div class="lang-menu" id="introLangMenu">
+                <button class="lang-item active" onclick="setLang('nl')" id="intro-item-nl">🇳🇱 NL</button>
+                <button class="lang-item" onclick="setLang('en')" id="intro-item-en">🇬🇧 EN</button>
+                <button class="lang-item" onclick="setLang('uk')" id="intro-item-uk">🇺🇦 UA</button>
+                <button class="lang-item" onclick="setLang('pl')" id="intro-item-pl">🇵🇱 PL</button>
+            </div>
         </div>
+
         <div class="intro-content">
             <div class="video-container">
                 <video id="introVideo" autoplay loop playsinline controls muted src="dutch1.mp4"></video>
             </div>
             <h1 class="intro-h1" id="introTitle">BOUWMAAT AMSTEL <span>XL</span></h1>
-            <div class="intro-slogan" id="introSlogan">Alles voor de vakman</div>
             <div class="intro-nav-title" id="introNavTitle">Smart Navigator</div>
+            <div class="intro-slogan" id="introSlogan">Alles voor de vakman</div>
             <p class="intro-p" id="introText">Vind direct jouw producten in de vestiging.</p>
             <button class="intro-btn" onclick="closeIntro()" id="introBtn">
                 <span id="introBtnText">START ZOEKEN</span>
@@ -929,11 +961,17 @@
                 </div>
                 <div class="controls">
                     <button id="btnDimToggle" onclick="toggleDimMode()" class="btn-reset" style="padding: 4px 8px; font-size: 1.1rem; border-radius: 50%;" title="Toggle Dim Mode">🌙</button>
-                    <div class="lang-segment">
-                        <button class="lang-btn active" onclick="setLang('nl')" id="btn-nl">🇳🇱 NL</button>
-                        <button class="lang-btn" onclick="setLang('en')" id="btn-en">🇬🇧 EN</button>
-                        <button class="lang-btn" onclick="setLang('uk')" id="btn-uk">🇺🇦 UA</button>
+                    
+                    <div class="lang-dropdown" id="appLangDropdown">
+                        <button class="lang-toggle" onclick="toggleAppLangMenu(event)" id="appLangToggle">🇳🇱 NL ▼</button>
+                        <div class="lang-menu" id="appLangMenu">
+                            <button class="lang-item active" onclick="setLang('nl')" id="app-item-nl">🇳🇱 NL</button>
+                            <button class="lang-item" onclick="setLang('en')" id="app-item-en">🇬🇧 EN</button>
+                            <button class="lang-item" onclick="setLang('uk')" id="app-item-uk">🇺🇦 UA</button>
+                            <button class="lang-item" onclick="setLang('pl')" id="app-item-pl">🇵🇱 PL</button>
+                        </div>
                     </div>
+
                     <button id="btnReset" onclick="resetApp()" class="btn-reset" style="display: none;">RESET</button>
                 </div>
             </div>
@@ -1042,24 +1080,25 @@
             backWallShort: "ACHTERWAND", backWallLong: "Achterwand", didYouMean: "Bedoelde je:",
             location: "LOCATIE:", art: "Art.", loc: "LOC", unknownLoc: "Onbekende locatie",
             mapLabels: {
-                "TUINHOUT": "TUINHOUT", 
-                "VUREN RUW / GESCHAAFD": "VUREN RUW / GESCHAAFD", 
-                "HOUT": "HOUT", 
-                "PLAATMATERIAAL HOUT": "PLAATMATERIAAL HOUT", 
-                "VENTILATIE": "VENTILATIE", 
-                "STEIGERS / BEKISTING": "STEIGERS / BEKISTING", 
-                "PLEISTERS / STUC": "PLEISTERS / STUC", 
-                "CEMENT / MORTELS": "CEMENT / MORTELS", 
-                "STENEN / BLOKKEN": "STENEN / BLOKKEN", 
-                "TEGELS / VOEGMIDDELEN": "TEGELS / VOEGMIDDELEN", 
-                "DAKBEDEKKING": "DAKBEDEKKING", 
-                "VERWARMING / ISOLATIE": "VERWARMING / ISOLATIE", 
-                "KEUKENATTRIBUTEN / ISOLATIE": "KEUKENATTRIBUTEN / ISOLATIE"
+                "Hout": "Hout", 
+                "Tuinhout": "Tuinhout", 
+                "Vuren ruw / geschaafd": "Vuren ruw / geschaafd", 
+                "Plaatmateriaal hout": "Plaatmateriaal hout", 
+                "Ventilatie": "Ventilatie", 
+                "Steigers / Bekisting": "Steigers / Bekisting", 
+                "Pleisters / Stuc": "Pleisters / Stuc", 
+                "Cement / Mortels": "Cement / Mortels", 
+                "Stenen / Blokken": "Stenen / Blokken", 
+                "Tegels / Voegmiddelen": "Tegels / Voegmiddelen", 
+                "Dakbedekking": "Dakbedekking", 
+                "Verwarming / Isolatie": "Verwarming / Isolatie", 
+                "Keukenattributen / Isolatie": "Keukenattributen / Isolatie",
+                "Gipsplaten": "Gipsplaten"
             },
             groups: { 
                 "Sanitair": "Sanitair", "Gereedschap": "Gereedschap", "IJzerwaren": "IJzerwaren", "Hout": "Hout", "Bouwstoffen": "Bouwstoffen", "Bouwmaterialen": "Bouwmaterialen", "Verf": "Verf", "Elektra": "Elektra", "Verwarming": "Verwarming", "Verwarming en klimaat": "Verwarming en klimaat", "Algemeen": "Algemeen", "Eigen gebruik": "Eigen gebruik", "Lokaal": "Lokaal", "Verlichting": "Verlichting", "Hang- en sluitwerk": "Hang- en sluitwerk", "Emballage": "Emballage", "Persoonlijke beschermings": "Persoonlijke beschermings", "Schoonmaak bedrijfswagen": "Schoonmaak bedrijfswagen", "Schoonmaak, bedrijfswagen": "Schoonmaak, bedrijfswagen", "Keukens": "Keukens", "Lijm, kit en pur": "Lijm, kit en pur", "Bevestigingsmateriaal": "Bevestigingsmateriaal", "Toilet": "Toilet", "Handgereedschap": "Handgereedschap", "Bevestiging": "Bevestiging", "Balkhout": "Balkhout", "Afdekken": "Afdekken", "Elektrisch gereedschap": "Elektrisch gereedschap", "Sanitair installatie gereedschap": "Sanitair installatie gereedschap", "Toebehoren gereedschap": "Toebehoren gereedschap", "Zware verankering": "Zware verankering", "Schroeven": "Schroeven", "Pluggen": "Pluggen", "Schildersgereedschap": "Schildersgereedschap", "Droge afbouw": "Droge afbouw", "Cement en mortels": "Cement en mortels", "Stucen": "Stucen", "Plaatmateriaal": "Plaatmateriaal", "Afwerklijsten en profielen": "Afwerklijsten en profielen", "Kranen": "Kranen", "Sanitair installatiemateriaal": "Sanitair installatiemateriaal", "CV-installaties": "CV-installaties", "Klimaatbeheersing": "Klimaatbeheersing", "Lijmen": "Lijmen", "Kitten": "Kitten", "Purschuimen": "Purschuimen", "Elektrisch installatiemateriaal": "Elektrisch installatiemateriaal", "Keukenkasten": "Keukenkasten", "Drinken, eten en huishoudelijk": "Drinken, eten en huishoudelijk", "Bedrijfswagen": "Bedrijfswagen", "Schoonmaak": "Schoonmaak", "EHBO": "EHBO", "Werkschoenen": "Werkschoenen", "Sloten en cilinders": "Sloten en cilinders", "Werkverlichting": "Werkverlichting", "Eigen gebruik diversen": "Eigen gebruik diversen",
-                "Deuren / Kozijnen": "Deuren / Kozijnen", "Kit, pur / lijm": "Kit, pur / lijm", "Kleding / schoenen": "Kleding / schoenen", "Meetgereedschap": "Meetgereedschap", "Constructie buiten": "Constructie buiten", "Schakelmateriaal": "Schakelmateriaal", "Accessoires en verbruiksartikelen": "Accessoires en verbruiksartikelen", "Deuren": "Deuren", "Werkkleding": "Werkkleding", "Timmerhout": "Timmerhout", "Gevelbekleding": "Gevelbekleding", "Isolatie": "Isolatie", "Tegelverwerking": "Tegelverwerking",
-                "Hout / gipsplaten": "Hout / gipsplaten", "Plinten": "Plinten", "Verf benodigdheden / attributen": "Verf benodigdheden / attributen", "Kleding": "Kleding", "Elektra / PVC": "Elektra / PVC"
+                "Deuren / Kozijnen": "Deuren / Kozijnen", "Kit, pur / lijm": "Kit, pur / lijm", "Kleding / Schoenen": "Kleding / Schoenen", "Kleding / schoenen": "Kleding / schoenen", "Meetgereedschap": "Meetgereedschap", "Constructie buiten": "Constructie buiten", "Schakelmateriaal": "Schakelmateriaal", "Accessoires en verbruiksartikelen": "Accessoires en verbruiksartikelen", "Deuren": "Deuren", "Werkkleding": "Werkkleding", "Timmerhout": "Timmerhout", "Gevelbekleding": "Gevelbekleding", "Isolatie": "Isolatie", "Tegelverwerking": "Tegelverwerking",
+                "Gipsplaten": "Gipsplaten", "Plinten": "Plinten", "Verf benodigdheden": "Verf benodigdheden", "Kleding": "Kleding", "Elektra / PVC": "Elektra / PVC"
             }
         },
         en: { 
@@ -1079,24 +1118,25 @@
             backWallShort: "BACK WALL", backWallLong: "Back wall", didYouMean: "Did you mean:",
             location: "LOCATION:", art: "Art.", loc: "LOC", unknownLoc: "Unknown location",
             mapLabels: {
-                "TUINHOUT": "GARDEN TIMBER", 
-                "VUREN RUW / GESCHAAFD": "ROUGH / PLANED PINE", 
-                "HOUT": "TIMBER", 
-                "PLAATMATERIAAL HOUT": "SHEET MATERIAL TIMBER", 
-                "VENTILATIE": "VENTILATION", 
-                "STEIGERS / BEKISTING": "SCAFFOLDING / FORMWORK", 
-                "PLEISTERS / STUC": "PLASTERS / STUCCO", 
-                "CEMENT / MORTELS": "CEMENT / MORTARS", 
-                "STENEN / BLOKKEN": "BRICKS / BLOCKS", 
-                "TEGELS / VOEGMIDDELEN": "TILES / GROUT", 
-                "DAKBEDEKKING": "ROOFING", 
-                "VERWARMING / ISOLATIE": "HEATING / INSULATION", 
-                "KEUKENATTRIBUTEN / ISOLATIE": "KITCHEN ACCESSORIES / INSULATION"
+                "Hout": "Timber", 
+                "Tuinhout": "Garden Timber", 
+                "Vuren ruw / geschaafd": "Rough / Planed Pine", 
+                "Plaatmateriaal hout": "Sheet Material Timber", 
+                "Ventilatie": "Ventilation", 
+                "Steigers / Bekisting": "Scaffolding / Formwork", 
+                "Pleisters / Stuc": "Plasters / Stucco", 
+                "Cement / Mortels": "Cement / Mortars", 
+                "Stenen / Blokken": "Bricks / Blocks", 
+                "Tegels / Voegmiddelen": "Tiles / Grout", 
+                "Dakbedekking": "Roofing", 
+                "Verwarming / Isolatie": "Heating / Insulation", 
+                "Keukenattributen / Isolatie": "Kitchen Accessories / Insulation",
+                "Gipsplaten": "Drywall"
             },
             groups: { 
                 "Sanitair": "Plumbing", "Gereedschap": "Tools", "IJzerwaren": "Hardware", "Hout": "Timber", "Bouwstoffen": "Building Materials", "Bouwmaterialen": "Building Materials", "Verf": "Paint", "Elektra": "Electrical", "Verwarming": "Heating", "Verwarming en klimaat": "Heating & Climate", "Algemeen": "General", "Eigen gebruik": "Internal Use", "Lokaal": "Local", "Verlichting": "Lighting", "Hang- en sluitwerk": "Hinges & Locks", "Emballage": "Packaging", "Persoonlijke beschermings": "Personal Protection", "Schoonmaak bedrijfswagen": "Van Cleaning", "Schoonmaak, bedrijfswagen": "Van Cleaning", "Keukens": "Kitchens", "Lijm, kit en pur": "Glue, Sealant & PU Foam", "Bevestigingsmateriaal": "Fasteners", "Toilet": "Toilet", "Handgereedschap": "Hand Tools", "Bevestiging": "Fasteners", "Balkhout": "Beams", "Afdekken": "Covering", "Elektrisch gereedschap": "Power Tools", "Sanitair installatie gereedschap": "Plumbing Tools", "Toebehoren gereedschap": "Tool Accessories", "Zware verankering": "Heavy Anchors", "Schroeven": "Screws", "Pluggen": "Plugs", "Schildersgereedschap": "Painting Tools", "Droge afbouw": "Drywall & Finish", "Cement en mortels": "Cement & Mortars", "Stucen": "Plastering", "Plaatmateriaal": "Sheet Material", "Afwerklijsten en profielen": "Trims & Profiles", "Kranen": "Taps & Faucets", "Sanitair installatiemateriaal": "Plumbing Materials", "CV-installaties": "Central Heating", "Klimaatbeheersing": "Climate Control", "Lijmen": "Adhesives", "Kitten": "Sealants", "Purschuimen": "PU Foams", "Elektrisch installatiemateriaal": "Electrical Installations", "Keukenkasten": "Kitchen Cabinets", "Drinken, eten en huishoudelijk": "Food & Household", "Bedrijfswagen": "Company Vehicle", "Schoonmaak": "Cleaning", "EHBO": "First Aid", "Werkschoenen": "Work Shoes", "Sloten en cilinders": "Locks & Cylinders", "Werkverlichting": "Work Lighting", "Eigen gebruik diversen": "Internal Use Misc",
-                "Deuren / Kozijnen": "Doors / Frames", "Kit, pur / lijm": "Sealant, PU Foam / Glue", "Kleding / schoenen": "Clothing / Shoes", "Meetgereedschap": "Measuring Tools", "Constructie buiten": "Outdoor Construction", "Schakelmateriaal": "Switchgear", "Accessoires en verbruiksartikelen": "Accessories & Consumables", "Deuren": "Doors", "Werkkleding": "Workwear", "Timmerhout": "Carpentry Wood", "Gevelbekleding": "Cladding", "Isolatie": "Insulation", "Tegelverwerking": "Tiling Tools",
-                "Hout / gipsplaten": "Timber / Drywall", "Plinten": "Baseboards", "Verf benodigdheden / attributen": "Paint Supplies / Accessories", "Kleding": "Clothing", "Elektra / PVC": "Electrical / PVC"
+                "Deuren / Kozijnen": "Doors / Frames", "Kit, pur / lijm": "Sealant, PU Foam / Glue", "Kleding / Schoenen": "Clothing / Shoes", "Kleding / schoenen": "Clothing / Shoes", "Meetgereedschap": "Measuring Tools", "Constructie buiten": "Outdoor Construction", "Schakelmateriaal": "Switchgear", "Accessoires en verbruiksartikelen": "Accessories & Consumables", "Deuren": "Doors", "Werkkleding": "Workwear", "Timmerhout": "Carpentry Wood", "Gevelbekleding": "Cladding", "Isolatie": "Insulation", "Tegelverwerking": "Tiling Tools",
+                "Gipsplaten": "Drywall", "Plinten": "Baseboards", "Verf benodigdheden": "Paint Supplies", "Kleding": "Clothing", "Elektra / PVC": "Electrical / PVC"
             }
         },
         uk: { 
@@ -1116,33 +1156,72 @@
             backWallShort: "ЗАДНЯ СТІНА", backWallLong: "Задня стіна", didYouMean: "Можливо, ви мали на увазі:",
             location: "РОЗТАШУВАННЯ:", art: "Арт.", loc: "МІСЦЕ", unknownLoc: "Невідоме розташування",
             mapLabels: {
-                "TUINHOUT": "САДОВА ДЕРЕВИНА", 
-                "VUREN RUW / GESCHAAFD": "ГРУБА / СТРУГАНА СОСНА", 
-                "HOUT": "ДЕРЕВИНА", 
-                "PLAATMATERIAAL HOUT": "ЛИСТОВА ДЕРЕВИНА", 
-                "VENTILATIE": "ВЕНТИЛЯЦІЯ", 
-                "STEIGERS / BEKISTING": "РИШТУВАННЯ / ОПАЛУБКА", 
-                "PLEISTERS / STUC": "ШТУКАТУРКА", 
-                "CEMENT / MORTELS": "ЦЕМЕНТ / РОЗЧИНИ", 
-                "STENEN / BLOKKEN": "ЦЕГЛА / БЛОКИ", 
-                "TEGELS / VOEGMIDDELEN": "ПЛИТКА / ЗАТИРКА", 
-                "DAKBEDEKKING": "ПОКРІВЛЯ", 
-                "VERWARMING / ISOLATIE": "ОПАЛЕННЯ / ІЗОЛЯЦІЯ", 
-                "KEUKENATTRIBUTEN / ISOLATIE": "КУХОННІ АКСЕСУАРИ / ІЗОЛЯЦІЯ"
+                "Hout": "Деревина", 
+                "Tuinhout": "Садова деревина", 
+                "Vuren ruw / geschaafd": "Груба / стругана сосна", 
+                "Plaatmateriaal hout": "Листова деревина", 
+                "Ventilatie": "Вентиляція", 
+                "Steigers / Bekisting": "Риштування / Опалубка", 
+                "Pleisters / Stuc": "Штукатурка", 
+                "Cement / Mortels": "Цемент / Розчини", 
+                "Stenen / Blokken": "Цегла / Блоки", 
+                "Tegels / Voegmiddelen": "Плитка / Затирка", 
+                "Dakbedekking": "Покрівля", 
+                "Verwarming / Isolatie": "Опалення / Ізоляція", 
+                "Keukenattributen / Isolatie": "Кухонні аксесуари / Ізоляція",
+                "Gipsplaten": "Гіпсокартон"
             },
             groups: { 
-                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибиранння", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Для власного використання",
-                "Deuren / Kozijnen": "Двері / рами", "Kit, pur / lijm": "Герметик, піна / клей", "Kleding / schoenen": "Одяг / взуття", "Meetgereedschap": "Вимірювальний інструмент", "Constructie buiten": "Зовнішні конструкції", "Schakelmateriaal": "Електрофурнітура", "Accessoires en verbruiksartikelen": "Аксесуари та витратні матеріали", "Deuren": "Двері", "Werkkleding": "Робочий одяг", "Timmerhout": "Столярна деревина", "Gevelbekleding": "Облицювання фасадів", "Isolatie": "Ізоляція", "Tegelverwerking": "Укладання плитки",
-                "Hout / gipsplaten": "Деревина / гіпсокартон", "Plinten": "Плінтуси", "Verf benodigdheden / attributen": "Приладдя для фарбування", "Kleding": "Одяг", "Elektra / PVC": "Електрика / ПВХ"
+                "Sanitair": "Сантехніка", "Gereedschap": "Інструменти", "IJzerwaren": "Кріплення", "Hout": "Деревина", "Bouwstoffen": "Будівельні суміші", "Bouwmaterialen": "Будівельні матеріали", "Verf": "Фарба", "Elektra": "Електрика", "Verwarming": "Опалення", "Verwarming en klimaat": "Опалення та клімат", "Algemeen": "Загальне", "Eigen використання": "Власне використання", "Eigen gebruik": "Власне використання", "Lokaal": "Місцеве", "Verlichting": "Освітлення", "Hang- en sluitwerk": "Замки та фурнітура", "Emballage": "Упаковка", "Persoonlijke beschermings": "Засоби захисту", "Schoonmaak bedrijfswagen": "Миття авто", "Schoonmaak, bedrijfswagen": "Миття авто", "Keukens": "Кухні", "Lijm, kit en pur": "Клей, герметик та піна", "Bevestigingsmateriaal": "Кріплення", "Toilet": "Туалет", "Handgereedschap": "Ручний інструмент", "Bevestiging": "Кріплення", "Balkhout": "Брус", "Afdekken": "Покриття", "Elektrisch gereedschap": "Електроінструмент", "Sanitair installatie gereedschap": "Сантехнічний інструмент", "Toebehoren gereedschap": "Аксесуари для інструментів", "Zware verankering": "Важкі анкери", "Schroeven": "Гвинти", "Pluggen": "Дюбелі", "Schildersgereedschap": "Інструмент для фарбування", "Droge afbouw": "Гіпсокартонні системи", "Cement en mortels": "Цемент і розчини", "Stucen": "Штукатурка", "Plaatmateriaal": "Листові матеріали", "Afwerklijsten en profielen": "Профілі та плінтуси", "Kranen": "Змішувачі", "Sanitair installatiemateriaal": "Сантехнічні матеріали", "CV-installaties": "Системи опалення", "Klimaatbeheersing": "Клімат-контроль", "Lijmen": "Клеї", "Kitten": "Герметики", "Purschuimen": "Монтажна піна", "Elektrisch installatiemateriaal": "Електромонтажні матеріали", "Keukenkasten": "Кухонні шафи", "Drinken, eten en huishoudelijk": "Напої, їжа та побут", "Bedrijfswagen": "Комерційний транспорт", "Schoonmaak": "Прибирання", "EHBO": "Перша допомога", "Werkschoenen": "Робоче взуття", "Sloten en cilinders": "Замки та циліндри", "Werkverlichting": "Робоче освітлення", "Eigen використання diversen": "Для власного використання", "Eigen gebruik diversen": "Для власного використання",
+                "Deuren / Kozijnen": "Двері / рами", "Kit, pur / lijm": "Герметик, піна / клей", "Kleding / Schoenen": "Одяг / Взуття", "Kleding / schoenen": "Одяг / взуття", "Meetgereedschap": "Вимірювальний інструмент", "Constructie buiten": "Зовнішні конструкції", "Schakelmateriaal": "Електрофурнітура", "Accessoires en verbruiksartikelen": "Аксесуари та витратні матеріали", "Deuren": "Двері", "Werkkleding": "Робочий одяг", "Timmerhout": "Столярна деревина", "Gevelbekleding": "Облицювання фасадів", "Isolatie": "Ізоляція", "Tegelverwerking": "Укладання плитки",
+                "Gipsplaten": "Гіпсокартон", "Plinten": "Плінтуси", "Verf benodigdheden": "Приладдя для фарбування", "Kleding": "Одяг", "Elektra / PVC": "Електрика / ПВХ"
+            }
+        },
+        pl: { 
+            introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
+            introSlogan: "Wszystko dla profesjonalisty",
+            introNav: "Inteligentny Nawigator",
+            introP: "Znajdź swoje produkty natychmiast w sklepie.",
+            introBtn: "ROZPOCZNIJ WYSZUKIWANIE",
+            placeholder: "Szukaj artykułu lub kodu...", search: "🔍 SZUKAJ", reset: "RESETUJ", 
+            allCats: "Wszystkie kategorie",
+            resFoundPlural: "WYNIKI", resFoundSingular: "WYNIK", noResTitle: "Brak wyników dla", 
+            noResDesc: "Sprawdź pisownię.", clearBtn: "WYCZYŚĆ", printBtn: "🖨️ DRUKUJ BILET", 
+            entrance: "WEJŚCIE", left: "LEWA", leftWord: "Lewa", right: "PRAWA", rightWord: "Prawa", sect: "Sekcja", pad: "ALEJA", padWord: "Aleja", zijde: "STRONA", kassa: "KASA",
+            serviceDesk: "Punkt obsługi", salesDesk: "Punkt sprzedaży", coffeeCorner: "Kącik kawowy", paintDesk: "Dział farb",
+            exit: "WYJŚCIE", sawmill: "Piła / Cięcie",
+            expandMap: "POWIĘKSZ MAPĘ",
+            backWallShort: "TYLNA ŚCIANA", backWallLong: "Tylna ściana", didYouMean: "Czy chodziło ci o:",
+            location: "LOKALIZACJA:", art: "Art.", loc: "LOK", unknownLoc: "Nieznana lokalizacja",
+            mapLabels: {
+                "Hout": "Drewno", 
+                "Tuinhout": "Drewno ogrodowe", 
+                "Vuren ruw / geschaafd": "Sosna surowa / strugana", 
+                "Plaatmateriaal hout": "Płyty drewnopochodne", 
+                "Ventilatie": "Wentylacja", 
+                "Steigers / Bekisting": "Rusztowania / Szalunki", 
+                "Pleisters / Stuc": "Tynki / Gips", 
+                "Cement / Mortels": "Cement / Zaprawy", 
+                "Stenen / Blokken": "Cegły / Bloki", 
+                "Tegels / Voegmiddelen": "Płytki / Fugi", 
+                "Dakbedekking": "Pokrycia dachowe", 
+                "Verwarming / Isolatie": "Ogrzewanie / Izolacja", 
+                "Keukenattributen / Isolatie": "Akcesoria kuchenne / Izolacja",
+                "Gipsplaten": "Płyty g-k"
+            },
+            groups: { 
+                "Sanitair": "Hydraulika", "Gereedschap": "Narzędzia", "IJzerwaren": "Okucia / Złącza", "Hout": "Drewno", "Bouwstoffen": "Materiały budowlane", "Bouwmaterialen": "Materiały budowlane", "Verf": "Farby", "Elektra": "Elektryka", "Verwarming": "Ogrzewanie", "Verwarming en klimaat": "Ogrzewanie i Klimatyzacja", "Algemeen": "Ogólne", "Eigen gebruik": "Użytek własny", "Lokaal": "Lokalne", "Verlichting": "Oświetlenie", "Hang- en sluitwerk": "Zamki i zawiasy", "Emballage": "Opakowania", "Persoonlijke beschermings": "Ochrona osobista", "Schoonmaak bedrijfswagen": "Czyszczenie aut", "Schoonmaak, bedrijfswagen": "Czyszczenie aut", "Keukens": "Kuchnie", "Lijm, kit en pur": "Kleje, silikony i pianki", "Bevestigingsmateriaal": "Technika zamocowań", "Toilet": "Toaleta", "Handgereedschap": "Narzędzia ręczne", "Bevestiging": "Zamocowania", "Balkhout": "Belki drewniane", "Afdekken": "Materiały ochronne", "Elektrisch gereedschap": "Elektronarzędzia", "Sanitair installatie gereedschap": "Narzędzia hydrauliczne", "Toebehoren gereedschap": "Akcesoria do narzędzi", "Zware verankering": "Kotwy ciężkie", "Schroeven": "Śruby", "Pluggen": "Kołki", "Schildersgereedschap": "Narzędzia malarskie", "Droge afbouw": "Sucha zabudowa", "Cement en mortels": "Cement i zaprawy", "Stucen": "Tynkowanie", "Plaatmateriaal": "Płyty drewnopochodne", "Afwerklijsten en profielen": "Listwy i profile", "Kranen": "Baterie i krany", "Sanitair installatiemateriaal": "Materiały hydrauliczne", "CV-installaties": "Instalacje CO", "Klimaatbeheersing": "Klimatyzacja", "Lijmen": "Kleje", "Kitten": "Silikony i akryle", "Purschuimen": "Pianki montażowe", "Elektrisch installatiemateriaal": "Materiały elektryczne", "Keukenkasten": "Szafki kuchenne", "Drinken, eten en huishoudelijk": "Gospodarstwo domowe", "Bedrijfswagen": "Wyposażenie aut", "Schoonmaak": "Czyszczenie", "EHBO": "Apteczki", "Werkschoenen": "Buty robocze", "Sloten en cilinders": "Zamki i wkładki", "Werkverlichting": "Oświetlenie robocze", "Eigen gebruik diversen": "Użytek własny - Różne",
+                "Deuren / Kozijnen": "Drzwi / Ościeżnice", "Kit, pur / lijm": "Silikony, pianki / kleje", "Kleding / Schoenen": "Odzież / Obuwie", "Kleding / schoenen": "Odzież / obuwie", "Meetgereedschap": "Narzędzia pomiarowe", "Constructie buiten": "Konstrukcje zewnętrzne", "Schakelmateriaal": "Osprzęt elektroinstalacyjny", "Accessoires en verbruiksartikelen": "Akcesoria eksploatacyjne", "Deuren": "Drzwi", "Werkkleding": "Odzież robocza", "Timmerhout": "Drewno budowlane", "Gevelbekleding": "Okładziny elewacyjne", "Isolatie": "Izolacja", "Tegelverwerking": "Narzędzia do płytek",
+                "Gipsplaten": "Płyty gipsowo-kartonowe", "Plinten": "Listwy przypodłogowe", "Verf benodigdheden": "Akcesoria malarskie", "Kleding": "Odzież", "Elektra / PVC": "Elektryka / PCV"
             }
         }
     };
 
     const aisleCategories = {
-        1: "gipsplaten", 2: "tuinhout", 3: "vuren ruw/geschaafd", 4: "Deuren / Kozijnen", 5: "IJzerwaren", 
-        6: "Schroeven", 7: "Kit, pur / lijm", 8: "Verf benodigdheden / attributen", 
+        1: "Gipsplaten", 2: "Plinten", 3: "Hout", 4: "Deuren / Kozijnen", 5: "IJzerwaren", 
+        6: "Schroeven", 7: "Kit, pur / lijm", 8: "Verf benodigdheden", 
         9: "Verf", 10: "Verf", 11: "Gereedschap", 12: "Gereedschap", 
-        13: "Kleding", 14: "Sanitair", 15: "Sanitair", 
+        13: "Kleding / Schoenen", 14: "Sanitair", 15: "Sanitair", 
         16: "Elektra", 17: "Elektra / PVC"
     };
 
@@ -2333,6 +2412,28 @@
     const getSg = (item) => String(item["Subgroep"] || item.subgroep || item.subcategory || '');
     const getLoc = (item) => String(item["Locatie2"] || item["Schaplocatie code"] || item.locatie || item.Locatie || '');
 
+    // Menu toggle logic
+    function toggleIntroLangMenu(e) {
+        e.stopPropagation();
+        document.getElementById('introLangMenu').classList.toggle('show');
+        const appMenu = document.getElementById('appLangMenu');
+        if(appMenu) appMenu.classList.remove('show');
+    }
+    
+    function toggleAppLangMenu(e) {
+        e.stopPropagation();
+        document.getElementById('appLangMenu').classList.toggle('show');
+        const introMenu = document.getElementById('introLangMenu');
+        if(introMenu) introMenu.classList.remove('show');
+    }
+
+    document.addEventListener('click', () => {
+        const introMenu = document.getElementById('introLangMenu');
+        const appMenu = document.getElementById('appLangMenu');
+        if(introMenu) introMenu.classList.remove('show');
+        if(appMenu) appMenu.classList.remove('show');
+    });
+
     async function initApp() {
         try {
             const response = await fetch('data.json');
@@ -2392,13 +2493,27 @@
         curLang = lang;
         localStorage.setItem('bouwmaat_lang', lang);
         
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        const activeBtn = document.getElementById(`btn-${lang}`);
-        if(activeBtn) activeBtn.classList.add('active');
+        document.querySelectorAll('.lang-item').forEach(btn => btn.classList.remove('active'));
         
-        document.querySelectorAll('.intro-lang-btn').forEach(btn => btn.classList.remove('active'));
-        const activeIntroBtn = document.getElementById(`intro-btn-${lang}`);
-        if(activeIntroBtn) activeIntroBtn.classList.add('active');
+        const activeAppItem = document.getElementById(`app-item-${lang}`);
+        if(activeAppItem) activeAppItem.classList.add('active');
+        
+        const activeIntroItem = document.getElementById(`intro-item-${lang}`);
+        if(activeIntroItem) activeIntroItem.classList.add('active');
+        
+        const labels = { 'nl': '🇳🇱 NL', 'en': '🇬🇧 EN', 'uk': '🇺🇦 UA', 'pl': '🇵🇱 PL' };
+        const labelText = labels[lang] + ' ▼';
+        
+        const introToggle = document.getElementById('introLangToggle');
+        if(introToggle) introToggle.innerText = labelText;
+        
+        const appToggle = document.getElementById('appLangToggle');
+        if(appToggle) appToggle.innerText = labelText;
+
+        const introMenu = document.getElementById('introLangMenu');
+        const appMenu = document.getElementById('appLangMenu');
+        if(introMenu) introMenu.classList.remove('show');
+        if(appMenu) appMenu.classList.remove('show');
         
         const t = i18n[lang];
         
@@ -2460,7 +2575,7 @@
             sawLoc.long = t.sawmill;
         }
         
-        const videoSrcs = { nl: "dutch1.mp4", en: "eng.mp4", uk: "eng.mp4" };
+        const videoSrcs = { nl: "dutch1.mp4", en: "eng.mp4", uk: "eng.mp4", pl: "eng.mp4" };
         const vidPlayer = document.getElementById('introVideo');
         if (vidPlayer) {
             if (vidPlayer.getAttribute('src') !== videoSrcs[lang]) {
@@ -2591,7 +2706,8 @@
         lw.innerHTML = `
             <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full', null, event)">
                 <div class="left-face"></div>
-                <div class="aisle-category-label label-full" data-map-label="HOUT">HOUT</div>
+                <div class="aisle-category-label label-top" data-map-label="Gipsplaten">Gipsplaten</div>
+                <div class="aisle-category-label label-bottom" data-map-label="Hout">Hout</div>
                 <div class="sec-container">${allSecs}</div>
             </div>
             <div class="aisle-num" id="badge-1L" style="display: none !important;"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>1L</b></div>
@@ -2599,10 +2715,10 @@
         grid.appendChild(lw);
         
         const backAisleLabels = {
-            1: "Hout  gipsplaten", 2: "Plinten tuinhout", 3: "Hout vuren ruw/geschaafd", 4: "Deuren/Kozijnen VUREN RUW/GESCHAAFD", 5: "IJzerwaren/Hout",
-            6: "Schroeven PLAATMATERIAAL HOUT", 7: "Hout Kit, pur & lijm", 8: "HOUT", 9: "VENTILATIE", 10: "STEIGERS / BEKISTING",
-            11: "PLEISTERS / STUC", 12: "CEMENT / MORTELS", 13: "STENEN / BLOKKEN", 14: "TEGELS / VOEGMIDDELEN", 
-            15: "DAKBEDEKKING", 16: "VERWARMING / ISOLATIE", 17: "KEUKENATTRIBUTEN / ISOLATIE"
+            1: "Hout", 2: "Tuinhout", 3: "Vuren ruw / geschaafd", 4: "Vuren ruw / geschaafd", 5: "Hout",
+            6: "Plaatmateriaal hout", 7: "Hout", 8: "Plaatmateriaal hout", 9: "Ventilatie", 10: "Steigers / Bekisting",
+            11: "Pleisters / Stuc", 12: "Cement / Mortels", 13: "Stenen / Blokken", 14: "Tegels / Voegmiddelen", 
+            15: "Dakbedekking", 16: "Verwarming / Isolatie", 17: "Keukenattributen / Isolatie"
         };
 
         for (let i = 1; i <= 17; i++) {
