@@ -139,7 +139,7 @@
             box-shadow: 0 16px 32px rgba(0, 46, 92, 0.15), inset 0 0 0 1px rgba(255,255,255,0.2); 
             border: 4px solid #ffffff; position: relative; transform: translateZ(0); 
         }
-        .video-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
+        .video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
         
         /* Premium Typography */
         .intro-h1 { 
@@ -548,11 +548,16 @@
             display: none !important; /* Hide popup triangle in expanded view */
         }
 
-        /* Prevent clicking and change cursor for aisles in expanded view */
+        /* Allow interactive Aisle Explorer in expanded view */
         .map-expanded-overlay .aisle,
         .map-expanded-overlay .aisle-part,
-        .map-expanded-overlay .sec-container span,
         .map-expanded-overlay .back-wall {
+            cursor: pointer !important;
+        }
+        .map-expanded-overlay .sec-container span,
+        .map-expanded-overlay .aisle.active,
+        .map-expanded-overlay .aisle.active .aisle-part,
+        .map-expanded-overlay .back-wall.active {
             cursor: default !important;
         }
 
@@ -786,6 +791,23 @@
         .btn-close-map { position: absolute; top: 20px; right: 20px; z-index: 10002; background: var(--primary); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.5rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; align-items: center; justify-content: center; transition: all 0.2s; }
         .map-expanded-overlay .btn-close-map { display: flex; }
 
+        /* Aisle Explorer Card */
+        #aisleExplorerCard {
+            position: absolute; top: 55px; left: 50%; transform: translateX(-50%) translateY(-200px);
+            width: calc(100% - 24px); max-width: 300px;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 14px; padding: 12px 16px;
+            box-shadow: 0 8px 32px rgba(0, 92, 185, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+            z-index: 10002; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .map-expanded-overlay #aisleExplorerCard.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+        .ae-header { font-weight: 900; font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-neutral); padding-bottom: 8px; }
+        .ae-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+        .ae-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 800; color: var(--text-main); background: rgba(255,255,255,0.6); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .ae-icon { font-size: 1.3rem; background: #fff; border-radius: 6px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .ae-close { background: #e2e8f0; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; cursor: pointer; color: var(--text-main); transition: background 0.2s; }
+        .ae-close:hover { background: #cbd5e1; }
+
         /* Modern Floating Product Detail Card - Compact Glassy Version */
         #productDetailCard {
             position: absolute;
@@ -868,6 +890,15 @@
         .pd-print-btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,92,185,0.4); }
         .pd-print-btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,92,185,0.3); }
 
+        .pd-help-btn {
+            position: relative; flex-shrink: 0;
+            background: #eab308; color: white; border: none; border-radius: 8px; width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(234, 179, 8, 0.25); cursor: pointer; transition: all 0.2s ease;
+        }
+        .pd-help-btn:hover { background: #ca8a04; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(234, 179, 8, 0.4); }
+        .pd-help-btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(234, 179, 8, 0.3); }
+        .pd-help-btn.sent { background: #16a34a; cursor: default; transform: none; box-shadow: none; pointer-events: none; color: white; }
+
         /* QR Code Container Dropdown */
         .pd-qr-container {
             display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -939,6 +970,13 @@
         body.dark-mode .map-expanded-overlay::before { background: rgba(2, 132, 199, 0.4); }
         body.dark-mode .map-expanded-overlay::after { background: rgba(0, 150, 199, 0.3); }
 
+        body.dark-mode #aisleExplorerCard { background: rgba(15, 23, 42, 0.75); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
+        body.dark-mode .ae-header { color: #38bdf8; border-color: rgba(255,255,255,0.1); }
+        body.dark-mode .ae-item { color: #e2e8f0; background: rgba(30, 41, 59, 0.6); border-color: rgba(255,255,255,0.05); }
+        body.dark-mode .ae-icon { background: rgba(15, 23, 42, 0.8); }
+        body.dark-mode .ae-close { background: #334155; color: #fff; }
+        body.dark-mode .ae-close:hover { background: #475569; }
+
         body.dark-mode #productDetailCard { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
         body.dark-mode .pd-icon { background: rgba(30, 41, 59, 0.6); border-color: rgba(255, 255, 255, 0.1); color: var(--accent); }
         body.dark-mode .pd-icon:hover img { background: #1e293b; border-color: #334155; box-shadow: 0 12px 30px rgba(0,0,0,0.6); transform: scale(8); z-index: 10000; }
@@ -951,6 +989,9 @@
         body.dark-mode .pd-qr-text { color: #e2e8f0; }
         body.dark-mode .pd-print-btn { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(0, 150, 199, 0.2); }
         body.dark-mode .pd-print-btn:hover { background: #0077b6; color: #fff;}
+        body.dark-mode .pd-help-btn { background: #ca8a04; color: #ffffff; border: 1px solid rgba(255,255,255,0.1); }
+        body.dark-mode .pd-help-btn:hover { background: #a16207; }
+        body.dark-mode .pd-help-btn.sent { background: #15803d; border-color: transparent; }
 
         body.dark-mode .floor { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-color: #334155; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), -8px 15px 15px rgba(0,0,0,0.5); }
         body.dark-mode .floor::before { background: linear-gradient(to bottom, #1e293b, #0f172a); border-bottom: 1px solid #000; }
@@ -989,7 +1030,8 @@
         body.dark-mode .back-wall.active { background: #0284c7; transform: translateZ(45px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), -6px 10px 12px rgba(2, 132, 199, 0.4); border-color: #ffffff; }
         body.dark-mode .back-wall.active::before { background: repeating-linear-gradient(to right, transparent 0px, transparent 40px, rgba(0,30,60,0.8) 40px, rgba(0,30,60,0.8) 43px), repeating-linear-gradient(to bottom, #0284c7 0px, #0369a1 1px, #075985 3px, transparent 3px, transparent 13px), #082f49; border-bottom-color: #ffffff; height: 45px; }
 
-        body.dark-mode .modern-door { border-color: rgba(2, 132, 199, 0.8); background: rgba(15, 23, 42, 0.2); box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 6px rgba(2, 132, 199, 0.2); }
+        /* Modern 3D Sliding Door - Softened & Less Intrusive */
+        .modern-door { border-color: rgba(2, 132, 199, 0.8); background: rgba(15, 23, 42, 0.2); box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 6px rgba(2, 132, 199, 0.2); }
         body.dark-mode .door-glass { background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(15, 23, 42, 0.4) 100%); border-color: rgba(56, 189, 248, 0.3); }
         body.dark-mode .door-glass::before { background: #38bdf8; opacity: 0.7; }
         
@@ -1062,7 +1104,7 @@
 
         <div class="intro-content">
             <div class="video-container">
-                <video id="introVideo" autoplay loop playsinline controls muted src="dutch1.mp4"></video>
+                <img src="https://cdn.bouwmaat.nl/api/images/bm_wk15-2026_homepage_banner_2.webp" alt="Bouwmaat Actie Banner">
             </div>
             <h1 class="intro-h1" id="introTitle">BOUWMAAT AMSTEL <span>XL</span></h1>
             <div class="intro-nav-title" id="introNavTitle">Smart Navigator</div>
@@ -1077,12 +1119,12 @@
             <div class="ticker-track">
                 <span><i>•</i> ALLES VOOR DE VAKMAN</span>
                 <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
+                <span><i>•</i> ВСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
                 <span><i>•</i> ALLES VOOR DE VAKMAN</span>
                 <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
-                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
-                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
-                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
-                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
+                <span><i>•</i> ВСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
+                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
             </div>
         </div>
     </div>
@@ -1136,6 +1178,7 @@
             <button class="btn-close-map" onclick="toggleMapExpand(false)">✕</button>
             
             <div id="productDetailCard"></div>
+            <div id="aisleExplorerCard"></div>
             
             <div class="map-section" aria-hidden="true" ondblclick="toggleMapExpand(true)">
                 <div class="floor" id="mapGrid">
@@ -1209,6 +1252,7 @@
             allCats: "Alle categorieën",
             resFoundPlural: "RESULTATEN", resFoundSingular: "RESULTAAT", noResTitle: "Geen resultaten voor", 
             noResDesc: "Controleer je spelling.", clearBtn: "WIS", printBtn: "🖨️ PRINT BON", 
+            askHelp: "VRAAG OM HULP", helpRequested: "HULP IS ONDERWEG!",
             entrance: "INGANG", left: "LINKS", leftWord: "Links", right: "RECHTS", rightWord: "Rechts", sect: "Sectie", pad: "PAD", padWord: "Pad", zijde: "ZIJDE", kassa: "KASSA",
             serviceDesk: "Service desk", salesDesk: "Verkoopdesk", coffeeCorner: "Koffiehoek", paintDesk: "Verfbalie",
             exit: "UITGANG", sawmill: "Zaagafdeling",
@@ -1248,6 +1292,7 @@
             allCats: "All categories",
             resFoundPlural: "RESULTS", resFoundSingular: "RESULT", noResTitle: "No results for", 
             noResDesc: "Check your spelling.", clearBtn: "CLEAR", printBtn: "🖨️ PRINT TICKET", 
+            askHelp: "ASK FOR HELP", helpRequested: "HELP IS ON THE WAY!",
             entrance: "ENTRANCE", left: "LEFT", leftWord: "Left", right: "RIGHT", rightWord: "Right", sect: "Section", pad: "AISLE", padWord: "Aisle", zijde: "SIDE", kassa: "CASHIER",
             serviceDesk: "Service Desk", salesDesk: "Sales Desk", coffeeCorner: "Coffee Corner", paintDesk: "Paint Desk",
             exit: "EXIT", sawmill: "Sawmill",
@@ -1256,19 +1301,12 @@
             location: "LOCATION:", art: "Art.", loc: "LOC", unknownLoc: "Unknown location",
             youAreHere: "You are here", scanToPhone: "Scan to phone",
             mapLabels: {
-                "Hout": "Timber", 
-                "Tuinhout": "Garden Timber", 
-                "Vuren ruw geschaafd": "Rough Planed Pine", 
-                "Plaatmateriaal hout": "Sheet Material Timber", 
-                "Ventilatie": "Ventilation", 
-                "Steigers Bekisting": "Scaffolding Formwork", 
-                "Pleisters Stuc": "Plasters Stucco", 
-                "Cement Mortels": "Cement Mortars", 
-                "Stenen Blokken": "Bricks Blocks", 
-                "Tegels Voegmiddelen": "Tiles Grout", 
-                "Dakbedekking": "Roofing", 
-                "Verwarming Isolatie": "Heating Insulation", 
-                "Keukenattributen Isolatie": "Kitchen Accessories Insulation",
+                "Hout": "Timber", "Tuinhout": "Garden Timber", "Vuren ruw geschaafd": "Rough Planed Pine", 
+                "Plaatmateriaal hout": "Sheet Material Timber", "Ventilatie": "Ventilation", 
+                "Steigers Bekisting": "Scaffolding Formwork", "Pleisters Stuc": "Plasters Stucco", 
+                "Cement Mortels": "Cement Mortars", "Stenen Blokken": "Bricks Blocks", 
+                "Tegels Voegmiddelen": "Tiles Grout", "Dakbedekking": "Roofing", 
+                "Verwarming Isolatie": "Heating Insulation", "Keukenattributen Isolatie": "Kitchen Accessories Insulation",
                 "Gipsplaten": "Drywall"
             },
             groups: { 
@@ -1287,6 +1325,7 @@
             allCats: "Всі категорії",
             resFoundPlural: "РЕЗУЛЬТАТІВ", resFoundSingular: "РЕЗУЛЬТАТ", noResTitle: "Немає результатів для", 
             noResDesc: "Перевірте правильність написання.", clearBtn: "ОЧИСТИТИ", printBtn: "🖨️ ДРУКУВАТИ ЧЕК", 
+            askHelp: "ПОПРОСИТИ ПРО ДОПОМОГУ", helpRequested: "ДОПОМОГА ВЖЕ В ДОРОЗІ!",
             entrance: "ВХІД", left: "ЛІВОРУЧ", leftWord: "Ліворуч", right: "ПРАВОРУЧ", rightWord: "Праворуч", sect: "Секція", pad: "РЯД", padWord: "Ряд", zijde: "СТОРОНА", kassa: "КАСА",
             serviceDesk: "Сервісний центр", salesDesk: "Відділ продажу", coffeeCorner: "Кавовий куточок", paintDesk: "Відділ фарб",
             exit: "ВИХІД", sawmill: "Пилорама",
@@ -1295,19 +1334,12 @@
             location: "РОЗТАШУВАННЯ:", art: "Арт.", loc: "МІСЦЕ", unknownLoc: "Невідоме розташування",
             youAreHere: "Ви тут", scanToPhone: "Сканувати на телефон",
             mapLabels: {
-                "Hout": "Деревина", 
-                "Tuinhout": "Садова деревина", 
-                "Vuren ruw geschaafd": "Груба стругана сосна", 
-                "Plaatmateriaal hout": "Листова деревина", 
-                "Ventilatie": "Вентиляція", 
-                "Steigers Bekisting": "Риштування Опалубка", 
-                "Pleisters Stuc": "Штукатурка", 
-                "Cement Mortels": "Цемент Розчини", 
-                "Stenen Blokken": "Цегла Блоки", 
-                "Tegels Voegmiddelen": "Плитка Затирка", 
-                "Dakbedekking": "Покрівля", 
-                "Verwarming Isolatie": "Опалення Ізоляція", 
-                "Keukenattributen Isolatie": "Кухонні аксесуари Ізоляція",
+                "Hout": "Деревина", "Tuinhout": "Садова деревина", "Vuren ruw geschaafd": "Груба стругана сосна", 
+                "Plaatmateriaal hout": "Листова деревина", "Ventilatie": "Вентиляція", 
+                "Steigers Bekisting": "Риштування Опалубка", "Pleisters Stuc": "Штукатурка", 
+                "Cement Mortels": "Цемент Розчини", "Stenen Blokken": "Цегла Блоки", 
+                "Tegels Voegmiddelen": "Плитка Затирка", "Dakbedekking": "Покрівля", 
+                "Verwarming Isolatie": "Опалення Ізоляція", "Keukenattributen Isolatie": "Кухонні аксесуари Ізоляція",
                 "Gipsplaten": "Гіпсокартон"
             },
             groups: { 
@@ -1326,6 +1358,7 @@
             allCats: "Wszystkie kategorie",
             resFoundPlural: "WYNIKI", resFoundSingular: "WYNIK", noResTitle: "Brak wyników dla", 
             noResDesc: "Sprawdź pisownię.", clearBtn: "WYCZYŚĆ", printBtn: "🖨️ DRUKUJ BILET", 
+            askHelp: "POPROŚ O POMOC", helpRequested: "POMOC JEST W DRODZE!",
             entrance: "WEJŚCIE", left: "LEWA", leftWord: "Lewa", right: "PRAWA", rightWord: "Prawa", sect: "Sekcja", pad: "ALEJA", padWord: "Aleja", zijde: "STRONA", kassa: "KASA",
             serviceDesk: "Punkt obsługi", salesDesk: "Punkt sprzedaży", coffeeCorner: "Kącik kawowy", paintDesk: "Dział farb",
             exit: "WYJŚCIE", sawmill: "Piła / Cięcie",
@@ -1334,23 +1367,16 @@
             location: "LOKALIZACJA:", art: "Art.", loc: "LOK", unknownLoc: "Nieznana lokalizacja",
             youAreHere: "Jesteś tutaj", scanToPhone: "Skanuj na telefon",
             mapLabels: {
-                "Hout": "Drewno", 
-                "Tuinhout": "Drewno ogrodowe", 
-                "Vuren ruw geschaafd": "Sosna surowa strugana", 
-                "Plaatmateriaal hout": "Płyty drewnopochodne", 
-                "Ventilatie": "Wentylacja", 
-                "Steigers Bekisting": "Rusztowania Szalunki", 
-                "Pleisters Stuc": "Tynki Gips", 
-                "Cement Mortels": "Cement Zaprawy", 
-                "Stenen Blokken": "Cegły Bloki", 
-                "Tegels Voegmiddelen": "Płytki Fugi", 
-                "Dakbedekking": "Pokrycia dachowe", 
-                "Verwarming Isolatie": "Ogrzewanie Izolacja", 
-                "Keukenattributen Isolatie": "Akcesoria kuchenne Izolacja",
+                "Hout": "Drewno", "Tuinhout": "Drewno ogrodowe", "Vuren ruw geschaafd": "Sosna surowa strugana", 
+                "Plaatmateriaal hout": "Płyty drewnopochodne", "Ventilatie": "Wentylacja", 
+                "Steigers Bekisting": "Rusztowania Szalunki", "Pleisters Stuc": "Tynki Gips", 
+                "Cement Mortels": "Cement Zaprawy", "Stenen Blokken": "Cegły Bloki", 
+                "Tegels Voegmiddelen": "Płytki Fugi", "Dakbedekking": "Pokrycia dachowe", 
+                "Verwarming Isolatie": "Ogrzewanie Izolacja", "Keukenattributen Isolatie": "Akcesoria kuchenne Izolacja",
                 "Gipsplaten": "Płyty g-k"
             },
             groups: { 
-                "Sanitair": "Hydraulika", "Gereedschap": "Narzędzia", "IJzerwaren": "Okucia / Złącza", "Hout": "Drewno", "Bouwstoffen": "Materiały budowlane", "Bouwmaterialen": "Materiały budowlane", "Verf": "Farby", "Elektra": "Elektryka", "Verwarming": "Ogrzewanie", "Verwarming en klimaat": "Ogrzewanie i Klimatyzacja", "Algemeen": "Ogólne", "Eigen gebruik": "Użytek własny", "Lokaal": "Lokalne", "Verlichting": "Oświetlenie", "Hang- en sluitwerk": "Zamki i zawiasy", "Emballage": "Opakowania", "Persoonlijke beschermings": "Ochrona osobista", "Schoonmaak bedrijfswagen": "Czyszczenie aut", "Schoonmaak, bedrijfswagen": "Czyszczenie aut", "Keukens": "Kuchnie", "Lijm, kit en pur": "Kleje, silikony i pianki", "Bevestigingsmateriaal": "Technika zamocowań", "Toilet": "Toaleta", "Handgereedschap": "Narzędzia ręczne", "Bevestiging": "Zamocowania", "Balkhout": "Belki drewniane", "Afdekken": "Materiały ochronne", "Elektrisch gereedschap": "Elektronarzędzia", "Sanitair installatie gereedschap": "Narzędzia hydrauliczne", "Toebehoren gereedschap": "Akcesoria do narzędzi", "Zware verankering": "Kotwy ciężkie", "Schroeven": "Śruby", "Pluggen": "Kołki", "Schildersgereedschap": "Narzędzia malarskie", "Droge afbouw": "Sucha zabudowa", "Cement en mortels": "Cement i zaprawy", "Stucen": "Tynkowanie", "Plaatmateriaal": "Płyty drewnopochodne", "Afwerklijsten en profielen": "Listwy i profile", "Kranen": "Baterie i krany", "Sanitair installatiemateriaal": "Materiały hydrauliczne", "CV-installaties": "Instalacje CO", "Klimaatbeheersing": "Klimatyzacja", "Lijmen": "Kleje", "Kitten": "Silikony i akryle", "Purschuimen": "Pianki montażowe", "Elektrisch installatiemateriaal": "Materiały elektryczne", "Keukenkasten": "Szafki kuchenne", "Drinken, eten en huishoudelijk": "Gospodarstwo domowe", "Bedrijfswagen": "Wyposażenie aut", "Schoonmaak": "Czyszczenie", "EHBO": "Apteczki", "Werkschoenen": "Buty robocze", "Sloten en cilinders": "Zamki i wkładki", "Werkverlichting": "Oświetlenie robocze", "Eigen gebruik diversen": "Użytek własny - Różne",
+                "Sanitair": "Hydraulika", "Gereedschap": "Narzędzia", "IJzerwaren": "Okucia / Złącza", "Hout": "Drewno", "Bouwstoffen": "Materiały budowlane", "Bouwmaterialen": "Materiały budowlane", "Verf": "Farby", "Elektra": "Elektryka", "Verwarming": "Ogrzewanie", "Verwarming en klimaat": "Ogrzewanie i Klimatyzacja", "Algemeen": "Ogólne", "Eigen gebruik": "Użytek własny", "Lokaal": "Lokalne", "Verlichting": "Oświetlenie", "Hang- en sluitwerk": "Zamki i zawiasy", "Emballage": "Opakowania", "Persoonlijke beschermings": "Ochrona osobista", "Schoonmaak bedrijfswagen": "Czyszczenie aut", "Schoonmaak, bedrijfswagen": "Czyszczenie aut", "Keukens": "Kuchnie", "Lijm, kit en pur": "Kleje, silikony i pianki", "Bevestigingsmateriaal": "Technika zamocowań", "Toilet": "Toaleta", "Handgereedschap": "Narzędzia ręczne", "Bevestiging": "Zamocowania", "Balkhout": "Belki drewniane", "Afdekken": "Materiały ochronne", "Elektrisch gereedschap": "Elektronarzędzia", "Sanitair installatie gereedschap": "Narzędzia hydrauliczne", "Toebehoren gereedschap": "Akcesoria do narzędzi", "Zware verankering": "Kotwy ciężkie", "Schroeven": "Śruby", "Pluggen": "Kołki", "Schildersgereedschap": "Narzędzia malarskie", "Droge afbouw": "Sucha zabudowa", "Cement en mortels": "Cement i zaprawy", "Stucen": "Tynkowanie", "Plaatmateriaal": "Płyty drewnopochodne", "Afwerklijsten en profielen": "Listwy i profile", "Kranen": "Baterie i krany", "Sanitair installatiemateriaal": "Materiały hydrauliczne", "CV-installaties": "Instalacje CO", "Klimatyzacja": "Klimatyzacja", "Lijmen": "Kleje", "Kitten": "Silikony i akryle", "Purschuimen": "Pianki montażowe", "Elektrisch installatiemateriaal": "Materiały elektryczne", "Keukenkasten": "Szafki kuchenne", "Drinken, eten en huishoudelijk": "Gospodarstwo domowe", "Bedrijfswagen": "Wyposażenie aut", "Schoonmaak": "Czyszczenie", "EHBO": "Apteczki", "Werkschoenen": "Buty robocze", "Sloten en cilinders": "Zamki i wkładki", "Werkverlichting": "Oświetlenie robocze", "Eigen gebruik diversen": "Użytek własny - Różne",
                 "Deuren / Kozijnen": "Drzwi / Ościeżnice", "Kit, pur / lijm": "Silikony, pianki / kleje", "Kleding / Schoenen": "Odzież / Obuwie", "Kleding / schoenen": "Odzież / obuwie", "Meetgereedschap": "Narzędzia pomiarowe", "Constructie buiten": "Konstrukcje zewnętrzne", "Schakelmateriaal": "Osprzęt elektroinstalacyjny", "Accessoires en verbruiksartikelen": "Akcesoria eksploatacyjne", "Deuren": "Drzwi", "Werkkleding": "Odzież robocza", "Timmerhout": "Drewno budowlane", "Gevelbekleding": "Okładziny elewacyjne", "Isolatie": "Izolacja", "Tegelverwerking": "Narzędzia do płytek",
                 "Gipsplaten": "Płyty gipsowo-kartonowe", "Plinten": "Listwy przypodłogowe", "Verf benodigdheden": "Akcesoria malarskie", "Kleding": "Odzież", "Deuren Kozijnen": "Drzwi Ościeżnice", "Kit, pur lijm": "Silikony, pianki kleje", "Kleding Schoenen": "Odzież Obuwie", "Elektra PVC": "Elektryka PCV"
             }
@@ -1385,7 +1411,7 @@
     window.currentSelectedProduct = null;
 
     const fallbackData = [
-            {
+           {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2542,7 +2568,7 @@
             "Hoofdgroep": "Eigen gebruik",
             "Subgroep": "Eigen gebruik diversen",
             "Locatie2": "Pad VM Links, Sectie 02"
-        },
+        }
 
     ];
 
@@ -2597,11 +2623,6 @@
         const intro = document.getElementById('introPage');
         if (intro) intro.classList.add('hidden');
         
-        const vidPlayer = document.getElementById('introVideo');
-        if (vidPlayer) {
-            vidPlayer.muted = true;
-            vidPlayer.pause();
-        }
         const resetBtn = document.getElementById('btnReset');
         if (resetBtn) resetBtn.style.display = '';
     }
@@ -2621,11 +2642,6 @@
         
         const resetBtn = document.getElementById('btnReset');
         if (resetBtn) resetBtn.style.display = 'none';
-        
-        const vidPlayer = document.getElementById('introVideo');
-        if (vidPlayer) {
-            vidPlayer.play().catch(e => console.warn("Video play prevented:", e));
-        }
     }
 
     function setLang(lang) {
@@ -2717,16 +2733,6 @@
             sawLoc.long = t.sawmill;
         }
         
-        const videoSrcs = { nl: "dutch1.mp4", en: "eng.mp4", uk: "eng.mp4", pl: "eng.mp4" };
-        const vidPlayer = document.getElementById('introVideo');
-        if (vidPlayer) {
-            if (vidPlayer.getAttribute('src') !== videoSrcs[lang]) {
-                vidPlayer.src = videoSrcs[lang];
-                vidPlayer.load();
-                vidPlayer.play().catch(e => console.warn("Auto-play prevented:", e));
-            }
-        }
-        
         renderCategoryChips();
         handleSearch();
     }
@@ -2795,8 +2801,10 @@
                 const sgEn = i18n.en.groups[sg] || '';
                 const hgUk = i18n.uk.groups[hg] || '';
                 const sgUk = i18n.uk.groups[sg] || '';
+                const hgPl = i18n.pl.groups[hg] || '';
+                const sgPl = i18n.pl.groups[sg] || '';
 
-                const fullText = `${getArtNr(item)} ${getLoc(item)} ${getOmsch(item)} ${hg} ${sg} ${hgEn} ${sgEn} ${hgUk} ${sgUk}`;
+                const fullText = `${getArtNr(item)} ${getLoc(item)} ${getOmsch(item)} ${hg} ${sg} ${hgEn} ${sgEn} ${hgUk} ${sgUk} ${hgPl} ${sgPl}`;
                 item._searchStr = normalizeStr(fullText);
                 item._cleanArt = getArtNr(item).toString().replace(/[-\s]/g, '').toLowerCase();
                 item._nameNorm = normalizeStr(getOmsch(item));
@@ -2988,7 +2996,7 @@
                 entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
             }
             window.entrancePosX = entranceX + 20; 
-            window.kioskPosX = window.entrancePosX + 45; /* Verplaatst naar rechts van de deur */
+            window.kioskPosX = window.entrancePosX + 45; 
             
             entLabel.style.left = `calc(${window.entrancePosX}px)`; 
             entLabel.style.bottom = `-5px`;
@@ -3023,7 +3031,7 @@
                 entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
             }
             window.entrancePosX = entranceX + 20;
-            window.kioskPosX = window.entrancePosX + 45; /* Verplaatst naar rechts van de deur */
+            window.kioskPosX = window.entrancePosX + 45;
             
             const entLabel = document.getElementById('entranceText');
             if (entLabel) entLabel.style.left = `calc(${window.entrancePosX}px)`; 
@@ -3089,9 +3097,13 @@
         const isCurrentlyExpanded = mapContainerEl && mapContainerEl.classList.contains('map-expanded-overlay');
         
         // ONLY ignore clicks on main aisle racks if expanded. 
-        // Desks, Sawmill, Coffee, and Paint remain clickable!
         const isAisle = !isNaN(parseInt(id, 10)) || id === '1L' || id === '0AW';
         if (isCurrentlyExpanded && isAisle && part !== 'paint') {
+            if (window.activeMapTarget && window.activeMapTarget.pad === id) {
+                return; // Do nothing if tapping on the already active highlighted aisle 
+            }
+            // Trigger Aisle Explorer for unselected aisles
+            showAisleExplorer(id, e);
             return; 
         }
 
@@ -3132,6 +3144,12 @@
         document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
         if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
         
+        const aeCard = document.getElementById('aisleExplorerCard');
+        if (aeCard) aeCard.classList.remove('show');
+        
+        const prodCard = document.getElementById('productDetailCard');
+        if (prodCard) prodCard.classList.remove('show');
+        
         let targetSec = clickedSec;
         if (!targetSec) {
             if (id === '1L' || id === '0AW' || id === '17') targetSec = '8';
@@ -3168,8 +3186,15 @@
                     if (span.dataset.origText === targetSec.toString()) {
                         span.classList.add('highlighted-sec');
                         const t = i18n[curLang] || i18n['nl'];
-                        const sideStr = manualSideClass === 'active-side-right' ? t.rightWord : t.leftWord;
-                        span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                        
+                        const isLeftOfAisle = manualSideClass === 'active-side-right';
+                        const sideStr = isLeftOfAisle ? t.leftWord : t.rightWord;
+                        
+                        if (isLeftOfAisle) {
+                            span.innerHTML = `<span class="side-text">${sideStr}&nbsp;</span>${span.dataset.origText}`;
+                        } else {
+                            span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                        }
                         span.setAttribute('aria-label', `${t.padWord} ${id}, ${t.sect} ${targetSec}, ${sideStr}`);
                     }
                 });
@@ -3195,34 +3220,41 @@
 
             if (id === 'KAS') {
                 const lbl = document.getElementById('label-' + (part || 'kassa'));
-                if (lbl) {
+                if (lbl && !isMapAlreadyExpanded) {
                     lbl.classList.add('active-label');
-                    window.labelPopupTimer = setTimeout(() => {
+                    setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
             } else if (id === 'KOFFIE') {
                 const lbl = document.getElementById('label-coffee');
-                if (lbl) {
+                if (lbl && !isMapAlreadyExpanded) {
                     lbl.classList.add('active-label');
-                    window.labelPopupTimer = setTimeout(() => {
+                    setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
             } else if (id === 'SAW') {
                 const lbl = document.getElementById('label-sawmill');
-                if (lbl) {
+                if (lbl && !isMapAlreadyExpanded) {
                     lbl.classList.add('active-label');
-                    window.labelPopupTimer = setTimeout(() => {
+                    setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
             }
         }
         
-        window.activeMapTarget = { pad: id, sec: targetSec, side: id === '1L' ? 'Links' : 'Rechts', subTarget: (id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || part === 'paint') ? part : null };
+        let subTargetResolved = (id === 'KAS' || id === 'KOFFIE' || id === 'SAW' || part === 'paint') ? part : null;
+        let sideResolved = (id === '1L' || manualSideClass === 'active-side-left') ? 'Links' : 'Rechts';
+
+        window.activeMapTarget = { pad: id, sec: targetSec, side: sideResolved, subTarget: subTargetResolved };
         
-        moveChar(id, true, targetSec, id === '1L' ? 'Links' : 'Rechts', window.activeMapTarget.subTarget);
+        if (mapContainerEl && !mapContainerEl.classList.contains('map-expanded-overlay')) {
+            toggleMapExpand(true);
+        } else {
+            moveChar(id, true, targetSec, sideResolved, subTargetResolved);
+        }
     }
 
     function getMapTarget(pad, side) {
@@ -3281,6 +3313,9 @@
             document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
             if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
             
+            const aeCard = document.getElementById('aisleExplorerCard');
+            if (aeCard) aeCard.classList.remove('show');
+            
             if (el) el.classList.add('selected');
             
             const card = document.getElementById('productDetailCard');
@@ -3310,6 +3345,9 @@
                         const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
                         const qrUrl = `https://www.bouwmaat.nl/zoeken?text=${artNrClean}`;
                         
+                        const safePadStr = String(pad || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                        const safeSecStr = String(sec || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                        
                         card.innerHTML = `
                             <div class="pd-header">
                                 <div class="pd-icon">${imgHtml}</div>
@@ -3323,6 +3361,9 @@
                                     📍 ${displayLoc}
                                 </div>
                                 <div class="pd-actions">
+                                    <button class="pd-help-btn" id="btnHelpRequest" title="${t.askHelp}" onclick="event.stopPropagation(); requestHelp('${safePadStr}', '${safeSecStr}', '${jsSafeName}')">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                    </button>
                                     <button class="pd-qr-btn" title="${t.scanToPhone}" onclick="event.stopPropagation(); toggleQR('${qrUrl}')">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm-2-6h2v2h-2v-2zm0 4h2v2h-2v-2z"></path></svg>
                                     </button>
@@ -3375,8 +3416,15 @@
                         if (span.dataset.origText === sec.toString()) {
                             span.classList.add('highlighted-sec');
                             const t = i18n[curLang] || i18n['nl'];
-                            const sideStr = side && side.toLowerCase().includes('recht') ? t.rightWord : t.leftWord;
-                            span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                            
+                            const isLeftOfAisle = side && side.toLowerCase().includes('link');
+                            const sideStr = isLeftOfAisle ? t.leftWord : t.rightWord;
+                            
+                            if (isLeftOfAisle) {
+                                span.innerHTML = `<span class="side-text">${sideStr}&nbsp;</span>${span.dataset.origText}`;
+                            } else {
+                                span.innerHTML = `${span.dataset.origText}<span class="side-text">&nbsp;${sideStr}</span>`;
+                            }
                         }
                     });
                 }
@@ -3438,15 +3486,15 @@
 
             window.activeMapTarget = { pad: pad, sec: sec, side: side, subTarget };
             
-        if (mapWrapNode && !mapWrapNode.classList.contains('map-expanded-overlay')) {
-            toggleMapExpand(true);
-        } else {
-            moveChar(pad, true, sec, side, subTarget);
-        }
-    }, 150); 
-}
+            if (mapWrapNode && !mapWrapNode.classList.contains('map-expanded-overlay')) {
+                toggleMapExpand(true);
+            } else {
+                moveChar(pad, true, sec, side, subTarget);
+            }
+        }, 150); 
+    }
 
-function toggleMapExpand(expand) {
+    function toggleMapExpand(expand) {
         const wrapper = document.getElementById('mapWrapper');
         const path = document.getElementById('guideLine');
         const char = document.getElementById('mainChar');
@@ -3486,6 +3534,182 @@ function toggleMapExpand(expand) {
                 }
             }
         }, 450); 
+    }
+
+    function closeSelection() {
+        document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table, #cashierZone, #coffeeCorner, #sawmillZone, #exitDoor').forEach(x => {
+            x.classList.remove('active', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
+        });
+        document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
+        document.querySelectorAll('.highlighted-sec').forEach(span => {
+            span.classList.remove('highlighted-sec');
+            if (span.dataset.origText) span.innerText = span.dataset.origText;
+            span.removeAttribute('aria-label');
+        });
+        document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
+        restoreLabels();
+        if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
+        
+        const card = document.getElementById('productDetailCard');
+        if (card) card.classList.remove('show');
+        
+        const aeCard = document.getElementById('aisleExplorerCard');
+        if (aeCard) aeCard.classList.remove('show');
+
+        window.currentSelectedProduct = null;
+        window.activeMapTarget = null;
+        moveChar('entrance', false, null, null, null);
+    }
+
+    function moveChar(pad, active, sec, side, subTarget) {
+        const char = document.getElementById('mainChar'), path = document.getElementById('guideLine');
+        const grid = document.getElementById('mapGrid');
+        if (!char || !path || !grid) return; 
+
+        const sPos = window.kioskPosX ? window.kioskPosX - 12 : 323;
+        let cPos = sPos, targetBottom = '0%'; 
+
+        let aisleTarget = 75; 
+        if (sec && !isNaN(sec)) {
+            const s = parseInt(sec);
+            const isFullAisle = pad === '1L' || pad === '17';
+            if (isFullAisle) {
+                aisleTarget = 10 + ((s - 1) / 16) * 75;
+            } else {
+                if (s <= 6) {
+                    aisleTarget = 10 + ((s - 1) / 5) * 25;
+                } else {
+                    aisleTarget = 55 + ((s - 7) / 10) * 30;
+                }
+            }
+        }
+
+        if (String(pad) === '9' && subTarget === 'paint') {
+            const p9 = document.getElementById('p-9');
+            if (p9) {
+                cPos = p9.offsetLeft - (p9.offsetWidth * 0.15) - 8; 
+                targetBottom = '1%';
+            }
+        }
+        else if (pad === 'KAS') { 
+            const kasEl = document.getElementById('cashierZone');
+            let targetDesk = null;
+            if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
+            
+            if (kasEl && targetDesk) {
+                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 8; 
+            } else {
+                cPos = kasEl ? kasEl.offsetLeft - 8 : 400; 
+            }
+            targetBottom = '1%';
+        }
+        else if (pad === 'SAW') {
+            const sawEl = document.getElementById('sawmillZone');
+            cPos = sawEl ? sawEl.offsetLeft - 8 : 600;
+            targetBottom = '1%';
+        }
+        else if (pad === 'UITGANG') {
+            const extEl = document.getElementById('exitDoor');
+            cPos = extEl ? extEl.offsetLeft : 700;
+            targetBottom = '0%';
+        }
+        else if (pad === 'KOFFIE') {
+            const cofEl = document.getElementById('coffeeCorner');
+            cPos = cofEl ? cofEl.offsetLeft - 8 : 800;
+            targetBottom = '1%';
+        }
+        else if (pad === '0AW') { 
+            cPos = sPos; 
+            targetBottom = active ? '90%' : '0%'; 
+            if (active && sec && !isNaN(sec)) {
+                const s = parseInt(sec);
+                cPos = 40 + ((s - 1) / 16) * (grid.offsetWidth - 80);
+            }
+        }
+        else if (pad !== 'entrance' && (!isNaN(pad) || pad === '1L')) {
+            const { rackPad, isRightOfRack } = getMapTarget(pad, side);
+            const t = document.getElementById(`p-${rackPad}`);
+            if(t) {
+                const isExpanded = document.getElementById('mapWrapper').classList.contains('map-expanded-overlay');
+                const gapOffset = isExpanded ? 12 : 9; 
+                cPos = isRightOfRack ? t.offsetLeft + t.offsetWidth + gapOffset : t.offsetLeft - gapOffset;
+                targetBottom = active ? `${aisleTarget}%` : `0%`;
+            }
+        }
+
+        if (window.charMoveTimeouts) window.charMoveTimeouts.forEach(clearTimeout);
+        window.charMoveTimeouts = [];
+
+        char.style.transition = 'none';
+        char.style.left = `${sPos}px`;
+        char.style.bottom = '6px';
+        char.classList.remove('running', 'interacting');
+        document.documentElement.style.setProperty('--char-dir', '1');
+
+        if (!active || pad === 'entrance') {
+            path.setAttribute('d', '');
+            path.style.animation = 'none';
+            char.style.bottom = '6px';
+            char.classList.add('interacting');
+            return;
+        }
+
+        const floorHeight = grid.offsetHeight;
+        const startY = floorHeight - 6;
+        const midY = floorHeight - (8 / 100 * floorHeight); 
+        const targetBVal = parseFloat(targetBottom);
+        const endY = floorHeight - (targetBVal / 100 * floorHeight);
+
+        const d1 = Math.abs(startY - midY); 
+        const d2 = Math.abs(cPos - sPos);
+        const d3 = Math.abs(midY - endY); 
+        const totalDist = d1 + d2 + d3 || 1;
+        const totalTime = 1400; 
+        const t1 = (d1 / totalDist) * totalTime;
+        const t2 = (d2 / totalDist) * totalTime;
+        const t3 = (d3 / totalDist) * totalTime;
+
+        const pathStr = `M ${sPos},${startY} L ${sPos},${midY} L ${cPos},${midY} L ${cPos},${endY}`;
+        const newPath = path.cloneNode(true);
+        newPath.setAttribute('d', pathStr);
+        newPath.style.strokeDasharray = totalDist;
+        newPath.style.strokeDashoffset = totalDist;
+        newPath.style.animation = 'none';
+        path.parentNode.replaceChild(newPath, path);
+        
+        newPath.getBoundingClientRect(); 
+        newPath.style.animation = `drawPath 1.4s linear forwards`;
+
+        char.classList.add('running');
+        
+        char.style.transition = `bottom ${t1}ms linear, transform 0.4s ease`;
+        char.style.bottom = `${floorHeight - midY}px`;
+
+        window.charMoveTimeouts.push(setTimeout(() => {
+            if (cPos !== sPos) {
+                document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
+            }
+            char.style.transition = `left ${t2}ms linear, transform 0.4s ease`;
+            char.style.left = `${cPos}px`;
+
+            window.charMoveTimeouts.push(setTimeout(() => {
+                document.documentElement.style.setProperty('--char-dir', '1');
+                char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
+                char.style.bottom = `${floorHeight - endY}px`;
+
+                window.charMoveTimeouts.push(setTimeout(() => {
+                    char.classList.remove('running');
+                    if (pad !== 'KAS' && pad !== 'KOFFIE' && pad !== 'SAW' && pad !== 'UITGANG' && pad !== '0AW') {
+                        if (String(pad) === '9' && subTarget === 'paint') {
+                            document.documentElement.style.setProperty('--char-dir', '1'); 
+                        } else {
+                            const { isRightOfRack } = getMapTarget(pad, side);
+                            document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
+                        }
+                    }
+                }, t3));
+            }, t2));
+        }, t1));
     }
 
     function clearSearch() {
@@ -3716,181 +3940,6 @@ function toggleMapExpand(expand) {
         }).join('');
     }
 
-    function closeSelection() {
-        document.querySelectorAll('.aisle, .back-wall, .result-item, .paint-table').forEach(x => {
-            x.classList.remove('active', 'active-num', 'selected', 'active-side-left', 'active-side-right', 'active-side-both', 'show-label-popup');
-        });
-        document.querySelectorAll('.active-part').forEach(x => x.classList.remove('active-part'));
-        document.querySelectorAll('.highlighted-sec').forEach(span => {
-            span.classList.remove('highlighted-sec');
-            if (span.dataset.origText) span.innerHTML = span.dataset.origText;
-            span.removeAttribute('aria-label');
-        });
-        document.querySelectorAll('.active-label').forEach(x => x.classList.remove('active-label'));
-        restoreLabels();
-        if (window.labelPopupTimer) clearTimeout(window.labelPopupTimer);
-        
-        const card = document.getElementById('productDetailCard');
-        if (card) {
-            card.classList.remove('show');
-        }
-
-        window.currentSelectedProduct = null;
-        window.activeMapTarget = null;
-        moveChar('entrance', false, null, null, null);
-    }
-
-    function moveChar(pad, active, sec, side, subTarget) {
-        const char = document.getElementById('mainChar'), path = document.getElementById('guideLine');
-        const grid = document.getElementById('mapGrid');
-        if (!char || !path || !grid) return; 
-
-        const sPos = window.kioskPosX ? window.kioskPosX - 12 : 323; /* Poppetje staat 12px naast de kiosk */
-        let cPos = sPos, targetBottom = '0%'; 
-
-        let aisleTarget = 75; 
-        if (sec && !isNaN(sec)) {
-            const s = parseInt(sec);
-            const isFullAisle = pad === '1L' || pad === '17';
-            if (isFullAisle) {
-                aisleTarget = 10 + ((s - 1) / 16) * 75;
-            } else {
-                if (s <= 6) {
-                    aisleTarget = 10 + ((s - 1) / 5) * 25;
-                } else {
-                    aisleTarget = 55 + ((s - 7) / 10) * 30;
-                }
-            }
-        }
-
-        if (String(pad) === '9' && subTarget === 'paint') {
-            const p9 = document.getElementById('p-9');
-            if (p9) {
-                cPos = p9.offsetLeft - (p9.offsetWidth * 0.15) - 8; 
-                targetBottom = '1%';
-            }
-        }
-        else if (pad === 'KAS') { 
-            const kasEl = document.getElementById('cashierZone');
-            let targetDesk = null;
-            if (subTarget) targetDesk = document.getElementById('desk-' + subTarget);
-            
-            if (kasEl && targetDesk) {
-                cPos = kasEl.offsetLeft + targetDesk.offsetLeft - 8; 
-            } else {
-                cPos = kasEl ? kasEl.offsetLeft - 8 : 400; 
-            }
-            targetBottom = '1%';
-        }
-        else if (pad === 'SAW') {
-            const sawEl = document.getElementById('sawmillZone');
-            cPos = sawEl ? sawEl.offsetLeft - 8 : 600;
-            targetBottom = '1%';
-        }
-        else if (pad === 'UITGANG') {
-            const extEl = document.getElementById('exitDoor');
-            cPos = extEl ? extEl.offsetLeft : 700;
-            targetBottom = '0%';
-        }
-        else if (pad === 'KOFFIE') {
-            const cofEl = document.getElementById('coffeeCorner');
-            cPos = cofEl ? cofEl.offsetLeft - 8 : 800;
-            targetBottom = '1%';
-        }
-        else if (pad === '0AW') { 
-            cPos = sPos; 
-            targetBottom = active ? '90%' : '0%'; 
-            if (active && sec && !isNaN(sec)) {
-                const s = parseInt(sec);
-                cPos = 40 + ((s - 1) / 16) * (grid.offsetWidth - 80);
-            }
-        }
-        else if (pad !== 'entrance' && (!isNaN(pad) || pad === '1L')) {
-            const { rackPad, isRightOfRack } = getMapTarget(pad, side);
-            const t = document.getElementById(`p-${rackPad}`);
-            if(t) {
-                const isExpanded = document.getElementById('mapWrapper').classList.contains('map-expanded-overlay');
-                const gapOffset = isExpanded ? 12 : 9; 
-                cPos = isRightOfRack ? t.offsetLeft + t.offsetWidth + gapOffset : t.offsetLeft - gapOffset;
-                targetBottom = active ? `${aisleTarget}%` : `0%`;
-            }
-        }
-
-        if (window.charMoveTimeouts) window.charMoveTimeouts.forEach(clearTimeout);
-        window.charMoveTimeouts = [];
-
-        char.style.transition = 'none';
-        char.style.left = `${sPos}px`;
-        char.style.bottom = '6px'; /* Synced with new kiosk position */
-        char.classList.remove('running', 'interacting');
-        document.documentElement.style.setProperty('--char-dir', '1');
-
-        if (!active || pad === 'entrance') {
-            path.setAttribute('d', '');
-            path.style.animation = 'none';
-            char.style.bottom = '6px'; /* Synced with new kiosk position */
-            char.classList.add('interacting');
-            return;
-        }
-
-        const floorHeight = grid.offsetHeight;
-        const startY = floorHeight - 6; /* Start path at bottom: 6px */
-        const midY = floorHeight - (8 / 100 * floorHeight); 
-        const targetBVal = parseFloat(targetBottom);
-        const endY = floorHeight - (targetBVal / 100 * floorHeight);
-
-        const d1 = Math.abs(startY - midY); 
-        const d2 = Math.abs(cPos - sPos);
-        const d3 = Math.abs(midY - endY); 
-        const totalDist = d1 + d2 + d3 || 1;
-        const totalTime = 1400; 
-        const t1 = (d1 / totalDist) * totalTime;
-        const t2 = (d2 / totalDist) * totalTime;
-        const t3 = (d3 / totalDist) * totalTime;
-
-        const pathStr = `M ${sPos},${startY} L ${sPos},${midY} L ${cPos},${midY} L ${cPos},${endY}`;
-        const newPath = path.cloneNode(true);
-        newPath.setAttribute('d', pathStr);
-        newPath.style.strokeDasharray = totalDist;
-        newPath.style.strokeDashoffset = totalDist;
-        newPath.style.animation = 'none';
-        path.parentNode.replaceChild(newPath, path);
-        
-        newPath.getBoundingClientRect(); 
-        newPath.style.animation = `drawPath 1.4s linear forwards`;
-
-        char.classList.add('running');
-        
-        char.style.transition = `bottom ${t1}ms linear, transform 0.4s ease`;
-        char.style.bottom = `${floorHeight - midY}px`;
-
-        window.charMoveTimeouts.push(setTimeout(() => {
-            if (cPos !== sPos) {
-                document.documentElement.style.setProperty('--char-dir', cPos < sPos ? '-1' : '1');
-            }
-            char.style.transition = `left ${t2}ms linear, transform 0.4s ease`;
-            char.style.left = `${cPos}px`;
-
-            window.charMoveTimeouts.push(setTimeout(() => {
-                document.documentElement.style.setProperty('--char-dir', '1');
-                char.style.transition = `bottom ${t3}ms linear, transform 0.4s ease`;
-                char.style.bottom = `${floorHeight - endY}px`;
-
-                window.charMoveTimeouts.push(setTimeout(() => {
-                    char.classList.remove('running');
-                    if (pad !== 'KAS' && pad !== 'KOFFIE' && pad !== 'SAW' && pad !== 'UITGANG' && pad !== '0AW') {
-                        if (String(pad) === '9' && subTarget === 'paint') {
-                            document.documentElement.style.setProperty('--char-dir', '1'); 
-                        } else {
-                            const { isRightOfRack } = getMapTarget(pad, side);
-                            document.documentElement.style.setProperty('--char-dir', isRightOfRack ? '-1' : '1');
-                        }
-                    }
-                }, t3));
-            }, t2));
-        }, t1));
-    }
-
     function handleKeys(e) { 
         if (e.key === "Escape") {
             const wrapper = document.getElementById('mapWrapper');
@@ -3947,6 +3996,289 @@ function toggleMapExpand(expand) {
         }
         window.print();
     }
+
+    window.requestHelp = function(pad, sec, itemName) {
+        const btn = document.getElementById('btnHelpRequest');
+        if (btn && !btn.classList.contains('sent')) {
+            btn.classList.add('sent');
+            const t = i18n[curLang] || i18n['nl'];
+            btn.title = t.helpRequested;
+            btn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            
+            // Mock network call / webhook trigger to notify staff
+            console.log(`[STAFF ALERT WEBHOOK]: Customer requested help finding "${itemName}" at Aisle ${pad}, Section ${sec}.`);
+        }
+    };
+
+    window.showAisleExplorer = function(pad, e) {
+        if (e) e.stopPropagation();
+        
+        const card = document.getElementById('aisleExplorerCard');
+        if (!card) return;
+        
+        const t = i18n[curLang] || i18n['nl'];
+        let padStr = String(pad);
+        
+        let catCounts = {};
+        
+        data.forEach(item => {
+            const loc2 = getLoc(item).toUpperCase();
+            let itemPad = '';
+            const match = loc2.match(/PAD\s*0*(\d+)/i) || loc2.match(/^0*(\d+)[LR]-/i);
+            if (match) itemPad = parseInt(match[1], 10).toString();
+            else if (loc2.includes('1L')) itemPad = '1L';
+            else if (loc2.includes('0AW') || loc2.includes('0A')) itemPad = '0AW';
+            
+            if (itemPad === padStr) {
+                const name = getSg(item) || getHg(item); 
+                const hg = getHg(item);
+                const icon = icons[hg] || icons[name] || '📦';
+                const key = `${icon}|${name}`;
+                catCounts[key] = (catCounts[key] || 0) + 1;
+            }
+        });
+        
+        let sorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+        
+        if (sorted.length < 3) {
+            const staticData = {
+                '1': ['Droge afbouw', 'Hout'], '1L': ['Hout'], '2': ['Plinten', 'Tuinhout'],
+                '3': ['Hout', 'Timmerhout'], '4': ['Deuren', 'Deuren Kozijnen'],
+                '5': ['Hang- en sluitwerk', 'IJzerwaren'], '6': ['Schroeven', 'Plaatmateriaal'],
+                '7': ['Kitten', 'Lijm, kit en pur'], '8': ['Schildersgereedschap', 'Verf benodigdheden'],
+                '9': ['Verf', 'Klimaatbeheersing'], '10': ['Verf', 'Steigers Bekisting'],
+                '11': ['Gereedschap', 'Cement en mortels'], '12': ['Gereedschap', 'Bouwmaterialen'],
+                '13': ['Werkschoenen', 'Persoonlijke beschermings'], '14': ['Sanitair', 'Tegelverwerking'],
+                '15': ['Sanitair', 'Dakbedekking'], '16': ['Schakelmateriaal', 'Elektra'],
+                '17': ['Elektra PVC', 'Verwarming'], '0AW': ['Isolatie']
+            };
+            const fallbacks = staticData[padStr] || ['Algemeen'];
+            fallbacks.forEach(fb => {
+                let foundIcon = icons[fb] || '📦';
+                for (let [hg, iconChar] of Object.entries(icons)) {
+                    if (fb.includes(hg)) foundIcon = iconChar;
+                }
+                const fKey = `${foundIcon}|${fb}`;
+                if (!sorted.includes(fKey)) sorted.push(fKey);
+            });
+        }
+        
+        const top5 = sorted.slice(0, 5);
+        
+        let listHtml = top5.map(item => {
+            const [icon, name] = item.split('|');
+            const transName = (t.groups && t.groups[name]) ? t.groups[name] : name;
+            return `<li class="ae-item"><div class="ae-icon">${icon}</div> <span>${transName}</span></li>`;
+        }).join('');
+        
+        let padDisplay = padStr;
+        if (padStr === '0AW') padDisplay = t.backWallShort;
+        else if (padStr === '1L') padDisplay = `1 ${t.leftWord}`;
+        else padDisplay = `${t.padWord} ${padStr}`;
+        
+        card.innerHTML = `
+            <div class="ae-header">
+                <span>📍 ${padDisplay}</span>
+                <button class="ae-close" onclick="event.stopPropagation(); document.getElementById('aisleExplorerCard').classList.remove('show')">✕</button>
+            </div>
+            <ul class="ae-list">
+                ${listHtml}
+            </ul>
+        `;
+        
+        const prodCard = document.getElementById('productDetailCard');
+        if (prodCard) prodCard.classList.remove('show');
+
+        card.classList.add('show');
+    };
+
+    // --- SHOPPING LIST & ROUTES LOGIC ---
+    window.toggleCartPanel = function() {
+        document.getElementById('cartPanel').classList.toggle('show');
+    };
+
+    window.addToCart = function(artNr, e) {
+        e.stopPropagation(); 
+        const isAdded = shoppingList.find(i => String(getArtNr(i)) === String(artNr));
+        if (isAdded) {
+            window.removeFromCart(artNr, e);
+            return;
+        }
+        const item = data.find(d => String(getArtNr(d)) === String(artNr));
+        if (!item) return;
+        
+        shoppingList.push(item);
+        const btn = document.getElementById('btn-add-' + artNr);
+        if (btn) btn.classList.add('added');
+        updateCartUI();
+    };
+
+    window.removeFromCart = function(artNr, e) {
+        if(e) e.stopPropagation();
+        shoppingList = shoppingList.filter(i => String(getArtNr(i)) !== String(artNr));
+        const btn = document.getElementById('btn-add-' + artNr);
+        if (btn) btn.classList.remove('added');
+        updateCartUI();
+    };
+
+    function updateCartUI() {
+        const badge = document.getElementById('cartBadge');
+        const fab = document.getElementById('fabCart');
+        const list = document.getElementById('cartItemsList');
+        const t = i18n[curLang] || i18n['nl'];
+        
+        if (shoppingList.length > 0) {
+            badge.innerText = shoppingList.length;
+            fab.classList.remove('hidden');
+        } else {
+            fab.classList.add('hidden');
+            document.getElementById('cartPanel').classList.remove('show');
+            closeVisualSelection();
+        }
+        
+        if (shoppingList.length === 0) {
+            list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-weight: bold;">${t.emptyList}</div>`;
+            return;
+        }
+        
+        list.innerHTML = shoppingList.map(item => {
+            const artNr = getArtNr(item);
+            const name = getOmsch(item).replace(/</g, "&lt;");
+            let loc = getLoc(item);
+            if (loc) {
+                loc = loc.replace(/Pad/ig, t.padWord).replace(/Sectie/ig, t.sect).replace(/Links/ig, t.leftWord).replace(/Rechts/ig, t.rightWord);
+            }
+            return `
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <h4 class="cart-item-title">${name}</h4>
+                    <div class="cart-item-loc">📍 ${loc || t.unknownLoc}</div>
+                </div>
+                <button class="cart-item-remove" onclick="window.removeFromCart('${artNr}', event)">✕</button>
+            </div>`;
+        }).join('');
+    }
+
+    window.calculateMultiRoute = function() {
+        if(shoppingList.length === 0) return;
+        document.getElementById('cartPanel').classList.remove('show');
+        
+        const mapWrapNode = document.getElementById('mapWrapper');
+        if (mapWrapNode && !mapWrapNode.classList.contains('map-expanded-overlay')) {
+            toggleMapExpand(true);
+        }
+        
+        setTimeout(() => {
+            closeVisualSelection();
+            const grid = document.getElementById('mapGrid'), path = document.getElementById('guideLine'), char = document.getElementById('mainChar');
+            if(!grid || !path || !char) return;
+
+            let stops = shoppingList.map(item => {
+                const loc2 = getLoc(item).toUpperCase();
+                let pad = '0AW', sec = '1';
+                
+                if (loc2.includes('PAD KA') || loc2.includes('KAS')) pad = 'KAS';
+                else if (loc2.includes('PAD VM') || loc2.includes('VMB')) pad = '9';
+                else if (loc2.includes('PAD LI') || loc2.includes('LIJ')) pad = '2';
+                else if (loc2.includes('PAD BA') || loc2.includes('BAL')) pad = 'KAS';
+                else if (loc2.includes('PAD PB') || loc2.includes('PBM')) pad = '13';
+                else if (loc2.includes('KOFFIE')) pad = 'KOFFIE';
+                else if (loc2.includes('ZAAG')) pad = 'SAW';
+                else if (loc2.includes('0A') || loc2.includes('AW')) pad = '0AW';
+                else {
+                    const pm = loc2.match(/PAD\s*0*(\d+)/i) || loc2.match(/^0*(\d+)[LR]-/i) || loc2.match(/0*(\d+)/);
+                    if (pm && parseInt(pm[1])<=17) pad = parseInt(pm[1]).toString();
+                }
+                
+                const sm = loc2.match(/SECTIE\s*0*(\d+)/i) || loc2.match(/^[A-Z0-9]+[LR]?-0*(\d+)-/i);
+                if (sm) sec = parseInt(sm[1]).toString();
+                
+                let isL = loc2.includes('LINKS') || loc2.match(/^[A-Z0-9]+L-/i);
+                
+                let order = 99;
+                if(pad === '1L') order = 0;
+                else if (!isNaN(pad)) order = parseInt(pad);
+                else if (pad === '0AW') order = 20;
+                else if (pad === 'SAW') order = 21;
+                else if (pad === 'KOFFIE') order = 22;
+                else if (pad === 'KAS') order = 23;
+                else if (pad === 'UITGANG') order = 24;
+                
+                return { item, pad, sec, isL, order };
+            });
+
+            stops.sort((a,b) => a.order - b.order);
+
+            const fh = grid.offsetHeight, sPos = window.kioskPosX ? window.kioskPosX - 12 : 323, sY = fh - 6, mY = fh - (8/100*fh);
+            let pathStr = `M ${sPos},${sY} L ${sPos},${mY}`;
+            
+            stops.forEach(stop => {
+                let { pad, sec, isL } = stop;
+                let cx = sPos, targetB = '0%';
+                
+                if (pad === '0AW') {
+                    cx = 40 + ((parseInt(sec)-1)/16)*(grid.offsetWidth-80);
+                    targetB = '90%';
+                }
+                else if (pad === 'KAS') { const kE = document.getElementById('cashierZone'); cx = kE ? kE.offsetLeft - 8 : 400; targetB = '1%'; }
+                else if (pad === 'SAW') { const sE = document.getElementById('sawmillZone'); cx = sE ? sE.offsetLeft - 8 : 600; targetB = '1%'; }
+                else if (pad === 'KOFFIE') { const cE = document.getElementById('coffeeCorner'); cx = cE ? cE.offsetLeft - 8 : 800; targetB = '1%'; }
+                else if (!isNaN(pad) || pad === '1L') {
+                    const rP = isL ? (pad === '1' ? '1L' : (parseInt(pad)-1).toString()) : pad.toString();
+                    const tEl = document.getElementById(`p-${rP}`);
+                    if(tEl) {
+                        const gap = 12;
+                        cx = isL ? tEl.offsetLeft + tEl.offsetWidth + gap : tEl.offsetLeft - gap;
+                        const s = parseInt(sec);
+                        targetB = (pad === '1L' || pad === '17') ? (10+((s-1)/16)*75)+'%' : (s<=6 ? (10+((s-1)/5)*25)+'%' : (55+((s-7)/10)*30)+'%');
+                    }
+                }
+                
+                const eY = fh - (parseFloat(targetB)/100*fh);
+                pathStr += ` L ${cx},${mY} L ${cx},${eY} L ${cx},${mY}`;
+
+                // Highlight rack visually
+                if (pad === '0AW') {
+                    const bw = document.getElementById('p-0AW');
+                    if(bw) {
+                        bw.classList.add('active');
+                        bw.querySelectorAll('.sec-container span').forEach(sp => {
+                            if (sp.dataset.sec === sec.toString()) sp.classList.add('highlighted-sec');
+                        });
+                    }
+                }
+                else if (['KAS', 'KOFFIE', 'SAW'].includes(pad)) {
+                    document.getElementById(pad === 'KAS' ? 'cashierZone' : (pad === 'KOFFIE' ? 'coffeeCorner' : 'sawmillZone'))?.classList.add('active');
+                }
+                else {
+                    const rP = isL ? (pad === '1' ? '1L' : (parseInt(pad)-1).toString()) : pad.toString();
+                    const rEl = document.getElementById(`p-${rP}`);
+                    if (rEl) {
+                        rEl.classList.add('active', isL ? 'active-side-right' : 'active-side-left');
+                        document.getElementById(`p-${pad}`)?.classList.add('active-num');
+                        rEl.querySelectorAll('.aisle-part').forEach(p => p.classList.add('active-part'));
+                        rEl.querySelectorAll('.sec-container span').forEach(sp => {
+                            if (!sp.dataset.origText) sp.dataset.origText = sp.innerText;
+                            if (sp.dataset.origText === sec.toString()) sp.classList.add('highlighted-sec');
+                        });
+                    }
+                }
+            });
+
+            // End at Exit
+            const extEl = document.getElementById('exitDoor'), exX = extEl ? extEl.offsetLeft : 700;
+            pathStr += ` L ${exX},${mY} L ${exX},${sY}`;
+
+            const np = path.cloneNode(true);
+            np.setAttribute('d', pathStr);
+            np.style.strokeDasharray = "10 15";
+            np.classList.add('multi-route-path');
+            path.parentNode.replaceChild(np, path);
+
+            char.style.left = `${exX}px`; char.style.bottom = `6px`; char.classList.remove('running', 'interacting');
+        }, 300);
+    };
+
 </script>
 </body>
 </html>
