@@ -8,9 +8,6 @@
     <meta name="theme-color" content="#005cb9">
     <link id="manifestLink" rel="manifest" href="">
     
-    <!-- Lightweight Offline QR Code Generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <style>
         :root {
             --primary: #005cb9; 
@@ -760,6 +757,47 @@
             border-color: var(--primary) transparent transparent transparent !important;
         }
 
+        /* --- VISIBLE LABELS IN EXPANDED MAP --- */
+        .map-expanded-overlay #label-paint, 
+        .map-expanded-overlay .desk-label, 
+        .map-expanded-overlay .coffee-label {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) translateZ(25px) rotateX(-42deg) scale(0.9);
+        }
+        
+        .map-expanded-overlay #label-paint::after, 
+        .map-expanded-overlay .desk-label::after, 
+        .map-expanded-overlay .coffee-label::after {
+            display: none !important;
+        }
+        
+        body.dark-mode .map-expanded-overlay #label-paint,
+        body.dark-mode .map-expanded-overlay .desk-label,
+        body.dark-mode .map-expanded-overlay .coffee-label {
+            background: rgba(15, 23, 42, 0.75);
+            color: #e2e8f0;
+            border-color: rgba(255,255,255,0.2);
+        }
+        
+        .map-expanded-overlay #label-paint.active-label, 
+        .map-expanded-overlay .desk-label.active-label, 
+        .map-expanded-overlay .coffee-label.active-label {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(-50%, -50%) translateZ(40px) rotateX(-42deg) scale(1.1) !important;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4) !important;
+        }
+
+        body.dark-mode .map-expanded-overlay #label-paint.active-label,
+        body.dark-mode .map-expanded-overlay .desk-label.active-label,
+        body.dark-mode .map-expanded-overlay .coffee-label.active-label {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+            text-shadow: none !important;
+        }
+
         #cashierZone { position: absolute; bottom: -8px; left: calc(100% / 18 * 7.8); width: calc(100% / 18 * 4.8); display: flex; justify-content: space-between; align-items: flex-end; height: 8px; z-index: 150; transform: translateZ(8px); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer;}
         .cashier-desk { width: 20%; height: 100%; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1.5px solid #020617; border-top: 3px solid var(--primary); border-radius: 2px; position: relative; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), -6px 10px 10px rgba(0,0,0,0.4); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer;}
         .cashier-desk::before { content: ''; position: absolute; top: -5px; right: 15%; width: 35%; height: 5px; background: var(--primary); border-radius: 1px; border: 1.5px solid #020617; box-shadow: 0 0 4px rgba(0, 92, 185, 0.6); transform: rotateZ(-8deg) translateZ(1px); z-index: 1; }
@@ -802,9 +840,21 @@
         }
         .map-expanded-overlay #aisleExplorerCard.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
         .ae-header { font-weight: 900; font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-neutral); padding-bottom: 8px; }
-        .ae-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
-        .ae-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 800; color: var(--text-main); background: rgba(255,255,255,0.6); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .ae-icon { font-size: 1.3rem; background: #fff; border-radius: 6px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .ae-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; max-height: 250px; overflow-y: auto; padding-right: 4px; }
+        .ae-list::-webkit-scrollbar { width: 4px; }
+        .ae-list::-webkit-scrollbar-thumb { background: rgba(0,92,185,0.3); border-radius: 4px; }
+        
+        .ae-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 800; color: var(--text-main); background: rgba(255,255,255,0.6); padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 2px 4px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s ease; }
+        .ae-item:hover { background: #ffffff; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        
+        .ae-icon { width: 38px; height: 38px; font-size: 1.3rem; background: #fff; border-radius: 6px; padding: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .ae-icon img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .ae-item-info { flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: left; }
+        .ae-item-title { font-size: 0.8rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); margin-bottom: 2px; }
+        .ae-item-art { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; }
+        
         .ae-close { background: #e2e8f0; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; cursor: pointer; color: var(--text-main); transition: background 0.2s; }
         .ae-close:hover { background: #cbd5e1; }
 
@@ -874,14 +924,6 @@
 
         .pd-actions { display: flex; gap: 6px; align-items: center; }
 
-        .pd-qr-btn {
-            position: relative; flex-shrink: 0;
-            background: #e2e8f0; color: var(--primary-dark); border: none; border-radius: 8px; width: 34px; height: 34px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;
-        }
-        .pd-qr-btn:hover { background: #cbd5e1; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .pd-qr-btn:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-
         .pd-print-btn { 
             position: relative; flex-shrink: 0;
             background: var(--primary); color: white; border: none; border-radius: 8px; width: 34px; height: 34px;
@@ -898,22 +940,6 @@
         .pd-help-btn:hover { background: #ca8a04; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(234, 179, 8, 0.4); }
         .pd-help-btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(234, 179, 8, 0.3); }
         .pd-help-btn.sent { background: #16a34a; cursor: default; transform: none; box-shadow: none; pointer-events: none; color: white; }
-
-        /* QR Code Container Dropdown */
-        .pd-qr-container {
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 10px; background: rgba(255,255,255,0.8); border-radius: 8px; margin-top: 4px;
-            border: 1px solid rgba(0,0,0,0.05); animation: slideDownQR 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform-origin: top;
-        }
-        .pd-qr-container.show { display: flex; }
-        .pd-qr-code { background: white; padding: 10px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .pd-qr-text { font-size: 0.7rem; font-weight: 800; color: var(--text-main); margin-top: 8px; text-align: center; }
-        
-        @keyframes slideDownQR {
-            0% { opacity: 0; transform: scaleY(0.5); }
-            100% { opacity: 1; transform: scaleY(1); }
-        }
 
         @keyframes runBob { 0%, 100% { transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) translateY(0) scale(var(--char-scale)); } 50% { transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) translateY(-4px) scale(var(--char-scale)); } }
         .user { position: absolute; z-index: 200; transform-origin: bottom center; bottom: 0%; left: 270px; display: flex; justify-content: center; transform: translateX(-50%) rotateX(var(--char-rx)) translateZ(var(--char-tz)) scale(var(--char-scale)); width: 18px; }
@@ -973,7 +999,10 @@
         body.dark-mode #aisleExplorerCard { background: rgba(15, 23, 42, 0.75); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); }
         body.dark-mode .ae-header { color: #38bdf8; border-color: rgba(255,255,255,0.1); }
         body.dark-mode .ae-item { color: #e2e8f0; background: rgba(30, 41, 59, 0.6); border-color: rgba(255,255,255,0.05); }
+        body.dark-mode .ae-item:hover { background: rgba(30, 41, 59, 0.9); }
         body.dark-mode .ae-icon { background: rgba(15, 23, 42, 0.8); }
+        body.dark-mode .ae-item-title { color: #f8fafc; }
+        body.dark-mode .ae-item-art { color: #94a3b8; }
         body.dark-mode .ae-close { background: #334155; color: #fff; }
         body.dark-mode .ae-close:hover { background: #475569; }
 
@@ -983,10 +1012,6 @@
         body.dark-mode .pd-title { color: #f8fafc; }
         body.dark-mode .pd-art { color: #94a3b8; }
         body.dark-mode .pd-loc-banner { background: rgba(30, 58, 138, 0.4); color: #bfdbfe; border-color: rgba(255, 255, 255, 0.05); }
-        body.dark-mode .pd-qr-btn { background: rgba(30, 41, 59, 0.8); color: #38bdf8; border: 1px solid rgba(255, 255, 255, 0.1); }
-        body.dark-mode .pd-qr-btn:hover { background: #1e293b; }
-        body.dark-mode .pd-qr-container { background: rgba(15, 23, 42, 0.5); border-color: rgba(255, 255, 255, 0.05); }
-        body.dark-mode .pd-qr-text { color: #e2e8f0; }
         body.dark-mode .pd-print-btn { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(0, 150, 199, 0.2); }
         body.dark-mode .pd-print-btn:hover { background: #0077b6; color: #fff;}
         body.dark-mode .pd-help-btn { background: #ca8a04; color: #ffffff; border: 1px solid rgba(255,255,255,0.1); }
@@ -1367,7 +1392,7 @@
             location: "LOKALIZACJA:", art: "Art.", loc: "LOK", unknownLoc: "Nieznana lokalizacja",
             youAreHere: "Jesteś tutaj", scanToPhone: "Skanuj na telefon",
             mapLabels: {
-                "Hout": "Drewno", "Tuinhout": "Drewno ogrodowe", "Vuren ruw geschaafd": "Sosna surowa strugana", 
+                "Houtt": "Drewno", "Tuinhout": "Drewno ogrodowe", "Vuren ruw geschaafd": "Sosna surowa strugana", 
                 "Plaatmateriaal hout": "Płyty drewnopochodne", "Ventilatie": "Wentylacja", 
                 "Steigers Bekisting": "Rusztowania Szalunki", "Pleisters Stuc": "Tynki Gips", 
                 "Cement Mortels": "Cement Zaprawy", "Stenen Blokken": "Cegły Bloki", 
@@ -1384,7 +1409,7 @@
     };
 
     const aisleCategories = {
-        1: "Gipsplaten", 2: "Plinten", 3: "Hout", 4: "Deuren Kozijnen", 5: "IJzerwaren", 
+        1: "Hout", 2: "Plinten", 3: "Hout", 4: "Deuren Kozijnen", 5: "IJzerwaren", 
         6: "Schroeven", 7: "Kit, pur lijm", 8: "Verf benodigdheden", 
         9: "Verf", 10: "Verf", 11: "Gereedschap", 12: "Gereedschap", 
         13: "Kleding Schoenen", 14: "Sanitair", 15: "Sanitair", 
@@ -1411,7 +1436,7 @@
     window.currentSelectedProduct = null;
 
     const fallbackData = [
-           {
+            {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2856,7 +2881,7 @@
         lw.innerHTML = `
             <div class="aisle-part" style="flex: 1;" onclick="event.stopPropagation(); handleMapClick('1L', 'full', null, event)">
                 <div class="left-face"></div>
-                <div class="aisle-category-label label-bottom" data-map-label="Hout">Hout</div>
+                <div class="aisle-category-label label-bottom" data-map-label="Gipsplaten">Gipsplaten</div>
                 <div class="sec-container">${allSecs}</div>
             </div>
             <div class="aisle-num" id="badge-1L" style="display: none !important;"><span class="pad-prefix" data-i18n-pad>${padWord}</span><b>1L</b></div>
@@ -3220,25 +3245,25 @@
 
             if (id === 'KAS') {
                 const lbl = document.getElementById('label-' + (part || 'kassa'));
-                if (lbl && !isMapAlreadyExpanded) {
+                if (lbl) {
                     lbl.classList.add('active-label');
-                    setTimeout(() => {
+                    window.labelPopupTimer = setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
             } else if (id === 'KOFFIE') {
                 const lbl = document.getElementById('label-coffee');
-                if (lbl && !isMapAlreadyExpanded) {
+                if (lbl) {
                     lbl.classList.add('active-label');
-                    setTimeout(() => {
+                    window.labelPopupTimer = setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
             } else if (id === 'SAW') {
                 const lbl = document.getElementById('label-sawmill');
-                if (lbl && !isMapAlreadyExpanded) {
+                if (lbl) {
                     lbl.classList.add('active-label');
-                    setTimeout(() => {
+                    window.labelPopupTimer = setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
@@ -3343,7 +3368,6 @@
 
                         const jsSafeLoc = displayLoc.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
                         const jsSafeArt = String(getArtNr(item)).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                        const qrUrl = `https://www.bouwmaat.nl/zoeken?text=${artNrClean}`;
                         
                         const safePadStr = String(pad || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                         const safeSecStr = String(sec || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -3364,17 +3388,10 @@
                                     <button class="pd-help-btn" id="btnHelpRequest" title="${t.askHelp}" onclick="event.stopPropagation(); requestHelp('${safePadStr}', '${safeSecStr}', '${jsSafeName}')">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                                     </button>
-                                    <button class="pd-qr-btn" title="${t.scanToPhone}" onclick="event.stopPropagation(); toggleQR('${qrUrl}')">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm-2-6h2v2h-2v-2zm0 4h2v2h-2v-2z"></path></svg>
-                                    </button>
                                     <button class="pd-print-btn" title="${t.printBtn.replace('🖨️ ', '')}" onclick="event.stopPropagation(); printTicket('${jsSafeName}', '${jsSafeArt}', '${jsSafeLoc}')">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                                     </button>
                                 </div>
-                            </div>
-                            <div id="qrContainer" class="pd-qr-container">
-                                <div id="qrCode" class="pd-qr-code"></div>
-                                <div class="pd-qr-text">${t.scanToPhone}</div>
                             </div>
                         `;
                         card.onclick = (e) => {
@@ -3449,25 +3466,25 @@
 
                 if (pad === 'KAS') {
                     const lbl = document.getElementById('label-' + (subTarget || 'kassa'));
-                    if (lbl && !isMapAlreadyExpanded) {
+                    if (lbl) {
                         lbl.classList.add('active-label');
-                        setTimeout(() => {
+                        window.labelPopupTimer = setTimeout(() => {
                             if (lbl) lbl.classList.remove('active-label');
                         }, 3000);
                     }
                 } else if (pad === 'KOFFIE') {
                     const lbl = document.getElementById('label-coffee');
-                    if (lbl && !isMapAlreadyExpanded) {
+                    if (lbl) {
                         lbl.classList.add('active-label');
-                        setTimeout(() => {
+                        window.labelPopupTimer = setTimeout(() => {
                             if (lbl) lbl.classList.remove('active-label');
                         }, 3000);
                     }
                 } else if (pad === 'SAW') {
                     const lbl = document.getElementById('label-sawmill');
-                    if (lbl && !isMapAlreadyExpanded) {
+                    if (lbl) {
                         lbl.classList.add('active-label');
-                        setTimeout(() => {
+                        window.labelPopupTimer = setTimeout(() => {
                             if (lbl) lbl.classList.remove('active-label');
                         }, 3000);
                     }
@@ -3476,9 +3493,9 @@
 
             if (String(pad) === '9' && subTarget === 'paint') {
                 const lbl = document.getElementById('label-paint');
-                if (lbl && !isMapAlreadyExpanded) {
+                if (lbl) {
                     lbl.classList.add('active-label');
-                    setTimeout(() => {
+                    window.labelPopupTimer = setTimeout(() => {
                         if (lbl) lbl.classList.remove('active-label');
                     }, 3000);
                 }
@@ -3959,28 +3976,6 @@
         }
     }
 
-    window.toggleQR = function(url) {
-        const container = document.getElementById('qrContainer');
-        if (!container) return;
-        
-        if (container.classList.contains('show')) {
-            container.classList.remove('show');
-        } else {
-            container.classList.add('show');
-            const qrCodeDiv = document.getElementById('qrCode');
-            if (qrCodeDiv && qrCodeDiv.innerHTML === '') {
-                new QRCode(qrCodeDiv, {
-                    text: url,
-                    width: 130,
-                    height: 130,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.L
-                });
-            }
-        }
-    };
-    
     function printTicket(name, art, loc) {
         const printArea = document.getElementById('printArea');
         const t = i18n[curLang] || i18n['nl'];
@@ -4019,8 +4014,7 @@
         const t = i18n[curLang] || i18n['nl'];
         let padStr = String(pad);
         
-        let catCounts = {};
-        
+        let aisleProducts = [];
         data.forEach(item => {
             const loc2 = getLoc(item).toUpperCase();
             let itemPad = '';
@@ -4030,51 +4024,56 @@
             else if (loc2.includes('0AW') || loc2.includes('0A')) itemPad = '0AW';
             
             if (itemPad === padStr) {
-                const name = getSg(item) || getHg(item); 
-                const hg = getHg(item);
-                const icon = icons[hg] || icons[name] || '📦';
-                const key = `${icon}|${name}`;
-                catCounts[key] = (catCounts[key] || 0) + 1;
+                aisleProducts.push(item);
             }
         });
         
-        let sorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+        // Sort products alphabetically and cap at a reasonable number for performance
+        aisleProducts.sort((a, b) => getOmsch(a).localeCompare(getOmsch(b)));
+        const displayProducts = aisleProducts.slice(0, 15);
         
-        if (sorted.length < 3) {
-            const staticData = {
-                '1': ['Droge afbouw', 'Hout'], '1L': ['Hout'], '2': ['Plinten', 'Tuinhout'],
-                '3': ['Hout', 'Timmerhout'], '4': ['Deuren', 'Deuren Kozijnen'],
-                '5': ['Hang- en sluitwerk', 'IJzerwaren'], '6': ['Schroeven', 'Plaatmateriaal'],
-                '7': ['Kitten', 'Lijm, kit en pur'], '8': ['Schildersgereedschap', 'Verf benodigdheden'],
-                '9': ['Verf', 'Klimaatbeheersing'], '10': ['Verf', 'Steigers Bekisting'],
-                '11': ['Gereedschap', 'Cement en mortels'], '12': ['Gereedschap', 'Bouwmaterialen'],
-                '13': ['Werkschoenen', 'Persoonlijke beschermings'], '14': ['Sanitair', 'Tegelverwerking'],
-                '15': ['Sanitair', 'Dakbedekking'], '16': ['Schakelmateriaal', 'Elektra'],
-                '17': ['Elektra PVC', 'Verwarming'], '0AW': ['Isolatie']
-            };
-            const fallbacks = staticData[padStr] || ['Algemeen'];
-            fallbacks.forEach(fb => {
-                let foundIcon = icons[fb] || '📦';
-                for (let [hg, iconChar] of Object.entries(icons)) {
-                    if (fb.includes(hg)) foundIcon = iconChar;
-                }
-                const fKey = `${foundIcon}|${fb}`;
-                if (!sorted.includes(fKey)) sorted.push(fKey);
-            });
+        let listHtml = '';
+        if (displayProducts.length > 0) {
+            listHtml = displayProducts.map(item => {
+                const name = getOmsch(item);
+                const artNr = getArtNr(item);
+                const cleanArt = artNr.toString().trim().replace(/[-\s]/g, '').toLowerCase();
+                const hg = getHg(item);
+                const catIcon = icons[hg] || '📦';
+                
+                const safeName = name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const jsSafeArt = artNr.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                
+                let sec = '1';
+                const loc2 = getLoc(item);
+                const secMatch = loc2.match(/Sectie\s*0*(\d+)/i) || loc2.match(/^[A-Z0-9]+[LR]?-0*(\d+)-/i);
+                if (secMatch) sec = parseInt(secMatch[1], 10).toString();
+                
+                let sideRaw = 'Links';
+                if (loc2.includes('Rechts') || loc2.match(/^[A-Z0-9]+R-/i)) sideRaw = 'Rechts';
+
+                const safeSec = String(sec).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                const safeSideRaw = String(sideRaw).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                
+                return `
+                <li class="ae-item" onclick="event.stopPropagation(); selectItem('${padStr}', '${safeSec}', '${safeSideRaw}', null, '', '${jsSafeArt}'); document.getElementById('aisleExplorerCard').classList.remove('show');">
+                    <div class="ae-icon">
+                        <img src="img/${cleanArt}.webp" onerror="handleImgFallback(this, '${cleanArt}', '${catIcon}')" alt="">
+                    </div>
+                    <div class="ae-item-info">
+                        <div class="ae-item-title" title="${safeName}">${safeName}</div>
+                        <div class="ae-item-art">${t.art} ${artNr}</div>
+                    </div>
+                </li>`;
+            }).join('');
+        } else {
+            listHtml = `<li class="ae-item" style="justify-content:center; color:var(--text-muted); font-size:0.8rem; cursor:default; pointer-events:none;">Geen specifieke producten gevonden</li>`;
         }
         
-        const top5 = sorted.slice(0, 5);
-        
-        let listHtml = top5.map(item => {
-            const [icon, name] = item.split('|');
-            const transName = (t.groups && t.groups[name]) ? t.groups[name] : name;
-            return `<li class="ae-item"><div class="ae-icon">${icon}</div> <span>${transName}</span></li>`;
-        }).join('');
-        
         let padDisplay = padStr;
-        if (padStr === '0AW') padDisplay = t.backWallShort;
-        else if (padStr === '1L') padDisplay = `1 ${t.leftWord}`;
-        else padDisplay = `${t.padWord} ${padStr}`;
+        if (padStr === '0AW') padDisplay = t.backWallShort || 'Achterwand';
+        else if (padStr === '1L') padDisplay = `1 ${t.leftWord || 'Links'}`;
+        else padDisplay = `${t.padWord || 'Pad'} ${padStr}`;
         
         card.innerHTML = `
             <div class="ae-header">
