@@ -56,28 +56,38 @@
         }
         @keyframes bgPan { 0% { transform: translateY(0) translateX(0); } 100% { transform: translateY(-32px) translateX(-32px); } }
 
-        /* Modern Frosted Glass Pills (Floating Tags) */
-        .floating-tags-container { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-        .float-tag {
-            position: absolute; bottom: -10%; left: 50%;
-            background: rgba(255, 255, 255, 0.7);
+        /* Modern Frosted Glass Image Bubbles */
+        .floating-tags-container { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+        .float-img {
+            position: absolute; top: 100%; left: 50%;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            color: var(--primary-dark);
-            padding: 8px 20px; border-radius: 40px;
-            font-size: 0.85rem; font-weight: 800; white-space: nowrap;
+            border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 12px 30px rgba(0, 46, 92, 0.08), inset 0 2px 4px rgba(255,255,255,0.8);
-            animation: modernFloat 24s linear infinite; animation-delay: var(--td);
-            opacity: 0; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px;
+            box-shadow: 0 12px 30px rgba(0, 46, 92, 0.1), inset 0 2px 4px rgba(255,255,255,0.8);
+            animation-name: modernFloat; animation-timing-function: linear; animation-iteration-count: infinite; 
+            animation-delay: var(--td);
+            opacity: 0; padding: 12px; box-sizing: border-box;
+            cursor: pointer; pointer-events: auto; transition: filter 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform, opacity;
         }
-        .float-tag span { color: var(--border-neutral); margin: 0 2px; }
-        .float-tag i { font-style: normal; font-size: 1.1rem; }
+        .float-img:hover {
+            animation-play-state: paused;
+            filter: brightness(1.05);
+            box-shadow: 0 20px 40px rgba(0, 92, 185, 0.25), inset 0 2px 4px rgba(255,255,255,1);
+            z-index: 20;
+        }
+        .float-img img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+        }
 
         @keyframes modernFloat {
-            0% { bottom: -10%; opacity: 0; transform: translateX(calc(var(--tx) * 1vw)) scale(0.9); }
-            10% { opacity: 1; transform: translateX(calc(var(--tx) * 1vw)) scale(1); }
-            90% { opacity: 1; transform: translateX(calc(var(--tx) * 1vw)) scale(1); }
-            100% { bottom: 110%; opacity: 0; transform: translateX(calc(var(--tx) * 1vw)) scale(1.05); }
+            0% { opacity: 0; transform: translate3d(calc(var(--tx) * 1vw), 5vh, 0) scale(0.9) rotate(calc(var(--rot) * -1deg)); }
+            10% { opacity: 1; transform: translate3d(calc(var(--tx) * 1vw), -15vh, 0) scale(1) rotate(0deg); }
+            90% { opacity: 1; transform: translate3d(calc(var(--tx) * 1vw), -95vh, 0) scale(1) rotate(calc(var(--rot) * 0.5deg)); }
+            100% { opacity: 0; transform: translate3d(calc(var(--tx) * 1vw), -115vh, 0) scale(1.05) rotate(calc(var(--rot) * 1deg)); }
         }
 
         /* Animated Navigation Lines (Subtle) */
@@ -194,8 +204,24 @@
         .btn-reset { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 6px 10px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
 
         .search-area-wrapper { display: flex; gap: 8px; margin-bottom: 12px; flex-shrink: 0; width: 100%; z-index: 50; position: relative; }
-        .search-wrap { position: relative; height: 48px; background: #fff; flex: 1; border-radius: 10px; border: 3px solid var(--primary); box-shadow: 0 4px 6px rgba(0, 92, 185, 0.1); display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; }
-        .search-wrap:focus-within { box-shadow: 0 0 0 4px rgba(0, 92, 185, 0.3); }
+        .search-wrap { 
+            position: relative; height: 48px; flex: 1; border-radius: 10px; 
+            background: linear-gradient(#fff, #fff) padding-box,
+                        linear-gradient(90deg, #0ea5e9, #8b5cf6, #ec4899, #0ea5e9) border-box;
+            border: 3px solid transparent;
+            background-size: 200% 100%;
+            animation: searchGlow 6s linear infinite;
+            display: flex; align-items: center; transition: all 0.2s ease; overflow: hidden; 
+        }
+        .search-wrap:focus-within { 
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2), 0 4px 20px rgba(236, 72, 153, 0.15);
+            animation: searchGlow 3s linear infinite;
+        }
+        @keyframes searchGlow {
+            0% { background-position: 0% 50%; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15); }
+            50% { box-shadow: 0 4px 15px rgba(236, 72, 153, 0.15); }
+            100% { background-position: 200% 50%; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15); }
+        }
         .input-layer { flex: 1; height: 100%; padding: 0 10px 0 12px; font-family: inherit; font-size: 1.1rem; font-weight: 900; border: none; background: transparent; outline: none; z-index: 2; color: var(--primary-dark); width: 100%; min-width: 0; }
         #searchGhost { position: absolute; left: 0; top: 0; height: 100%; display: flex; align-items: center; padding-left: 12px; font-family: inherit; z-index: 1; color: #94a3b8; pointer-events: none; font-size: 1.1rem; font-weight: 900; white-space: pre; overflow: hidden; }
         .search-actions { display: flex; align-items: center; padding-right: 5px; z-index: 3; gap: 5px; }
@@ -977,7 +1003,11 @@
         body.dark-mode { --bg: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --border-neutral: #334155; --aisle: #1e293b; }
         body.dark-mode .logo h1 { color: var(--text-main); }
         body.dark-mode .logo h1 span { background: var(--accent); color: #ffffff; }
-        body.dark-mode .search-wrap, body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
+        body.dark-mode .category-chip, body.dark-mode .result-item, body.dark-mode .btn-reset, body.dark-mode .icon-wrap { background: #1e293b; color: var(--text-main); }
+        body.dark-mode .search-wrap { 
+            background: linear-gradient(#1e293b, #1e293b) padding-box,
+                        linear-gradient(90deg, #0ea5e9, #8b5cf6, #ec4899, #0ea5e9) border-box;
+        }
         body.dark-mode .input-layer { color: var(--text-main); }
         body.dark-mode .tag { background: #334155; color: #cbd5e1; } body.dark-mode .tag.sub { background: #1e3a8a; color: #bfdbfe; }
         body.dark-mode .clear-btn { background: #334155; color: white; } body.dark-mode .result-item.selected { background: #0b1120; border-color: var(--primary); }
@@ -1083,8 +1113,7 @@
         }
         body.dark-mode .video-container { border-color: #1e293b; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
-        body.dark-mode .float-tag { background: rgba(30, 41, 59, 0.6); color: #e2e8f0; border-color: rgba(255,255,255,0.05); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
-        body.dark-mode .float-tag span { color: #475569; }
+        body.dark-mode .float-img { background: rgba(30, 41, 59, 0.6); border-color: rgba(255,255,255,0.05); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         
         body.dark-mode .intro-h1 { background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; }
         body.dark-mode .intro-slogan { color: #f8fafc; }
@@ -1106,10 +1135,8 @@
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
         <div class="intro-bg">
-            <div class="floating-tags-container">
-                <div class="float-tag" style="--tx: -30; --td: 0s;"><i>🎨</i> Verf <span>•</span> Paint</div>
-                <div class="float-tag" style="--tx: 20; --td: -8s;"><i>🛠️</i> Gereedschap <span>•</span> Tools</div>
-                <div class="float-tag" style="--tx: -10; --td: -16s;"><i>🪵</i> Hout <span>•</span> Timber</div>
+            <div class="floating-tags-container" id="floatingTagsContainer">
+                <!-- Dynamically populated via JS -->
             </div>
             <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
                 <path d="M -100,200 L 200,200 L 200,500 L 600,500 L 600,300 L 1100,300" />
@@ -1436,7 +1463,7 @@
     window.currentSelectedProduct = null;
 
     const fallbackData = [
-            {
+                   {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2595,6 +2622,8 @@
             "Locatie2": "Pad VM Links, Sectie 02"
         }
 
+
+
     ];
 
     const getArtNr = (item) => String(item["ArtikelNr."] || item.artikelNr || item.id || '');
@@ -2618,6 +2647,7 @@
         if(introMenu) introMenu.classList.remove('show');
     }
 
+    // Close language dropdowns when clicking anywhere else
     document.addEventListener('click', () => {
         const introMenu = document.getElementById('introLangMenu');
         const appMenu = document.getElementById('appLangMenu');
@@ -2642,6 +2672,54 @@
         }
 
         boot(); 
+        populateIntroImages(); // Inject the 30 floating images
+    }
+
+    function populateIntroImages() {
+        const container = document.getElementById('floatingTagsContainer');
+        if (!container || !data || data.length === 0) return;
+        
+        container.innerHTML = '';
+        // Use 30 images
+        const totalImages = Math.min(30, data.length); 
+
+        for (let i = 0; i < totalImages; i++) {
+            // Pick a random product from the loaded catalog
+            const randomProduct = data[Math.floor(Math.random() * data.length)];
+            const artNr = getArtNr(randomProduct).trim();
+            const catIcon = icons[getHg(randomProduct)] || '📦';
+            
+            // Distribute images evenly across the screen width to prevent clustering
+            const sectionWidth = 140 / totalImages; // Spread from -70vw to +70vw
+            const baseTx = -70 + (i * sectionWidth); 
+            const tx = baseTx + (Math.random() * 12 - 6); // Add natural random jitter
+            
+            // Randomize duration, delay, rotation, and size
+            const duration = 18 + Math.random() * 22; // Random speed between 18s and 40s
+            const td = -(Math.random() * duration).toFixed(2); // Random start position in the loop
+            const rot = Math.floor(Math.random() * 80) - 40; // Rotation: -40 to +40 degrees
+            const size = Math.floor(Math.random() * 50) + 60; // Size: 60px to 110px
+
+            const div = document.createElement('div');
+            div.className = 'float-img';
+            div.style.setProperty('--tx', tx);
+            div.style.setProperty('--td', `${td}s`);
+            div.style.setProperty('--rot', rot);
+            div.style.animationDuration = `${duration}s`;
+            div.style.width = `${size}px`;
+            div.style.height = `${size}px`;
+            
+            div.onclick = () => triggerIntroProduct(artNr);
+
+            // Create image with fallback placeholder
+            const img = document.createElement('img');
+            img.src = `img/${artNr}.webp`;
+            img.setAttribute('onerror', `this.src='https://placehold.co/100x100/ffffff/0a55d7?text=${encodeURIComponent(catIcon)}'`);
+            img.alt = getOmsch(randomProduct).replace(/"/g, '&quot;');
+            
+            div.appendChild(img);
+            container.appendChild(div);
+        }
     }
 
     function closeIntro() {
@@ -2651,6 +2729,29 @@
         const resetBtn = document.getElementById('btnReset');
         if (resetBtn) resetBtn.style.display = '';
     }
+
+    window.triggerIntroProduct = function(artNr) {
+        closeIntro();
+        
+        setTimeout(() => {
+            const searchBox = document.getElementById('searchBox');
+            if (searchBox) {
+                searchBox.value = artNr;
+                handleSearch();
+            }
+
+            // Short delay to allow the search results to render
+            setTimeout(() => {
+                const list = document.getElementById('resultsList');
+                if (list) {
+                    const firstResult = list.querySelector('.result-item');
+                    if (firstResult) {
+                        firstResult.click(); // Simulates a click on the result to pop open the map
+                    }
+                }
+            }, 100);
+        }, 400); // Waits for the intro screen to finish its fade-out animation
+    };
 
     function resetApp() {
         closeSelection(); 
