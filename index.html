@@ -26,89 +26,189 @@
 
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; background: var(--bg); font-family: system-ui, -apple-system, sans-serif;}
 
-        /* --- MODERN PREMIUM INTRO PAGE --- */
+        /* --- GLOWY COMMERCIAL INTRO PAGE --- */
         #introPage {
             position: fixed; inset: 0; width: 100%; height: 100vh; height: 100dvh;
             z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box; color: var(--primary); text-align: center;
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 24px; box-sizing: border-box; text-align: center;
+            background: var(--bg);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s;
             overflow: hidden;
-            background: #f8fafc;
+            cursor: pointer;
         }
 
-        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.04); filter: blur(12px); }
+        #introPage.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.05); }
 
-        /* Soft Ambient Orbs */
-        .glow-orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.6; z-index: 0; pointer-events: none; transition: all 1s ease; }
-        .orb-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: rgba(56, 189, 248, 0.4); animation: orbDrift 18s ease-in-out infinite alternate; }
-        .orb-2 { width: 60vw; height: 60vw; bottom: -20%; right: -10%; background: rgba(0, 92, 185, 0.3); animation: orbDrift 22s ease-in-out infinite alternate-reverse; }
-        @keyframes orbDrift { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10vw, 10vh) scale(1.1); } }
+        /* Ambient Mesh Gradient Background */
+        .intro-mesh {
+            position: absolute; inset: -50%; z-index: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 92, 185, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(0, 69, 139, 0.1) 0%, transparent 40%);
+            filter: blur(60px);
+            animation: meshMove 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes meshMove {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(-5%, 5%) rotate(10deg) scale(1.15); }
+        }
 
-        /* Sleek Dot Matrix Background */
-        .intro-bg { position: absolute; inset: 0; background: transparent; z-index: 0; overflow: hidden; }
-        .intro-bg::before {
-            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+        /* --- ELEGANT AMBIENT BACKGROUND & ANIMATED SLOGAN --- */
+        .intro-bg-animated { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+        
+        .light-beam {
+            position: absolute; width: 30vw; height: 150vh;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), rgba(0, 92, 185, 0.15), transparent);
+            transform-origin: top center; top: -20%; left: 20%;
+            animation: beamSweep 12s ease-in-out infinite alternate; filter: blur(40px);
+        }
+        .beam-2 { left: 60%; animation-duration: 16s; animation-direction: alternate-reverse; background: linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.05), transparent); }
+        .beam-3 { left: 40%; animation-duration: 20s; transform-origin: bottom center; top: auto; bottom: -20%; }
+        
+        @keyframes beamSweep { 0% { transform: rotate(-25deg); } 100% { transform: rotate(25deg); } }
+
+        /* Slow ambient dust motes instead of fast sparks */
+        .particles i {
+            position: absolute; bottom: -20px; width: 5px; height: 5px;
+            background: rgba(255, 255, 255, 0.6); border-radius: 50%; 
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+            animation: dustFloat 15s linear infinite; opacity: 0;
+            filter: blur(1px);
+        }
+        .particles i:nth-child(even) { background: rgba(56, 189, 248, 0.4); box-shadow: 0 0 12px 3px rgba(56, 189, 248, 0.3); }
+        
+        .particles i:nth-child(1) { left: 10%; animation-duration: 18s; animation-delay: 0s; }
+        .particles i:nth-child(2) { left: 25%; animation-duration: 22s; animation-delay: 4s; }
+        .particles i:nth-child(3) { left: 40%; animation-duration: 15s; animation-delay: 2s; }
+        .particles i:nth-child(4) { left: 55%; animation-duration: 25s; animation-delay: 8s; }
+        .particles i:nth-child(5) { left: 70%; animation-duration: 19s; animation-delay: 1s; }
+        .particles i:nth-child(6) { left: 85%; animation-duration: 21s; animation-delay: 6s; }
+        .particles i:nth-child(7) { left: 15%; animation-duration: 16s; animation-delay: 9s; }
+        .particles i:nth-child(8) { left: 50%; animation-duration: 24s; animation-delay: 3s; }
+        .particles i:nth-child(9) { left: 80%; animation-duration: 17s; animation-delay: 5s; }
+        .particles i:nth-child(10) { left: 95%; animation-duration: 20s; animation-delay: 7s; }
+        
+        @keyframes dustFloat {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Subtle Blueprint Dot Matrix */
+        .intro-grid {
+            position: absolute; inset: 0;
             background-image: radial-gradient(rgba(0, 92, 185, 0.15) 1px, transparent 1px);
-            background-size: 32px 32px;
-            animation: bgPan 90s linear infinite;
+            background-size: 40px 40px;
+            opacity: 0.7;
+            animation: subtleDrift 30s linear infinite;
+            pointer-events: none; z-index: 1;
             mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
             -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
         }
-        @keyframes bgPan { 0% { transform: translateY(0) translateX(0); } 100% { transform: translateY(-32px) translateX(-32px); } }
-
-        /* Modern Frosted Glass Image Bubbles */
-        .floating-tags-container { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
-        .float-img {
-            position: absolute; top: 100%; left: 50%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-radius: 22px;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 12px 30px rgba(0, 46, 92, 0.1), inset 0 2px 4px rgba(255,255,255,0.8);
-            animation-name: modernFloat; animation-timing-function: linear; animation-iteration-count: infinite; 
-            animation-delay: var(--td);
-            opacity: 0; padding: 12px; box-sizing: border-box;
-            cursor: pointer; pointer-events: auto; transition: filter 0.3s ease, box-shadow 0.3s ease;
-            will-change: transform, opacity;
+        @keyframes subtleDrift {
+            0% { background-position: 0 0; }
+            100% { background-position: -40px -40px; }
         }
-        .float-img:hover {
-            animation-play-state: paused;
-            filter: brightness(1.05);
-            box-shadow: 0 20px 40px rgba(0, 92, 185, 0.25), inset 0 2px 4px rgba(255,255,255,1);
-            z-index: 20;
-        }
-        .float-img img {
-            max-width: 100%; max-height: 100%; object-fit: contain;
-            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+        
+        body.dark-mode .intro-grid {
+            background-image: radial-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px);
         }
 
-        @keyframes modernFloat {
-            0% { opacity: 0; transform: translate3d(calc(var(--tx) * 1vw), 5vh, 0) scale(0.9) rotate(calc(var(--rot) * -1deg)); }
-            10% { opacity: 1; transform: translate3d(calc(var(--tx) * 1vw), -15vh, 0) scale(1) rotate(0deg); }
-            90% { opacity: 1; transform: translate3d(calc(var(--tx) * 1vw), -95vh, 0) scale(1) rotate(calc(var(--rot) * 0.5deg)); }
-            100% { opacity: 0; transform: translate3d(calc(var(--tx) * 1vw), -115vh, 0) scale(1.05) rotate(calc(var(--rot) * 1deg)); }
+        .animated-slogan {
+            font-size: clamp(0.9rem, 3.5vw, 1.3rem); font-weight: 900; color: var(--primary-dark);
+            text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 24px; position: relative; display: inline-block;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        .animated-slogan::after {
+            content: ''; position: absolute; left: 0; bottom: -6px; height: 4px;
+            background: linear-gradient(90deg, transparent, #38bdf8, var(--primary), #38bdf8, transparent);
+            background-size: 200% 100%; width: 100%; border-radius: 2px;
+            animation: underlineFlow 2.5s linear infinite;
+            box-shadow: 0 0 12px rgba(0, 92, 185, 0.4);
+        }
+        @keyframes underlineFlow { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        
+        body.dark-mode .animated-slogan { color: #f8fafc; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
+        body.dark-mode .animated-slogan::after { box-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
 
-        /* Animated Navigation Lines (Subtle) */
-        .intro-routes { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.4; }
-        .intro-routes path { fill: none; stroke: var(--primary); opacity: 0.2; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 4 12; animation: dashMove 20s linear infinite; }
-        .intro-routes .accent-path { stroke: #38bdf8; opacity: 0.4; stroke-width: 3; stroke-dasharray: 6 18; }
-        @keyframes dashMove { to { stroke-dashoffset: -1000; } }
-
-        /* Refined Premium Glass Card */
-        .intro-content {
-            display: flex; flex-direction: column; align-items: center; max-width: 380px; width: 100%;
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.8); 
-            border-radius: 36px;
-            padding: 40px 32px;
-            box-shadow: 0 30px 60px rgba(0, 46, 92, 0.08), 0 4px 12px rgba(0,0,0,0.02), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-            animation: cardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* Glowing Commercial Glass Card */
+        .intro-card {
             position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 90%; max-width: 650px; /* Increased for a grand full-page feel */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 40px;
+            padding: 64px 48px; /* Increased padding */
+            box-shadow: 0 30px 60px rgba(0, 92, 185, 0.15), inset 0 1px 2px rgba(255, 255, 255, 1);
+            animation: cardRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        .intro-card::before {
+            content: ''; position: absolute; inset: -2px; border-radius: 42px;
+            background: linear-gradient(45deg, rgba(0, 92, 185, 0.3), rgba(56, 189, 248, 0.3), rgba(0, 69, 139, 0.2));
+            z-index: -1; opacity: 0.6; filter: blur(20px);
+            animation: cardGlow 4s ease-in-out infinite alternate;
+        }
+        @keyframes cardGlow { 0% { opacity: 0.3; filter: blur(15px); } 100% { opacity: 0.7; filter: blur(25px); } }
+        @keyframes cardRise { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Commercial Badge */
+        .intro-badge {
+            background: rgba(0, 92, 185, 0.08);
+            border: 1px solid rgba(0, 92, 185, 0.2);
+            color: var(--primary);
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 900; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 32px;
+            box-shadow: 0 0 15px rgba(0, 92, 185, 0.15);
+            animation: pulseBadge 2s infinite alternate;
+            transition: opacity 0.3s ease;
+        }
+        @keyframes pulseBadge { 0% { box-shadow: 0 0 10px rgba(0, 92, 185, 0.1); border-color: rgba(0, 92, 185, 0.2); } 100% { box-shadow: 0 0 25px rgba(0, 92, 185, 0.3); border-color: rgba(0, 92, 185, 0.4); color: var(--primary-dark); } }
+
+        /* Icon & Typography */
+        .intro-title {
+            font-size: clamp(2.5rem, 8vw, 4.2rem); font-weight: 900; letter-spacing: -1px; margin: 0 0 16px 0;
+            color: #0f172a; line-height: 1.1; 
+        }
+        .intro-title span { 
+            background: linear-gradient(135deg, var(--primary), #38bdf8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0, 92, 185, 0.2));
+        }
+        
+        .intro-subtitle {
+            font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; color: #475569; margin: 0 0 48px 0; line-height: 1.5; 
+            transition: opacity 0.3s ease;
+        }
+
+        /* Glowing Action Button */
+        .intro-action-btn {
+            background: linear-gradient(90deg, var(--primary), #38bdf8, var(--primary-dark), var(--primary));
+            background-size: 300% 100%;
+            color: #ffffff;
+            border: none; padding: 22px 32px; border-radius: 100px;
+            font-weight: 900; font-size: 1.3rem; cursor: pointer;
+            width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 92, 185, 0.35), inset 0 2px 4px rgba(255,255,255,0.3);
+            animation: btnFlow 4s linear infinite;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        @keyframes btnFlow { 0% { background-position: 0% 50%; } 100% { background-position: 150% 50%; } }
+        
+        .intro-action-btn:hover {
+            transform: translateY(-3px) scale(1.03); 
+            box-shadow: 0 15px 40px rgba(0, 92, 185, 0.5), inset 0 2px 4px rgba(255,255,255,0.5);
+        }
+        .intro-action-btn:active { transform: translateY(1px); box-shadow: 0 5px 15px rgba(0, 92, 185, 0.4); }
+        .intro-action-btn svg { transition: transform 0.3s ease; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+        .intro-action-btn:hover svg { transform: translateX(6px) scale(1.1); }
 
         /* Language Dropdown Shared Styles */
         .lang-dropdown { position: relative; z-index: 200; }
@@ -135,60 +235,13 @@
         .lang-item.active { background: #e0f2fe; color: var(--primary); }
 
         /* Intro specific adjustments */
-        .intro-lang-dropdown { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 20px; z-index: 20; }
-        .intro-lang-dropdown .lang-toggle { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); font-size: 0.8rem; padding: 8px 16px; border-radius: 12px; }
-        .intro-lang-dropdown .lang-toggle:hover { background: #ffffff; transform: translateY(-1px); }
-
-        /* Modernized Video Container */
-        .video-container { 
-            width: 100%; max-width: 320px; aspect-ratio: 16/9; margin-bottom: 28px; 
-            background: #0f172a; border-radius: 20px; overflow: hidden; 
-            box-shadow: 0 16px 32px rgba(0, 46, 92, 0.15), inset 0 0 0 1px rgba(255,255,255,0.2); 
-            border: 4px solid #ffffff; position: relative; transform: translateZ(0); 
+        .intro-lang-dropdown { position: absolute; top: max(24px, env(safe-area-inset-top)); right: 24px; z-index: 20; cursor: default; }
+        .intro-lang-dropdown .lang-toggle { 
+            background: rgba(255, 255, 255, 0.9); color: #0f172a; border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-size: 0.8rem; padding: 8px 16px; border-radius: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
-        
-        /* Premium Typography */
-        .intro-h1 { 
-            font-size: 2.6rem; font-weight: 900; margin: 0 0 4px 0; line-height: 1.1; letter-spacing: -1.5px; 
-            background: linear-gradient(135deg, var(--primary-dark), #0ea5e9);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        }
-        .intro-h1 span { 
-            background: linear-gradient(135deg, var(--primary), #38bdf8); color: white; -webkit-text-fill-color: white;
-            display: inline-block; padding: 2px 10px; border-radius: 10px; margin-left: 4px; font-size: 0.8em; line-height: 1.2; box-shadow: 0 4px 10px rgba(0, 92, 185, 0.2);
-        }
-        
-        .intro-nav-title { 
-            font-size: 0.85rem; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 1.5px; 
-            margin-bottom: 8px; background: rgba(56, 189, 248, 0.15); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-        .intro-slogan { font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 24px; }
-        .intro-p { font-size: 0.95rem; font-weight: 500; margin: 0 0 32px 0; color: var(--text-muted); line-height: 1.5; text-align: center; }
-
-        /* Sleek Button */
-        .intro-btn { 
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
-            color: #ffffff; border: none; padding: 18px 32px; border-radius: 50px; 
-            font-weight: 800; font-size: 1.05rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; 
-            box-shadow: 0 12px 24px rgba(0, 92, 185, 0.3), inset 0 2px 4px rgba(255,255,255,0.2); 
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; 
-        }
-        .intro-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
-        .intro-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 32px rgba(0, 92, 185, 0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
-        .intro-btn:hover svg { transform: translateX(4px); }
-        .intro-btn:active { transform: translateY(1px); box-shadow: 0 4px 12px rgba(0, 92, 185, 0.2); }
-
-        /* Glassy Commercial Ticker */
-        .commercial-ticker { 
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 36px; 
-            background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            color: var(--primary-dark); display: flex; align-items: center; overflow: hidden; 
-            font-weight: 800; font-size: 0.75rem; letter-spacing: 2px; z-index: 20; border-top: 1px solid rgba(255,255,255,0.8); 
-        }
-        .ticker-track { display: flex; gap: 60px; white-space: nowrap; animation: tickerScroll 40s linear infinite; text-transform: uppercase; }
-        .ticker-track span i { color: #38bdf8; margin-right: 12px; font-style: normal; font-size: 1.2em; vertical-align: middle; }
-        @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .intro-lang-dropdown .lang-toggle:hover { background: #ffffff; border-color: var(--primary); transform: translateY(-1px); }
 
         /* --- MAIN APP INTERFACE --- */
         #mainAppWrapper { position: relative; width: 100%; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; padding: max(8px, env(safe-area-inset-top)) 8px 0; }
@@ -1113,14 +1166,28 @@
         }
         body.dark-mode .video-container { border-color: #1e293b; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
-        body.dark-mode .float-img { background: rgba(30, 41, 59, 0.6); border-color: rgba(255,255,255,0.05); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+        body.dark-mode .float-img { 
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.5) 100%); 
+            border-color: rgba(255,255,255,0.15); 
+            border-bottom-color: rgba(0,0,0,0.4);
+            border-right-color: rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.05); 
+        }
+        body.dark-mode .float-img:hover {
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.1), 0 0 0 4px rgba(56, 189, 248, 0.25);
+        }
         
-        body.dark-mode .intro-h1 { background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; }
-        body.dark-mode .intro-slogan { color: #f8fafc; }
-        body.dark-mode .intro-nav-title { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
-        body.dark-mode .intro-p { color: #94a3b8; }
-        
-        body.dark-mode .commercial-ticker { background: rgba(15, 23, 42, 0.5); color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.05); }
+        /* Intro Page Dark Mode Overrides */
+        body.dark-mode #introPage { background: #020617; }
+        body.dark-mode .intro-mesh { background: radial-gradient(circle at 50% 50%, rgba(0, 92, 185, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.25) 0%, transparent 40%), radial-gradient(circle at 20% 80%, rgba(0, 69, 139, 0.3) 0%, transparent 40%); }
+        body.dark-mode .intro-card { background: rgba(15, 23, 42, 0.6); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        body.dark-mode .intro-card::before { background: linear-gradient(45deg, #005cb9, #38bdf8, #00458b); opacity: 0.4; }
+        body.dark-mode .intro-title { color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        body.dark-mode .intro-title span { background: linear-gradient(135deg, #38bdf8, #bae6fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5)); }
+        body.dark-mode .intro-subtitle { color: #cbd5e1; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-weight: 600; }
+        body.dark-mode .intro-badge { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+        body.dark-mode .intro-lang-dropdown .lang-toggle { background: rgba(255, 255, 255, 0.05); color: #ffffff; border-color: rgba(255, 255, 255, 0.15); box-shadow: none; }
+        body.dark-mode .intro-lang-dropdown .lang-toggle:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
 
         /* --- FOOTER STYLES --- */
         .app-footer { width: 100%; padding: 10px 0; text-align: center; font-size: 0.65rem; color: var(--text-muted); flex-shrink: 0; z-index: 5; background: var(--bg); border-top: 1px solid var(--border-neutral); transition: all 0.3s ease; }
@@ -1131,20 +1198,20 @@
 </head>
 <body onload="initApp()">
 
-    <div id="introPage">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="intro-bg">
-            <div class="floating-tags-container" id="floatingTagsContainer">
-                <!-- Dynamically populated via JS -->
+    <div id="introPage" onclick="closeIntro()">
+        <!-- Subtle Ambient Animated Background -->
+        <div class="intro-bg-animated">
+            <div class="intro-grid"></div>
+            <div class="light-beam"></div>
+            <div class="light-beam beam-2"></div>
+            <div class="light-beam beam-3"></div>
+            <div class="particles">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
             </div>
-            <svg class="intro-routes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-                <path d="M -100,200 L 200,200 L 200,500 L 600,500 L 600,300 L 1100,300" />
-                <path class="accent-path" d="M 1100,800 L 700,800 L 700,600 L 300,600 L 300,900" />
-            </svg>
         </div>
+        <div class="intro-mesh"></div>
         
-        <div class="lang-dropdown intro-lang-dropdown" id="introLangDropdown">
+        <div class="lang-dropdown intro-lang-dropdown" id="introLangDropdown" onclick="event.stopPropagation()">
             <button class="lang-toggle" onclick="toggleIntroLangMenu(event)" id="introLangToggle">🇳🇱 NL ▼</button>
             <div class="lang-menu" id="introLangMenu">
                 <button class="lang-item active" onclick="setLang('nl')" id="intro-item-nl">🇳🇱 NL</button>
@@ -1154,30 +1221,20 @@
             </div>
         </div>
 
-        <div class="intro-content">
-            <div class="video-container">
-                <img src="https://cdn.bouwmaat.nl/api/images/bm_wk15-2026_homepage_banner_2.webp" alt="Bouwmaat Actie Banner">
-            </div>
-            <h1 class="intro-h1" id="introTitle">BOUWMAAT AMSTEL <span>XL</span></h1>
-            <div class="intro-nav-title" id="introNavTitle">Smart Navigator</div>
-            <div class="intro-slogan" id="introSlogan">Alles voor de vakman</div>
-            <p class="intro-p" id="introText">Vind direct jouw producten in de vestiging.</p>
-            <button class="intro-btn" onclick="closeIntro()" id="introBtn">
+        <div class="intro-card">
+            <div class="intro-badge" id="introBadge">SMART NAVIGATOR</div>
+            
+            <h1 class="intro-title" id="introTitle">AMSTEL <span>XL</span></h1>
+            
+            <!-- Added Animated Slogan -->
+            <div class="animated-slogan" id="introSlogan">ALLES VOOR DE VAKMAN</div>
+            
+            <p class="intro-subtitle" id="introText">Vind direct jouw producten in de vestiging. Geen gezoek, meteen aan de slag!</p>
+            
+            <button class="intro-action-btn" onclick="event.stopPropagation(); closeIntro()" id="introBtn">
                 <span id="introBtnText">START ZOEKEN</span>
-                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
-        </div>
-        <div class="commercial-ticker">
-            <div class="ticker-track">
-                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
-                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
-                <span><i>•</i> ВСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
-                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
-                <span><i>•</i> ALLES VOOR DE VAKMAN</span>
-                <span><i>•</i> EVERYTHING FOR THE PROFESSIONAL</span>
-                <span><i>•</i> ВСЕ ДЛЯ ПРОФЕСІОНАЛІВ</span>
-                <span><i>•</i> WSZYSTKO DLA PROFESJONALISTY</span>
-            </div>
         </div>
     </div>
 
@@ -1280,6 +1337,18 @@
         </footer>
     </div>
     
+    <div id="streetviewModal" class="sv-modal" style="background: #e2e8f0;">
+        <div class="sv-header">
+            <span id="svTitle">Pad 1 - Streetview</span>
+            <button class="sv-close" onclick="closeStreetView()">✕</button>
+        </div>
+        <div class="sv-container" id="svContainer">
+            <!-- Universal warehouse placeholder to simulate the aisle look using a highly reliable source -->
+            <img class="sv-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/IKEA_B%C3%A4ckebol_warehouse_2.jpg/2560px-IKEA_B%C3%A4ckebol_warehouse_2.jpg" onerror="this.src='https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=2500&auto=format&fit=crop'" alt="Aisle Panorama">
+            <div class="sv-hint" id="svHintText">Sleep om rond te kijken ↔️</div>
+        </div>
+    </div>
+
     <div id="printArea"></div>
 
 <script>
@@ -1298,7 +1367,7 @@
             introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
             introSlogan: "Alles voor de vakman",
             introNav: "Smart Navigator",
-            introP: "Vind direct jouw producten in de vestiging.",
+            introP: "Vind direct jouw producten in de vestiging. Geen gezoek, meteen aan de slag!",
             introBtn: "START ZOEKEN",
             placeholder: "Zoek artikel of code...", search: "🔍 ZOEKEN", reset: "RESET", 
             allCats: "Alle categorieën",
@@ -1338,7 +1407,7 @@
             introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
             introSlogan: "Everything for the professional",
             introNav: "Smart Navigator",
-            introP: "Find your products instantly in the store.",
+            introP: "Find your products instantly in the store. No searching, just building!",
             introBtn: "START SEARCHING",
             placeholder: "Search item or code...", search: "🔍 SEARCH", reset: "RESET", 
             allCats: "All categories",
@@ -1371,7 +1440,7 @@
             introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
             introSlogan: "Все для професіоналів",
             introNav: "Розумний навігатор",
-            introP: "Миттєво знаходьте потрібні товари у магазині.",
+            introP: "Миттєво знаходьте потрібні товари у магазині. Без пошуків, одразу до справи!",
             introBtn: "ПОЧАТИ ПОШУК",
             placeholder: "Пошук товару або коду...", search: "🔍 ПОШУК", reset: "СКИДАННЯ", 
             allCats: "Всі категорії",
@@ -1404,7 +1473,7 @@
             introTitle: "BOUWMAAT AMSTEL <span>XL</span>",
             introSlogan: "Wszystko dla profesjonalisty",
             introNav: "Inteligentny Nawigator",
-            introP: "Znajdź swoje produkty natychmiast w sklepie.",
+            introP: "Znajdź swoje produkty natychmiast w sklepie. Bez szukania, od razu do pracy!",
             introBtn: "ROZPOCZNIJ WYSZUKIWANIE",
             placeholder: "Szukaj artykułu lub kodu...", search: "🔍 SZUKAJ", reset: "RESETUJ", 
             allCats: "Wszystkie kategorie",
@@ -1462,8 +1531,16 @@
     window.activeMapTarget = null; 
     window.currentSelectedProduct = null;
 
+    // Helper functions to safely read data properties
+    const getArtNr = (item) => item["ArtikelNr."] || item.artNr || '';
+    const getOmsch = (item) => item["Artikel omsch."] || item.name || '';
+    const getLoc = (item) => item["Locatie2"] || item.loc || '';
+    const getHg = (item) => item["Hoofdgroep"] || item.hg || 'Algemeen';
+    const getSg = (item) => item["Subgroep"] || item.sg || '';
+
+    // Fallback data for the preview environment if data.json is missing
     const fallbackData = [
-                   {
+            {
             "ArtikelNr.": "10000294",
             "Artikel omsch.": "Stucvilt Afdekvlies Wit Waterdicht Lichtgewicht 1m x 40m 40m2",
             "Schaplocatie code": "11L-007-0020",
@@ -2605,6 +2682,22 @@
             "Subgroep": "Elektrisch installatiemateriaal",
             "Locatie2": "Pad 16 Links, Sectie 06"
         },
+          {
+            "ArtikelNr.": "322313",
+            "Artikel omsch.": "Eurocol 705 Speciaal Poedertegellijm Grijs Flexibel 25kg",
+            "Schaplocatie code": "14L-015-0130",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Tegelverwerking",
+            "Locatie2": "Pad 14 Links, Sectie 15"
+        },
+            {
+            "ArtikelNr.": "435885",
+            "Artikel omsch.": "Knauf U-profiel 28/27 verzinkt staal 300 cm",
+            "Schaplocatie code": "09R-011-0070",
+            "Hoofdgroep": "Bouwmaterialen",
+            "Subgroep": "Droge afbouw",
+            "Locatie2": "Pad 09 Rechts, Sectie 11"
+        },
         {
             "ArtikelNr.": "573876",
             "Artikel omsch.": "AC ACOMIX COLORPASTE WR2 1 L",
@@ -2622,19 +2715,50 @@
             "Locatie2": "Pad VM Links, Sectie 02"
         }
 
-
-
     ];
 
-    const getArtNr = (item) => String(item["ArtikelNr."] || item.artikelNr || item.id || '');
-    const getOmsch = (item) => String(item["Artikel omsch."] || item.omschrijving || item.naam || item.name || '');
-    const getHg = (item) => String(item["Hoofdgroep"] || item.hoofdgroep || item.category || 'Algemeen');
-    const getSg = (item) => String(item["Subgroep"] || item.subgroep || item.subcategory || '');
-    const getLoc = (item) => String(item["Locatie2"] || item["Schaplocatie code"] || item.locatie || item.Locatie || '');
+    /* --- Language Auto-Cycle Timer Variables --- */
+    let introCycleTimer = null;
+    let isUserInteractedWithLang = false;
+    const cycleLangs = ['nl', 'en', 'uk', 'pl'];
+
+    function startIntroCycle() {
+        if (introCycleTimer) clearInterval(introCycleTimer);
+        if (isUserInteractedWithLang) return; 
+        
+        let currentIndex = cycleLangs.indexOf(curLang);
+        if (currentIndex === -1) currentIndex = 0;
+        
+        introCycleTimer = setInterval(() => {
+            const introPage = document.getElementById('introPage');
+            if (introPage && introPage.classList.contains('hidden')) {
+                clearInterval(introCycleTimer);
+                return;
+            }
+            currentIndex = (currentIndex + 1) % cycleLangs.length;
+            
+            const texts = [document.getElementById('introText'), document.getElementById('introBtnText'), document.getElementById('introBadge')];
+            texts.forEach(el => { if(el) el.style.opacity = '0'; });
+            
+            setTimeout(() => {
+                setLang(cycleLangs[currentIndex], true);
+                texts.forEach(el => { if(el) el.style.opacity = '1'; });
+            }, 300);
+        }, 4000); 
+    }
+
+    function stopIntroCycle() {
+        if (introCycleTimer) {
+            clearInterval(introCycleTimer);
+            introCycleTimer = null;
+        }
+    }
 
     // Menu toggle logic
     function toggleIntroLangMenu(e) {
         e.stopPropagation();
+        isUserInteractedWithLang = true;
+        stopIntroCycle();
         document.getElementById('introLangMenu').classList.toggle('show');
         const appMenu = document.getElementById('appLangMenu');
         if(appMenu) appMenu.classList.remove('show');
@@ -2672,57 +2796,11 @@
         }
 
         boot(); 
-        populateIntroImages(); // Inject the 30 floating images
-    }
-
-    function populateIntroImages() {
-        const container = document.getElementById('floatingTagsContainer');
-        if (!container || !data || data.length === 0) return;
-        
-        container.innerHTML = '';
-        // Use 30 images
-        const totalImages = Math.min(30, data.length); 
-
-        for (let i = 0; i < totalImages; i++) {
-            // Pick a random product from the loaded catalog
-            const randomProduct = data[Math.floor(Math.random() * data.length)];
-            const artNr = getArtNr(randomProduct).trim();
-            const catIcon = icons[getHg(randomProduct)] || '📦';
-            
-            // Distribute images evenly across the screen width to prevent clustering
-            const sectionWidth = 140 / totalImages; // Spread from -70vw to +70vw
-            const baseTx = -70 + (i * sectionWidth); 
-            const tx = baseTx + (Math.random() * 12 - 6); // Add natural random jitter
-            
-            // Randomize duration, delay, rotation, and size
-            const duration = 18 + Math.random() * 22; // Random speed between 18s and 40s
-            const td = -(Math.random() * duration).toFixed(2); // Random start position in the loop
-            const rot = Math.floor(Math.random() * 80) - 40; // Rotation: -40 to +40 degrees
-            const size = Math.floor(Math.random() * 50) + 60; // Size: 60px to 110px
-
-            const div = document.createElement('div');
-            div.className = 'float-img';
-            div.style.setProperty('--tx', tx);
-            div.style.setProperty('--td', `${td}s`);
-            div.style.setProperty('--rot', rot);
-            div.style.animationDuration = `${duration}s`;
-            div.style.width = `${size}px`;
-            div.style.height = `${size}px`;
-            
-            div.onclick = () => triggerIntroProduct(artNr);
-
-            // Create image with fallback placeholder
-            const img = document.createElement('img');
-            img.src = `img/${artNr}.webp`;
-            img.setAttribute('onerror', `this.src='https://placehold.co/100x100/ffffff/0a55d7?text=${encodeURIComponent(catIcon)}'`);
-            img.alt = getOmsch(randomProduct).replace(/"/g, '&quot;');
-            
-            div.appendChild(img);
-            container.appendChild(div);
-        }
+        startIntroCycle(); // Start the language carousel on boot
     }
 
     function closeIntro() {
+        stopIntroCycle(); // Stop timer when intro is closed
         const intro = document.getElementById('introPage');
         if (intro) intro.classList.add('hidden');
         
@@ -2764,16 +2842,25 @@
         toggleMapExpand(false);
 
         const intro = document.getElementById('introPage');
-        if (intro) intro.classList.remove('hidden');
+        if (intro) {
+            intro.classList.remove('hidden');
+            isUserInteractedWithLang = false; // Reset interaction state
+            startIntroCycle(); // Restart the carousel
+        }
         
         const resetBtn = document.getElementById('btnReset');
         if (resetBtn) resetBtn.style.display = 'none';
     }
 
-    function setLang(lang) {
+    function setLang(lang, isAutoCycle = false) {
         if (!i18n[lang]) lang = 'nl';
         curLang = lang;
-        localStorage.setItem('bouwmaat_lang', lang);
+        
+        if (!isAutoCycle) {
+            localStorage.setItem('bouwmaat_lang', lang);
+            isUserInteractedWithLang = true;
+            stopIntroCycle();
+        }
         
         document.querySelectorAll('.lang-item').forEach(btn => btn.classList.remove('active'));
         
@@ -2800,15 +2887,17 @@
         const t = i18n[lang];
         
         const elIntroTitle = document.getElementById('introTitle');
-        if(elIntroTitle) elIntroTitle.innerHTML = t.introTitle;
+        if(elIntroTitle) elIntroTitle.innerHTML = `BOUWMAAT AMSTEL <span>XL</span>`; // Concise title
+        
         const elIntroSlogan = document.getElementById('introSlogan');
-        if(elIntroSlogan) elIntroSlogan.innerText = t.introSlogan;
-        const elIntroNavTitle = document.getElementById('introNavTitle');
-        if(elIntroNavTitle) elIntroNavTitle.innerText = t.introNav;
+        if(elIntroSlogan) elIntroSlogan.innerText = t.introSlogan || "ALLES VOOR DE VAKMAN";
+        
         const elIntroText = document.getElementById('introText');
         if(elIntroText) elIntroText.innerText = t.introP;
         const elIntroBtnText = document.getElementById('introBtnText');
         if(elIntroBtnText) elIntroBtnText.innerText = t.introBtn;
+        const elIntroBadge = document.getElementById('introBadge');
+        if(elIntroBadge) elIntroBadge.innerText = t.introNav;
         
         const elSearchBox = document.getElementById('searchBox');
         if(elSearchBox) elSearchBox.placeholder = t.placeholder;
@@ -2962,7 +3051,7 @@
         if(exitText) exitText.remove();
         if(entDoorEx) entDoorEx.remove();
         if(entTextEx) entTextEx.remove();
-        
+
         if (!grid) return; 
 
         const getSecs = (pad, start, end, part) => {
@@ -3111,33 +3200,72 @@
         
         setLang(curLang); 
         
-        setTimeout(() => {
+        window.updateEntrancePosition = function() {
             const aisle5 = document.getElementById('p-5');
             const aisle6 = document.getElementById('p-6');
+            const grid = document.getElementById('mapGrid');
+            if (!grid) return;
+            
             let entranceX = 270;
-            if (aisle5 && aisle6) {
+            if (aisle5 && aisle6 && aisle5.offsetLeft > 0) {
                 entranceX = aisle5.offsetLeft + aisle5.offsetWidth + (aisle6.offsetLeft - (aisle5.offsetLeft + aisle5.offsetWidth)) / 2;
             } else {
                 const centerAisle = document.getElementById('p-9');
-                entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
+                if (centerAisle && centerAisle.offsetLeft > 0) {
+                    entranceX = centerAisle.offsetLeft - 11;
+                }
             }
+
+            // Failsafe: If CSS layout hasn't rendered yet (offsetLeft = 0), estimate the position
+            if (entranceX <= 20) {
+                entranceX = grid.offsetWidth * 0.28; // Approx. between aisle 5 and 6
+            }
+            
             window.entrancePosX = entranceX + 20; 
             window.kioskPosX = window.entrancePosX + 45; 
             
-            entLabel.style.left = `calc(${window.entrancePosX}px)`; 
-            entLabel.style.bottom = `-5px`;
+            const entLabel = document.getElementById('entranceText');
+            if (entLabel) {
+                entLabel.style.left = `${window.entrancePosX}px`; 
+                entLabel.style.bottom = `-5px`;
+            }
             
             const door = document.getElementById('entranceDoor');
             if (door) {
-                door.style.left = `calc(${window.entrancePosX}px)`;
+                door.style.left = `${window.entrancePosX}px`;
                 door.onclick = closeSelection;
             }
 
             const kiosk = document.getElementById('kioskZone');
-            if (kiosk) kiosk.style.left = `calc(${window.kioskPosX}px)`;
+            if (kiosk) kiosk.style.left = `${window.kioskPosX}px`;
 
-            moveChar('entrance', false, null, null, null);
-        }, 50); 
+            // Snap character perfectly to the touch screen if not navigating
+            if (!window.activeMapTarget && !window.multiRouteActive) {
+                const char = document.getElementById('mainChar');
+                const path = document.getElementById('guideLine');
+                if (char && !char.classList.contains('running')) {
+                    char.style.transition = 'none';
+                    char.style.left = `${window.kioskPosX - 12}px`;
+                    char.style.bottom = '6px';
+                    char.classList.add('interacting');
+                    if (path) {
+                        path.setAttribute('d', '');
+                        path.style.animation = 'none';
+                    }
+                }
+            }
+        };
+
+        // Attach to ResizeObserver to ensure 100% pixel-perfect alignment anytime layout changes
+        const gridElement = document.getElementById('mapGrid');
+        if (window.ResizeObserver && gridElement) {
+            new ResizeObserver(window.updateEntrancePosition).observe(gridElement);
+        }
+        window.addEventListener('resize', window.updateEntrancePosition);
+        
+        // Safety calls for initial load paint cycles
+        setTimeout(window.updateEntrancePosition, 50);
+        setTimeout(window.updateEntrancePosition, 300);
         
         const elSearchBox = document.getElementById('searchBox');
         if(elSearchBox) {
@@ -3145,29 +3273,6 @@
             elSearchBox.addEventListener('focus', handleSearch); 
             elSearchBox.addEventListener('keydown', handleKeys);
         }
-        
-        window.addEventListener('resize', () => {
-            const aisle5 = document.getElementById('p-5');
-            const aisle6 = document.getElementById('p-6');
-            let entranceX = 270;
-            if (aisle5 && aisle6) {
-                entranceX = aisle5.offsetLeft + aisle5.offsetWidth + (aisle6.offsetLeft - (aisle5.offsetLeft + aisle5.offsetWidth)) / 2;
-            } else {
-                const centerAisle = document.getElementById('p-9');
-                entranceX = centerAisle ? centerAisle.offsetLeft - 11 : 270;
-            }
-            window.entrancePosX = entranceX + 20;
-            window.kioskPosX = window.entrancePosX + 45;
-            
-            const entLabel = document.getElementById('entranceText');
-            if (entLabel) entLabel.style.left = `calc(${window.entrancePosX}px)`; 
-            
-            const door = document.getElementById('entranceDoor');
-            if (door) door.style.left = `calc(${window.entrancePosX}px)`;
-
-            const kiosk = document.getElementById('kioskZone');
-            if (kiosk) kiosk.style.left = `calc(${window.kioskPosX}px)`;
-        });
     }
 
     function toggleDimMode() {
@@ -4175,6 +4280,8 @@
         if (padStr === '0AW') padDisplay = t.backWallShort || 'Achterwand';
         else if (padStr === '1L') padDisplay = `1 ${t.leftWord || 'Links'}`;
         else padDisplay = `${t.padWord || 'Pad'} ${padStr}`;
+        
+        const safePadName = padDisplay.replace(/'/g, "\\'");
         
         card.innerHTML = `
             <div class="ae-header">
